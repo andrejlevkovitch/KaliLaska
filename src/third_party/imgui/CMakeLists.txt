@@ -13,8 +13,13 @@ set(IMGUI_SRC
   "sources/imgui_widgets.cpp"
   )
 
-find_package(OpenGL REQUIRED)
-find_package(SDL2 REQUIRED)
+if(CMAKE_CXX_COMPILER MATCHES "mingw" AND UNIX)
+  set(SDL2_LIBRARY "/usr/i686-w64-mingw32/bin/SDL2.dll")
+  set(OPENGL_gl_LIBRARY "/usr/i686-w64-mingw32/lib/libopengl32.a")
+else()
+  find_package(OpenGL REQUIRED)
+  find_package(SDL2 REQUIRED)
+endif()
 
 add_library(imgui ${IMGUI_SRC})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_11)
