@@ -7,9 +7,15 @@ project(KaliLaska)
 include(build.cmake)
 include(doxygen.cmake)
 
-set(LIST_SUBDIRS third_party Director)
+find_package(OpenGL REQUIRED)
+find_package(gl3w REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(Box2D REQUIRED)
+find_package(tinyxml2 REQUIRED)
+
+set(LIST_SUBDIRS third_party src tests)
 foreach(DIR ${LIST_SUBDIRS})
-  add_subdirectory("src/${DIR}")
+  add_subdirectory(${DIR})
 endforeach()
 
 message(STATUS "SUBDIRECTORIES: ${LIST_SUBDIRS}")
