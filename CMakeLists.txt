@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.12)
 
 project(KaliLaska)
 
-include(build.cmake)
-include(doxygen.cmake)
+include(cmake/build.cmake)
+include(cmake/doxygen.cmake)
 
 find_package(OpenGL REQUIRED)
 find_package(gl3w REQUIRED)
