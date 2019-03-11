@@ -45,4 +45,60 @@ uint8_t sdlButton(Mouse::Button button) {
     return 0;
   }
 }
+
+ShowAction showAction(uint8_t sdlAction) {
+  switch (sdlAction) {
+  case SDL_WINDOWEVENT_SHOWN:
+    return ShowAction::Shown;
+  case SDL_WINDOWEVENT_HIDDEN:
+    return ShowAction::Hidden;
+    // case SDL_WINDOWEVENT_MINIMIZED:
+    //  return ShowAction::Minimized;
+    // case SDL_WINDOWEVENT_MAXIMIZED:
+    //  return ShowAction::Maximized;
+    // case SDL_WINDOWEVENT_RESTORED:
+    //  return ShowAction::Restored;
+  default:
+    return ShowAction::Invalid;
+  }
+}
+
+uint8_t sdlAction(ShowAction action) {
+  switch (action) {
+  case ShowAction::Shown:
+    return SDL_WINDOWEVENT_SHOWN;
+  case ShowAction::Hidden:
+    return SDL_WINDOWEVENT_HIDDEN;
+    // case ShowAction::Minimized:
+    //  return SDL_WINDOWEVENT_MINIMIZED;
+    // case ShowAction::Maximized:
+    //  return SDL_WINDOWEVENT_MAXIMIZED;
+    // case ShowAction::Restored:
+    //  return SDL_WINDOWEVENT_RESTORED;
+  default:
+    return SDL_WINDOWEVENT_NONE;
+  }
+}
+
+Mouse::Focus mouseFocus(uint8_t sdlMouseFocus) {
+  switch (sdlMouseFocus) {
+  case SDL_WINDOWEVENT_ENTER:
+    return Mouse::Focus::Enter;
+  case SDL_WINDOWEVENT_LEAVE:
+    return Mouse::Focus::Leave;
+  default:
+    return Mouse::Focus::Invalid;
+  }
+}
+
+uint8_t sdlMouseFocus(Mouse::Focus focus) {
+  switch (focus) {
+  case Mouse::Focus::Enter:
+    return SDL_WINDOWEVENT_ENTER;
+  case Mouse::Focus::Leave:
+    return SDL_WINDOWEVENT_LEAVE;
+  default:
+    return SDL_WINDOWEVENT_NONE;
+  }
+}
 } // namespace KaliLaska

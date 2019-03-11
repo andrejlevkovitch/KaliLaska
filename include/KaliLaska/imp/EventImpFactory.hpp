@@ -7,27 +7,42 @@
 
 namespace KaliLaska {
 class CloseEventImp;
+class MouseFocusEventImp;
 class MousePressEventImp;
 class MouseReleaseEventImp;
 class MouseMoveEventImp;
 class MouseWheelEventImp;
+class ShowEventImp;
 
 class Point;
 
-/**\brief this factory create event implementations from user data
+/**\brief this factory create event implementations from user data. This class
+ * need because we can not create abstract base class, and we can not set
+ * certain implementation. So we need abstract factory, which will be create
+ * this
  */
 class EventImpFactory {
 public:
   virtual ~EventImpFactory() = default;
 
   virtual std::unique_ptr<CloseEventImp> createCloseEventImp() = 0;
+
   virtual std::unique_ptr<MousePressEventImp>
   createMousePressImp(Mouse::Button button, Point clickPos) = 0;
+
   virtual std::unique_ptr<MouseReleaseEventImp>
-                                             createMouseReleaseImp(Mouse::Button button, Point clickPos) = 0;
+  createMouseReleaseImp(Mouse::Button button, Point clickPos) = 0;
+
   virtual std::unique_ptr<MouseMoveEventImp> createMouseMoveEventImp(
       Mouse::Buttons buttons, Point curPos, Point prevPos) = 0;
+
   virtual std::unique_ptr<MouseWheelEventImp>
   createMouseWheelEventImp(Mouse::Scale scale) = 0;
+
+  virtual std::unique_ptr<ShowEventImp>
+  createShowEventImp(ShowAction action) = 0;
+
+  virtual std::unique_ptr<MouseFocusEventImp>
+  createMouseFocusEvent(Mouse::Focus focus) = 0;
 };
 } // namespace KaliLaska

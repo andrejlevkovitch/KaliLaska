@@ -2,15 +2,12 @@
 
 #include "KaliLaska/Window.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/WindowImp.hpp"
-#include "KaliLaska/WindowImpFactory.hpp"
+#include "KaliLaska/CloseEvent.hpp"
+#include "KaliLaska/imp/WindowImp.hpp"
+#include "KaliLaska/imp/WindowImpFactory.hpp"
 #include "debug.hpp"
 #include <iostream>
 #include <stdexcept>
-
-// delete later
-#include "KaliLaska/CloseEvent.hpp"
-#include "KaliLaska/CloseEventImp.hpp"
 
 #define WINDOW_CREATE_ERROR "Window can not be created"
 
@@ -107,6 +104,18 @@ void Window::mouseReleaseEvent(std::unique_ptr<MouseReleaseEvent> event) {
 }
 
 void Window::mouseWheelEvent(std::unique_ptr<MouseWheelEvent> event) {
+  UNUSED(event);
+}
+
+void Window::mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event) {
+  UNUSED(event);
+}
+
+void Window::showEvent(std::unique_ptr<ShowEvent> event) {
+  UNUSED(event);
+}
+
+void Window::resizeEvent(std::unique_ptr<ResizeEvent> event) {
   UNUSED(event);
 }
 } // namespace KaliLaska

@@ -3,15 +3,13 @@
 #pragma once
 
 #include "KaliLaska/Event.hpp"
+#include "KaliLaska/imp/CloseEventImp.hpp"
 #include <memory>
 
 namespace KaliLaska {
-class CloseEventImp;
-
 class CloseEvent final : public Event {
 public:
   CloseEvent();
-
   CloseEvent(std::unique_ptr<CloseEventImp> imp);
 
 private:

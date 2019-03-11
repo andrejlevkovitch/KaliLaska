@@ -2,8 +2,8 @@
 
 #include "KaliLaska/CloseEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/CloseEventImp.hpp"
-#include "KaliLaska/EventImpFactory.hpp"
+#include "KaliLaska/imp/CloseEventImp.hpp"
+#include "KaliLaska/imp/EventImpFactory.hpp"
 #include "debug.hpp"
 
 namespace KaliLaska {

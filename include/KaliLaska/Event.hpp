@@ -11,18 +11,32 @@ namespace Mouse {
 enum Button { Invalid = 0, Left = 1, Middle = 2, Right = 4 };
 enum class Scale { Invalid, ScaleUp, ScaleDown };
 using Buttons = uint32_t;
+enum class Focus { Invalid, Enter, Leave };
 } // namespace Mouse
+
+enum class ShowAction {
+  Invalid,
+  Shown,
+  Hidden,
+  // Minimized,
+  // Maximized,
+  // Restored
+};
 
 /**\brief base class for all events
  */
 class Event {
 public:
   enum class Type {
+    Invalid,
     CloseEvent,
+    ShowEvent,
+    ResizeEvent,
+    MouseFocusEvent,
     MousePressEvent,
     MouseReleaseEvent,
     MouseMoveEvent,
-    MouseWheelEvent
+    MouseWheelEvent,
   };
 
   Event(Type type);

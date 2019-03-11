@@ -4,6 +4,7 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
+#include "KaliLaska/imp/MouseReleaseEventImp.hpp"
 #include <memory>
 
 namespace KaliLaska {

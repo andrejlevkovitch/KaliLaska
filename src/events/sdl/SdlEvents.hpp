@@ -10,4 +10,10 @@ uint32_t       sdlButtons(Mouse::Buttons button);
 
 Mouse::Button mouseButton(uint8_t sdlButton);
 uint8_t       sdlButton(Mouse::Button button);
+
+ShowAction showAction(uint8_t sdlAction);
+uint8_t    sdlAction(ShowAction action);
+
+Mouse::Focus mouseFocus(uint8_t sdlMouseFocus);
+uint8_t      sdlMouseFocus(Mouse::Focus focus);
 } // namespace KaliLaska

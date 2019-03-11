@@ -3,14 +3,18 @@
 #include "EventConverterSdl.hpp"
 #include "CloseEventSdl.hpp"
 #include "KaliLaska/CloseEvent.hpp"
+#include "KaliLaska/MouseFocusEvent.hpp"
 #include "KaliLaska/MouseMoveEvent.hpp"
 #include "KaliLaska/MousePressEvent.hpp"
 #include "KaliLaska/MouseReleaseEvent.hpp"
 #include "KaliLaska/MouseWheelEvent.hpp"
+#include "KaliLaska/ShowEvent.hpp"
+#include "MouseFocusEventSdl.hpp"
 #include "MouseMoveEventSdl.hpp"
 #include "MousePressEventSdl.hpp"
 #include "MouseReleaseEventSdl.hpp"
 #include "MouseWheelEventSdl.hpp"
+#include "ShowEventSdl.hpp"
 #include "window/sdl/WindowSdlFactory.hpp"
 
 namespace KaliLaska {
@@ -72,6 +76,15 @@ EventConverterSdl::convertWindowEvent(const SDL_WindowEvent & event,
   switch (event.event) {
   case SDL_WINDOWEVENT_CLOSE:
     return convertCloseEvent(event, factory);
+  case SDL_WINDOWEVENT_SHOWN:
+  case SDL_WINDOWEVENT_HIDDEN:
+    // case SDL_WINDOWEVENT_MINIMIZED:
+    // case SDL_WINDOWEVENT_MAXIMIZED:
+    // case SDL_WINDOWEVENT_RESTORED:
+    return convertShowEvent(event, factory);
+  case SDL_WINDOWEVENT_LEAVE:
+  case SDL_WINDOWEVENT_ENTER:
+    return convertMouseFocusEvent(event, factory);
   default:
     return {nullptr, nullptr};
   }
@@ -82,5 +95,20 @@ EventConverterSdl::convertCloseEvent(const SDL_WindowEvent & event,
                                      const WindowSdlFactory &factory) {
   return {factory.getWindowFromId(event.windowID),
           std::make_unique<CloseEvent>(std::make_unique<CloseEventSdl>(event))};
+}
+
+std::pair<Window *, std::unique_ptr<Event>>
+EventConverterSdl::convertShowEvent(const SDL_WindowEvent & event,
+                                    const WindowSdlFactory &factory) {
+  return {factory.getWindowFromId(event.windowID),
+          std::make_unique<ShowEvent>(std::make_unique<ShowEventSdl>(event))};
+}
+
+std::pair<Window *, std::unique_ptr<Event>>
+EventConverterSdl ::convertMouseFocusEvent(const SDL_WindowEvent & event,
+                                           const WindowSdlFactory &factory) {
+  return {factory.getWindowFromId(event.windowID),
+          std::make_unique<MouseFocusEvent>(
+              std::make_unique<MouseFocusEventSdl>(event))};
 }
 } // namespace KaliLaska

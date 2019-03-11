@@ -2,8 +2,8 @@
 
 #include "KaliLaska/MouseReleaseEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/EventImpFactory.hpp"
-#include "KaliLaska/MouseReleaseEventImp.hpp"
+#include "KaliLaska/imp/EventImpFactory.hpp"
+#include "KaliLaska/imp/MouseReleaseEventImp.hpp"
 
 namespace KaliLaska {
 MouseReleaseEvent::MouseReleaseEvent(Mouse::Button button, Point clickPos)
@@ -18,24 +18,15 @@ MouseReleaseEvent::MouseReleaseEvent(std::unique_ptr<MouseReleaseEventImp> imp)
 }
 
 Mouse::Button MouseReleaseEvent::button() const {
-  if (imp_) {
-    return imp_->button();
-  }
-  return {};
+  return imp_->button();
 }
 
 Mouse::Buttons MouseReleaseEvent::buttons() const {
-  if (imp_) {
-    return imp_->buttons();
-  }
-  return {};
+  return imp_->buttons();
 }
 
 Point MouseReleaseEvent::clickPos() const {
-  if (imp_) {
-    return imp_->clickPos();
-  }
-  return {};
+  return imp_->clickPos();
 }
 
 std::ostream &operator<<(std::ostream &stream, const MouseReleaseEvent &event) {

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "KaliLaska/CloseEventImp.hpp"
+#include "KaliLaska/imp/CloseEventImp.hpp"
 #include <SDL2/SDL.h>
 
 namespace KaliLaska {

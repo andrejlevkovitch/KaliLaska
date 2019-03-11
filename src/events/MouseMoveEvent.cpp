@@ -2,8 +2,8 @@
 
 #include "KaliLaska/MouseMoveEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/EventImpFactory.hpp"
-#include "KaliLaska/MouseMoveEventImp.hpp"
+#include "KaliLaska/imp/EventImpFactory.hpp"
+#include "KaliLaska/imp/MouseMoveEventImp.hpp"
 
 namespace KaliLaska {
 MouseMoveEvent::MouseMoveEvent(Mouse::Buttons buttons,
@@ -20,24 +20,15 @@ MouseMoveEvent::MouseMoveEvent(std::unique_ptr<MouseMoveEventImp> imp)
 }
 
 Mouse::Buttons MouseMoveEvent::buttons() const {
-  if (imp_) {
-    return imp_->buttons();
-  }
-  return {};
+  return imp_->buttons();
 }
 
 Point MouseMoveEvent::currentPos() const {
-  if (imp_) {
-    return imp_->currentPos();
-  }
-  return {};
+  return imp_->currentPos();
 }
 
 Point MouseMoveEvent::previousPos() const {
-  if (imp_) {
-    return imp_->previousPos();
-  }
-  return {};
+  return imp_->previousPos();
 }
 
 std::ostream &operator<<(std::ostream &stream, const MouseMoveEvent &event) {

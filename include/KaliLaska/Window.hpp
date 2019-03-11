@@ -11,6 +11,9 @@ class WindowImp;
 class EventNotifyer;
 
 class CloseEvent;
+class ShowEvent;
+class ResizeEvent;
+class MouseFocusEvent;
 class MousePressEvent;
 class MouseMoveEvent;
 class MouseReleaseEvent;
@@ -92,6 +95,15 @@ protected:
   /**\brief by default does nothing
    */
   virtual void mouseWheelEvent(std::unique_ptr<MouseWheelEvent> event);
+  /**\brief by default does nothing
+   */
+  virtual void mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event);
+  /**\brief by default does nothing
+   */
+  virtual void showEvent(std::unique_ptr<ShowEvent> event);
+  /**\brief by default does nothing
+   */
+  virtual void resizeEvent(std::unique_ptr<ResizeEvent> event);
 
 private:
   std::unique_ptr<WindowImp> imp_;

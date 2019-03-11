@@ -2,17 +2,15 @@
 
 #include "KaliLaska/EventNotifyer.hpp"
 #include "KaliLaska/CloseEvent.hpp"
-#include "KaliLaska/CloseEventImp.hpp"
 #include "KaliLaska/Event.hpp"
+#include "KaliLaska/MouseFocusEvent.hpp"
 #include "KaliLaska/MouseMoveEvent.hpp"
-#include "KaliLaska/MouseMoveEventImp.hpp"
 #include "KaliLaska/MousePressEvent.hpp"
-#include "KaliLaska/MousePressEventImp.hpp"
 #include "KaliLaska/MouseReleaseEvent.hpp"
-#include "KaliLaska/MouseReleaseEventImp.hpp"
 #include "KaliLaska/MouseWheelEvent.hpp"
-#include "KaliLaska/MouseWheelEventImp.hpp"
+#include "KaliLaska/ShowEvent.hpp"
 #include "KaliLaska/Window.hpp"
+#include <iostream>
 
 namespace KaliLaska {
 // custom unique cast
@@ -39,6 +37,13 @@ void EventNotifyer::notify(Window *window, std::unique_ptr<Event> event) {
       break;
     case Event::Type::MouseWheelEvent:
       window->mouseWheelEvent(uniqueCast<MouseWheelEvent>(event));
+      break;
+    case Event::Type::MouseFocusEvent:
+      window->mouseFocusEvent(uniqueCast<MouseFocusEvent>(event));
+      break;
+    case Event::Type::ShowEvent:
+      window->showEvent(uniqueCast<ShowEvent>(event));
+      break;
       break;
     default:
       break;

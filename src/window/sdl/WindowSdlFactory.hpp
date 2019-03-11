@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "KaliLaska/WindowImpFactory.hpp"
+#include "KaliLaska/imp/WindowImpFactory.hpp"
 #include <map>
 
 namespace KaliLaska {

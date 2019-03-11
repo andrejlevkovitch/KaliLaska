@@ -10,8 +10,14 @@ namespace KaliLaska {
 class Window;
 class WindowSdlFactory;
 
+/**\brief create KaliLaska::Event-s from SDL events
+ */
 class EventConverterSdl final {
 public:
+  /**\param factory factory which create sdl windows. It also register
+   * every window, and get interface, for get pointer to window, for which
+   * the event
+   */
   static std::pair<Window *, std::unique_ptr<Event>>
   convert(const SDL_Event &event, const WindowSdlFactory &factory);
 
@@ -41,5 +47,13 @@ private:
   static std::pair<Window *, std::unique_ptr<Event>>
   convertCloseEvent(const SDL_WindowEvent & event,
                     const WindowSdlFactory &factory);
+
+  static std::pair<Window *, std::unique_ptr<Event>>
+  convertShowEvent(const SDL_WindowEvent & event,
+                   const WindowSdlFactory &factory);
+
+  static std::pair<Window *, std::unique_ptr<Event>>
+  convertMouseFocusEvent(const SDL_WindowEvent & event,
+                         const WindowSdlFactory &factory);
 };
 } // namespace KaliLaska

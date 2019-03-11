@@ -11,6 +11,9 @@ set(KaliLaska_SRC
 
   events/Event.cpp
   events/CloseEvent.cpp
+  events/ShowEvent.cpp
+  events/ResizeEvent.cpp
+  events/MouseFocusEvent.cpp
   events/MouseMoveEvent.cpp
   events/MousePressEvent.cpp
   events/MouseReleaseEvent.cpp
@@ -23,6 +26,8 @@ set(KaliLaska_SRC
   application/sdl/ApplicationSdl.cpp
 
   events/sdl/CloseEventSdl.cpp
+  events/sdl/ShowEventSdl.cpp
+  events/sdl/MouseFocusEventSdl.cpp
   events/sdl/MouseMoveEventSdl.cpp
   events/sdl/MousePressEventSdl.cpp
   events/sdl/MouseReleaseEventSdl.cpp

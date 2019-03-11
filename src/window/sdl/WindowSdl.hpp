@@ -4,7 +4,7 @@
 
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
-#include "KaliLaska/WindowImp.hpp"
+#include "KaliLaska/imp/WindowImp.hpp"
 
 class SDL_Window;
 
