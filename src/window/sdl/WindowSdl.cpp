@@ -11,6 +11,9 @@ WindowSdl::WindowSdl()
     : window_{}
     , hidden_{false} {
   window_ = SDL_CreateWindow({}, 0, 0, 0, 0, SDL_WINDOW_OPENGL);
+  if (!window_) {
+    throw std::runtime_error{SDL_GetError()};
+  }
 }
 WindowSdl::WindowSdl(const char *title, Size size)
     : window_{}
@@ -20,7 +23,10 @@ WindowSdl::WindowSdl(const char *title, Size size)
                              SDL_WINDOWPOS_CENTERED,
                              size.width(),
                              size.height(),
-                             SDL_WINDOW_OPENGL);
+                             SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+  if (!window_) {
+    throw std::runtime_error{SDL_GetError()};
+  }
 }
 
 WindowSdl::WindowSdl(const char *title, Point point, Size size)
@@ -32,6 +38,9 @@ WindowSdl::WindowSdl(const char *title, Point point, Size size)
                              size.width(),
                              size.height(),
                              SDL_WINDOW_OPENGL);
+  if (!window_) {
+    throw std::runtime_error{SDL_GetError()};
+  }
 }
 
 WindowSdl::~WindowSdl() {
@@ -79,10 +88,6 @@ void WindowSdl::setTitle(const char *title) {
   SDL_SetWindowTitle(window_, title);
 }
 
-bool WindowSdl::isValid() const {
-  return window_;
-}
-
 bool WindowSdl::isHide() const {
   return hidden_;
 }
@@ -95,22 +100,6 @@ void WindowSdl::hide() {
 void WindowSdl::show() {
   SDL_ShowWindow(window_);
   hidden_ = false;
-}
-
-void WindowSdl::minimize() {
-  ::SDL_MinimizeWindow(window_);
-}
-
-void WindowSdl::maximize() {
-  ::SDL_MaximizeWindow(window_);
-}
-
-void WindowSdl::restore() {
-  ::SDL_RestoreWindow(window_);
-}
-
-void WindowSdl::raise() {
-  ::SDL_RaiseWindow(window_);
 }
 
 void WindowSdl::setFullScr() {

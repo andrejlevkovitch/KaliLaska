@@ -1,5 +1,9 @@
 // ApplicationSdl.cpp
 
+// TODO we can set cikle interval, but we whatever get events which we not need
+// for example we get many mouseMouveEvent-s, but we need only one. I think we
+// can change this
+
 #include "ApplicationSdl.hpp"
 #include "KaliLaska/EventNotifyer.hpp"
 #include "debug.hpp"

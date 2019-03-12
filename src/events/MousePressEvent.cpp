@@ -6,9 +6,12 @@
 #include "KaliLaska/imp/MousePressEventImp.hpp"
 
 namespace KaliLaska {
-MousePressEvent::MousePressEvent(Mouse::Button button, Point pos)
+MousePressEvent::MousePressEvent(Mouse::Button button,
+                                 Mouse::Click  click,
+                                 Point         pos)
     : Event{Type::MouseMoveEvent}
-    , imp_{Application::eventFactory()->createMousePressImp(button, pos)} {
+    , imp_{Application::eventFactory()->createMousePressImp(
+          button, click, pos)} {
 }
 
 MousePressEvent::MousePressEvent(std::unique_ptr<MousePressEventImp> imp)
@@ -22,6 +25,10 @@ Mouse::Button MousePressEvent::button() const {
 
 Mouse::Buttons MousePressEvent::buttons() const {
   return imp_->buttons();
+}
+
+Mouse::Click MousePressEvent::click() const {
+  return imp_->click();
 }
 
 Point MousePressEvent::clickPos() const {
@@ -44,6 +51,7 @@ std::ostream &operator<<(std::ostream &stream, const MousePressEvent &event) {
     stream << "Unknow";
     break;
   }
+  stream << ", click " << static_cast<int>(event.click());
   return stream;
 }
 } // namespace KaliLaska

@@ -35,19 +35,12 @@ public:
 
   void setTitle(const char *title) override;
 
-  bool isValid() const override;
-
   bool isHide() const override;
 
   void hide() override;
   void show() override;
-  void raise() override;
 
   void setFullScr() override;
-
-  void minimize() override;
-  void maximize() override;
-  void restore() override;
 
 private:
   SDL_Window *window_;

@@ -8,6 +8,7 @@
 #include "KaliLaska/MousePressEvent.hpp"
 #include "KaliLaska/MouseReleaseEvent.hpp"
 #include "KaliLaska/MouseWheelEvent.hpp"
+#include "KaliLaska/ResizeEvent.hpp"
 #include "KaliLaska/ShowEvent.hpp"
 #include "KaliLaska/Window.hpp"
 #include <iostream>
@@ -26,6 +27,12 @@ void EventNotifyer::notify(Window *window, std::unique_ptr<Event> event) {
     case Event::Type::CloseEvent:
       window->closeEvent(uniqueCast<CloseEvent>(event));
       break;
+    case Event::Type::ShowEvent:
+      window->showEvent(uniqueCast<ShowEvent>(event));
+      break;
+    case Event::Type::ResizeEvent:
+      window->resizeEvent(uniqueCast<ResizeEvent>(event));
+      break;
     case Event::Type::MouseMoveEvent:
       window->mouseMoveEvent(uniqueCast<MouseMoveEvent>(event));
       break;
@@ -40,10 +47,6 @@ void EventNotifyer::notify(Window *window, std::unique_ptr<Event> event) {
       break;
     case Event::Type::MouseFocusEvent:
       window->mouseFocusEvent(uniqueCast<MouseFocusEvent>(event));
-      break;
-    case Event::Type::ShowEvent:
-      window->showEvent(uniqueCast<ShowEvent>(event));
-      break;
       break;
     default:
       break;

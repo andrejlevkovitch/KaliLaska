@@ -16,4 +16,7 @@ uint8_t    sdlAction(ShowAction action);
 
 Mouse::Focus mouseFocus(uint8_t sdlMouseFocus);
 uint8_t      sdlMouseFocus(Mouse::Focus focus);
+
+Mouse::Click mouseClick(uint8_t sdlMouseClick);
+uint8_t      sdlMouseClick(Mouse::Click click);
 } // namespace KaliLaska

@@ -16,8 +16,13 @@ public:
                                              Point       pos,
                                              Size        size) override;
 
+  /**\return pointer to window from id of SDL_Window
+   */
   Window *getWindowFromId(uint32_t id) const;
 
+  /**\brief unstore pointer to input window. If window with input pointer not
+   * stored - does nothing
+   */
   void resetWindow(Window *window) override;
 
 private:

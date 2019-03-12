@@ -7,6 +7,7 @@
 #include "KaliLaska/MousePressEvent.hpp"
 #include "KaliLaska/MouseReleaseEvent.hpp"
 #include "KaliLaska/MouseWheelEvent.hpp"
+#include "KaliLaska/ResizeEvent.hpp"
 #include "KaliLaska/ShowEvent.hpp"
 
 namespace KaliLaska {
@@ -25,6 +26,9 @@ std::ostream &operator<<(std::ostream &stream, const Event &event) {
     break;
   case Event::Type::ShowEvent:
     stream << reinterpret_cast<const ShowEvent &>(event);
+    break;
+  case Event::Type::ResizeEvent:
+    stream << reinterpret_cast<const ResizeEvent &>(event);
     break;
   case Event::Type::MouseMoveEvent:
     stream << reinterpret_cast<const MouseMoveEvent &>(event);

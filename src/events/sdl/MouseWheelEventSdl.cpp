@@ -5,25 +5,28 @@
 
 namespace KaliLaska {
 MouseWheelEventSdl::MouseWheelEventSdl(Mouse::Scale scale)
-    : event_{} {
+    : event_{}
+    , buttons_{}
+    , pos_{} {
   if (scale != Mouse::Scale::Invalid) {
     event_.y = (scale == Mouse::Scale::ScaleDown) ? -1 : 1;
   }
 }
 
-MouseWheelEventSdl::MouseWheelEventSdl(SDL_MouseWheelEvent event)
-    : event_{event} {
+MouseWheelEventSdl::MouseWheelEventSdl(SDL_MouseWheelEvent event,
+                                       uint32_t            buttons,
+                                       Point               pos)
+    : event_{event}
+    , buttons_{buttons}
+    , pos_{pos} {
 }
 
 Point MouseWheelEventSdl::position() const {
-  int x{};
-  int y{};
-  SDL_GetMouseState(&x, &y);
-  return Point{x, y};
+  return pos_;
 }
 
 Mouse::Buttons MouseWheelEventSdl::buttons() const {
-  return mouseButtons(SDL_GetMouseState(nullptr, nullptr));
+  return mouseButtons(buttons_);
 }
 
 Mouse::Scale MouseWheelEventSdl::scale() const {

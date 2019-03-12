@@ -12,17 +12,21 @@ class MousePressEventImp;
 
 class MousePressEvent final : public Event {
 public:
-  MousePressEvent(Mouse::Button button, Point pos);
+  MousePressEvent(Mouse::Button button, Mouse::Click click, Point pos);
 
   MousePressEvent(std::unique_ptr<MousePressEventImp> imp);
 
-  /**\return pressed button (only one)
+  /**\return pressed button (currently)
    */
   Mouse::Button button() const;
 
   /**\return all pressed buttons
    */
   Mouse::Buttons buttons() const;
+
+  /**\return One if was only one click, and Double if was double-click
+   */
+  Mouse::Click click() const;
 
   /**\return click position in window coordinates
    */

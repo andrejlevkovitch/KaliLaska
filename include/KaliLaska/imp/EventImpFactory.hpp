@@ -7,14 +7,16 @@
 
 namespace KaliLaska {
 class CloseEventImp;
+class ShowEventImp;
+class ResizeEventImp;
 class MouseFocusEventImp;
 class MousePressEventImp;
 class MouseReleaseEventImp;
 class MouseMoveEventImp;
 class MouseWheelEventImp;
-class ShowEventImp;
 
 class Point;
+class Size;
 
 /**\brief this factory create event implementations from user data. This class
  * need because we can not create abstract base class, and we can not set
@@ -27,8 +29,14 @@ public:
 
   virtual std::unique_ptr<CloseEventImp> createCloseEventImp() = 0;
 
-  virtual std::unique_ptr<MousePressEventImp>
-  createMousePressImp(Mouse::Button button, Point clickPos) = 0;
+  virtual std::unique_ptr<ShowEventImp>
+  createShowEventImp(ShowAction action) = 0;
+
+  virtual std::unique_ptr<ResizeEventImp> createResizeEventImp(Size prev,
+                                                               Size next) = 0;
+
+  virtual std::unique_ptr<MousePressEventImp> createMousePressImp(
+      Mouse::Button button, Mouse::Click click, Point clickPos) = 0;
 
   virtual std::unique_ptr<MouseReleaseEventImp>
   createMouseReleaseImp(Mouse::Button button, Point clickPos) = 0;
@@ -38,9 +46,6 @@ public:
 
   virtual std::unique_ptr<MouseWheelEventImp>
   createMouseWheelEventImp(Mouse::Scale scale) = 0;
-
-  virtual std::unique_ptr<ShowEventImp>
-  createShowEventImp(ShowAction action) = 0;
 
   virtual std::unique_ptr<MouseFocusEventImp>
   createMouseFocusEvent(Mouse::Focus focus) = 0;

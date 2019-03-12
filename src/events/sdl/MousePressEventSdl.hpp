@@ -8,15 +8,20 @@
 namespace KaliLaska {
 class MousePressEventSdl final : public MousePressEventImp {
 public:
-  MousePressEventSdl(Mouse::Button button, Point clickPos);
+  MousePressEventSdl(Mouse::Button button, Mouse::Click click, Point clickPos);
 
-  MousePressEventSdl(SDL_MouseButtonEvent sdlEvent);
+  /**\param buttons mask of currently pressed mouse buttons. This needed because
+   * sdl event not store this information
+   */
+  MousePressEventSdl(SDL_MouseButtonEvent sdlEvent, uint32_t buttons);
 
   Mouse::Button  button() const override;
   Mouse::Buttons buttons() const override;
+  Mouse::Click   click() const override;
   Point          clickPos() const override;
 
 private:
   SDL_MouseButtonEvent event_;
+  uint32_t             buttons_;
 };
 } // namespace KaliLaska

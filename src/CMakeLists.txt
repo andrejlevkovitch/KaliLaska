@@ -27,6 +27,7 @@ set(KaliLaska_SRC
 
   events/sdl/CloseEventSdl.cpp
   events/sdl/ShowEventSdl.cpp
+  events/sdl/ResizeEventSdl.cpp
   events/sdl/MouseFocusEventSdl.cpp
   events/sdl/MouseMoveEventSdl.cpp
   events/sdl/MousePressEventSdl.cpp

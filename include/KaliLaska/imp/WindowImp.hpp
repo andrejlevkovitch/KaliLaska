@@ -8,38 +8,40 @@
 namespace KaliLaska {
 class CloseEvent;
 
-/**\brief abstract base class which provides interface for winodw
+/**\brief abstract base class which provides interface for winodw.
+ * \except constructors of inheritor can throw runtime_error if window can not
+ * be created
  */
 class WindowImp {
 public:
   virtual ~WindowImp() = default;
 
+  /**\return top-left corner of the window
+   */
   virtual Point pos() const       = 0;
   virtual void  setPos(Point pos) = 0;
 
-  virtual Size size() const = 0;
-
-  virtual Size drawSize() const = 0;
-
+  /**\return complete size of window (with borders)
+   */
+  virtual Size size() const       = 0;
   virtual void setSize(Size size) = 0;
+
+  /**\return size of drawable area of window
+   */
+  virtual Size drawSize() const = 0;
 
   virtual const char *title() const = 0;
 
   virtual void setTitle(const char *title) = 0;
 
-  virtual bool isValid() const = 0;
-
+  /**\return true if window is currently hidden, false - other wise
+   */
   virtual bool isHide() const = 0;
 
-  virtual void hide()  = 0;
-  virtual void show()  = 0;
-  virtual void raise() = 0;
+  virtual void hide() = 0;
+  virtual void show() = 0;
 
   virtual void setFullScr() = 0;
-
-  virtual void minimize() = 0;
-  virtual void maximize() = 0;
-  virtual void restore()  = 0;
 
 private:
 };

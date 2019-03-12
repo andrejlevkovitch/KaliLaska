@@ -63,17 +63,8 @@ public:
 
   void hide();
   void show();
-  /**\brief raise this window above others and have focus
-   */
-  void raise();
 
   void setFullScr();
-
-  void minimize();
-  void maximize();
-  /**\brief use this method for restore window after minimize of maximize
-   */
-  void restore();
 
   /**\brief generate close event for current window
    */
@@ -81,29 +72,35 @@ public:
 
 protected:
   /**\warning after call this method you can not call the object
+   * \brief call before window will be closed. If you reimplemend this method
+   * you have to call Window::closeEvent, other way window will not be closed!
    */
   virtual void closeEvent(std::unique_ptr<CloseEvent> event);
-  /**\brief by default does nothing
-   */
-  virtual void mouseMoveEvent(std::unique_ptr<MouseMoveEvent> event);
-  /**\brief by default does nothing
-   */
-  virtual void mousePressEvent(std::unique_ptr<MousePressEvent> event);
-  /**\brief by default does nothing
-   */
-  virtual void mouseReleaseEvent(std::unique_ptr<MouseReleaseEvent> event);
-  /**\brief by default does nothing
-   */
-  virtual void mouseWheelEvent(std::unique_ptr<MouseWheelEvent> event);
-  /**\brief by default does nothing
-   */
-  virtual void mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event);
-  /**\brief by default does nothing
+  /**\brief By default does nothing
    */
   virtual void showEvent(std::unique_ptr<ShowEvent> event);
-  /**\brief by default does nothing
+  /**\brief By default does nothing
    */
   virtual void resizeEvent(std::unique_ptr<ResizeEvent> event);
+  /**\brief call when mouse leave or enter in area of the window. By default
+   * does nothing
+   */
+  virtual void mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event);
+  /**\brief By default does nothing
+   * \warning if case double click you can get two mouse press event (this
+   * dependence from implementation) with single click and second - double
+   * click. Be carefull
+   */
+  virtual void mousePressEvent(std::unique_ptr<MousePressEvent> event);
+  /**\brief By default does nothing
+   */
+  virtual void mouseReleaseEvent(std::unique_ptr<MouseReleaseEvent> event);
+  /**\brief By default does nothing
+   */
+  virtual void mouseMoveEvent(std::unique_ptr<MouseMoveEvent> event);
+  /**\brief By default does nothing
+   */
+  virtual void mouseWheelEvent(std::unique_ptr<MouseWheelEvent> event);
 
 private:
   std::unique_ptr<WindowImp> imp_;

@@ -5,14 +5,17 @@
 
 namespace KaliLaska {
 MouseReleaseEventSdl::MouseReleaseEventSdl(Mouse::Button button, Point clickPos)
-    : event_{} {
+    : event_{}
+    , buttons_{} {
   event_.button = sdlButton(button);
   event_.x      = clickPos.x();
   event_.y      = clickPos.y();
 }
 
-MouseReleaseEventSdl::MouseReleaseEventSdl(SDL_MouseButtonEvent event)
-    : event_{event} {
+MouseReleaseEventSdl::MouseReleaseEventSdl(SDL_MouseButtonEvent event,
+                                           uint32_t             buttons)
+    : event_{event}
+    , buttons_{buttons} {
 }
 
 Mouse::Button MouseReleaseEventSdl::button() const {
@@ -29,7 +32,7 @@ Mouse::Button MouseReleaseEventSdl::button() const {
 }
 
 Mouse::Buttons MouseReleaseEventSdl::buttons() const {
-  return mouseButtons(::SDL_GetMouseState(nullptr, nullptr));
+  return mouseButtons(buttons_);
 }
 
 Point MouseReleaseEventSdl::clickPos() const {

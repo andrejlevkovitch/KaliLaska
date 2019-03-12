@@ -101,4 +101,26 @@ uint8_t sdlMouseFocus(Mouse::Focus focus) {
     return SDL_WINDOWEVENT_NONE;
   }
 }
+
+Mouse::Click mouseClick(uint8_t sdlMouseClick) {
+  switch (sdlMouseClick) {
+  case 1:
+    return Mouse::Click::Single;
+  case 2:
+    return Mouse::Click::Double;
+  default:
+    return Mouse::Click::Invalid;
+  }
+}
+
+uint8_t sdlMouseClick(Mouse::Click click) {
+  switch (click) {
+  case Mouse::Click::Single:
+    return 1;
+  case Mouse::Click::Double:
+    return 2;
+  default:
+    return 0;
+  }
+}
 } // namespace KaliLaska

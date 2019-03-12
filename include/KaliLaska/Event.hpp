@@ -8,6 +8,7 @@
 namespace KaliLaska {
 
 namespace Mouse {
+enum class Click { Invalid, Single, Double };
 enum Button { Invalid = 0, Left = 1, Middle = 2, Right = 4 };
 enum class Scale { Invalid, ScaleUp, ScaleDown };
 using Buttons = uint32_t;

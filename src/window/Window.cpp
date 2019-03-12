@@ -27,7 +27,7 @@ Window::Window(const char *title, Size size)
   if (auto factory = Application::windowFactory()) {
     imp_ = factory->createWindowImp(*this, title, size);
   }
-  if (imp_ == nullptr || !imp_->isValid()) {
+  if (imp_ == nullptr) {
     throw std::runtime_error{WINDOW_CREATE_ERROR};
   }
 }
@@ -87,35 +87,43 @@ void Window::close() {
 }
 
 void Window::closeEvent(std::unique_ptr<CloseEvent> event) {
+  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
   UNUSED(event);
   imp_.reset();
 }
 
 void Window::mouseMoveEvent(std::unique_ptr<MouseMoveEvent> event) {
+  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
   UNUSED(event);
 }
 
 void Window::mousePressEvent(std::unique_ptr<MousePressEvent> event) {
+  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
   UNUSED(event);
 }
 
 void Window::mouseReleaseEvent(std::unique_ptr<MouseReleaseEvent> event) {
+  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
   UNUSED(event);
 }
 
 void Window::mouseWheelEvent(std::unique_ptr<MouseWheelEvent> event) {
+  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
   UNUSED(event);
 }
 
 void Window::mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event) {
+  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
   UNUSED(event);
 }
 
 void Window::showEvent(std::unique_ptr<ShowEvent> event) {
+  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
   UNUSED(event);
 }
 
 void Window::resizeEvent(std::unique_ptr<ResizeEvent> event) {
+  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
   UNUSED(event);
 }
 } // namespace KaliLaska

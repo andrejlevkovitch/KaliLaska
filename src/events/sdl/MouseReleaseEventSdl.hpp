@@ -10,7 +10,10 @@ class MouseReleaseEventSdl final : public MouseReleaseEventImp {
 public:
   MouseReleaseEventSdl(Mouse::Button button, Point clickPos);
 
-  MouseReleaseEventSdl(SDL_MouseButtonEvent event);
+  /**\param buttons mask of currently pressed mouse buttons. This needed because
+   * sdl event not store this information
+   */
+  MouseReleaseEventSdl(SDL_MouseButtonEvent event, uint32_t buttons);
 
   Mouse::Button  button() const;
   Mouse::Buttons buttons() const;
@@ -18,5 +21,6 @@ public:
 
 private:
   SDL_MouseButtonEvent event_;
+  uint32_t             buttons_;
 };
 } // namespace KaliLaska

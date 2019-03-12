@@ -7,29 +7,41 @@
 
 namespace KaliLaska {
 std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &window) {
-  auto retval = std::make_unique<WindowSdl>();
-  auto id     = retval->id();
-  windows_.insert(std::pair{id, &window});
-  return retval;
+  try {
+    auto retval = std::make_unique<WindowSdl>();
+    auto id     = retval->id();
+    windows_.insert(std::pair{id, &window});
+    return retval;
+  } catch (const std::runtime_error &) {
+    return nullptr;
+  }
 }
 
 std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &    window,
                                                              const char *title,
                                                              Size        size) {
-  auto retval = std::make_unique<WindowSdl>(title, size);
-  auto id     = retval->id();
-  windows_.insert(std::pair{id, &window});
-  return retval;
+  try {
+    auto retval = std::make_unique<WindowSdl>(title, size);
+    auto id     = retval->id();
+    windows_.insert(std::pair{id, &window});
+    return retval;
+  } catch (const std::runtime_error &) {
+    return nullptr;
+  }
 }
 
 std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &    window,
                                                              const char *title,
                                                              Point       pos,
                                                              Size        size) {
-  auto retval = std::make_unique<WindowSdl>(title, pos, size);
-  auto id     = retval->id();
-  windows_.insert(std::pair{id, &window});
-  return retval;
+  try {
+    auto retval = std::make_unique<WindowSdl>(title, pos, size);
+    auto id     = retval->id();
+    windows_.insert(std::pair{id, &window});
+    return retval;
+  } catch (const std::runtime_error &) {
+    return nullptr;
+  }
 }
 
 Window *WindowSdlFactory::getWindowFromId(uint32_t id) const {

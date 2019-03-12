@@ -55,5 +55,9 @@ private:
   static std::pair<Window *, std::unique_ptr<Event>>
   convertMouseFocusEvent(const SDL_WindowEvent & event,
                          const WindowSdlFactory &factory);
+
+  static std::pair<Window *, std::unique_ptr<Event>>
+  convertResizeEvent(const SDL_WindowEvent & event,
+                     const WindowSdlFactory &factory);
 };
 } // namespace KaliLaska

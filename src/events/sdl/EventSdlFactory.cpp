@@ -2,11 +2,13 @@
 
 #include "EventSdlFactory.hpp"
 #include "CloseEventSdl.hpp"
+#include "KaliLaska/Size.hpp"
 #include "MouseFocusEventSdl.hpp"
 #include "MouseMoveEventSdl.hpp"
 #include "MousePressEventSdl.hpp"
 #include "MouseReleaseEventSdl.hpp"
 #include "MouseWheelEventSdl.hpp"
+#include "ResizeEventSdl.hpp"
 #include "ShowEventSdl.hpp"
 
 namespace KaliLaska {
@@ -14,9 +16,9 @@ std::unique_ptr<CloseEventImp> EventSdlFactory::createCloseEventImp() {
   return std::make_unique<CloseEventSdl>();
 }
 
-std::unique_ptr<MousePressEventImp>
-EventSdlFactory::createMousePressImp(Mouse::Button button, Point clickPos) {
-  return std::make_unique<MousePressEventSdl>(button, clickPos);
+std::unique_ptr<MousePressEventImp> EventSdlFactory::createMousePressImp(
+    Mouse::Button button, Mouse::Click click, Point clickPos) {
+  return std::make_unique<MousePressEventSdl>(button, click, clickPos);
 }
 
 std::unique_ptr<MouseReleaseEventImp>
@@ -42,5 +44,10 @@ EventSdlFactory::createShowEventImp(ShowAction action) {
 std::unique_ptr<MouseFocusEventImp>
 EventSdlFactory::createMouseFocusEvent(Mouse::Focus focus) {
   return std::make_unique<MouseFocusEventSdl>(focus);
+}
+
+std::unique_ptr<ResizeEventImp>
+EventSdlFactory::createResizeEventImp(Size prev, Size next) {
+  return std::make_unique<ResizeEventSdl>(prev, next);
 }
 } // namespace KaliLaska
