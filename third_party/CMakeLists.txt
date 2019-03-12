@@ -25,3 +25,6 @@ set(imgui_SRC
   )
 add_library(imgui ${imgui_SRC})
 target_include_directories(imgui PUBLIC "imgui")
+target_link_libraries(imgui PRIVATE SDL2::SDL2 gl3w)
+
+add_subdirectory(Box2D)
