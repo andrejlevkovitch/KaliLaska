@@ -36,3 +36,4 @@ target_include_directories(imgui PUBLIC "imgui")
 target_link_libraries(imgui PRIVATE SDL2::SDL2 gl3w)
 
 add_subdirectory(Box2D)
+add_subdirectory(Catch2)
