@@ -15,10 +15,13 @@
 #include <stdexcept>
 #include <thread>
 
+#define WAIT_TIMEOUT 300
+
 namespace KaliLaska {
 
 int quitCallback(void *app, SDL_Event *event) {
   if (event && event->type == SDL_EventType::SDL_QUIT) {
+    DEBUG_OUT("exit sdl event");
     reinterpret_cast<ApplicationSdl *>(app)->exit(0);
   }
   return {};
@@ -38,8 +41,7 @@ int eventFilter(void *factory, SDL_Event *sdlEvent) {
 }
 
 ApplicationSdl::ApplicationSdl()
-    : cickleInterval_{100}
-    , loop_{false}
+    : loop_{false}
     , return_code_{}
     , windowFactory_{std::make_unique<WindowSdlFactory>()}
     , eventFactory_{std::make_unique<EventSdlFactory>()} {
@@ -56,14 +58,11 @@ int ApplicationSdl::exec() {
   SDL_AddEventWatch(quitCallback, this);
   SDL_SetEventFilter(eventFilter, windowFactory_.get());
 
-  auto lastTick = std::chrono::system_clock::now();
-  loop_         = true;
+  loop_ = true;
+  SDL_Event event;
   while (loop_) {
-    auto sleepInterval = std::chrono::milliseconds{cickleInterval_} -
-                         (std::chrono::system_clock::now() - lastTick);
-    std::this_thread::sleep_for(sleepInterval);
-    lastTick = std::chrono::system_clock::now();
-    handleEventQueue();
+    // we use with timeout because quitcallback work in other thread
+    SDL_WaitEventTimeout(&event, WAIT_TIMEOUT);
   }
   return return_code_;
 }
@@ -79,19 +78,5 @@ WindowImpFactory *ApplicationSdl::windowFactory() const {
 
 EventImpFactory *ApplicationSdl::eventFactory() const {
   return eventFactory_.get();
-}
-
-void ApplicationSdl::handleEventQueue() {
-  SDL_Event event;
-  while (::SDL_PollEvent(&event)) {
-  }
-}
-
-int ApplicationSdl::ups() const {
-  return 1000 / cickleInterval_.load();
-}
-
-void ApplicationSdl::setUps(int ups) {
-  cickleInterval_ = 1000 / ups;
 }
 } // namespace KaliLaska

@@ -5,6 +5,10 @@
 #include <cassert>
 #include <cstdlib>
 
+#ifdef __SANITIZE_ADDRESS__
+#  include <sanitizer/lsan_interface.h>
+#endif
+
 int main(int argc, char *argv[]) {
   assert(KaliLaska::Application::instance() == nullptr);
 
@@ -12,5 +16,12 @@ int main(int argc, char *argv[]) {
 
   KaliLaska::Window w{"temp", KaliLaska::Size{600, 600}};
 
-  return KaliLaska::Application::exec();
+  int retval = KaliLaska::Application::exec();
+
+#ifdef __SANITIZE_ADDRESS__
+  __lsan_do_leak_check();
+  __lsan_disable();
+#endif
+
+  return retval;
 }

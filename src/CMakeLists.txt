@@ -1,7 +1,5 @@
 # cmake for src
 
-find_package(SDL2 REQUIRED)
-find_package(OpenGL REQUIRED)
 
 set(KaliLaska_SRC
   application/Application.cpp

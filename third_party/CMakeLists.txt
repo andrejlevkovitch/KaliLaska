@@ -3,6 +3,14 @@
 # for include picopng
 include_directories(picopng)
 
+find_package(OpenGL REQUIRED)
+
+if(NOT EXISTS Box2D)
+  find_package(Git REQUIRED)
+  execute_process(COMMAND ${GIT_EXECUTABLE} submodule init)
+  execute_process(COMMAND ${GIT_EXECUTABLE} submodule update)
+endif()
+
 add_library(base64 "base64/base64.cpp")
 target_include_directories(base64 PUBLIC "base64")
 

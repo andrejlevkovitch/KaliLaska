@@ -13,6 +13,7 @@ public:
   virtual ~ApplicationImp() = default;
 
   /**\brief start main loop
+   * \throw can throw runtime_error if causes internal error
    */
   virtual int exec() = 0;
 
@@ -22,13 +23,5 @@ public:
 
   virtual WindowImpFactory *windowFactory() const = 0;
   virtual EventImpFactory * eventFactory() const  = 0;
-
-  /**\return current update per second (interval between main cickle iterations)
-   */
-  virtual int ups() const = 0;
-
-  /**\brief set update per second
-   */
-  virtual void setUps(int ups) = 0;
 };
 } // namespace KaliLaska

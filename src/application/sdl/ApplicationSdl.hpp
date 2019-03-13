@@ -28,15 +28,7 @@ public:
   WindowImpFactory *windowFactory() const override;
   EventImpFactory * eventFactory() const override;
 
-  int  ups() const override;
-  void setUps(int ups) override;
-
-  /**\brief handle sdl events
-   */
-  void handleEventQueue();
-
 private:
-  std::atomic<int>  cickleInterval_;
   std::atomic<bool> loop_;
   int               return_code_;
 

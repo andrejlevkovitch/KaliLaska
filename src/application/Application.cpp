@@ -26,7 +26,6 @@ Application::Application(int argc, char *argv[])
     // TODO maybe we can use factory or somthing else?
     imp_ = new ApplicationSdl{};
     parseArguments(argc, argv);
-    setUps(DEFAULT_UPS);
   } catch (std::runtime_error &) {
     throw;
   }
@@ -49,6 +48,7 @@ int Application::exec() {
 }
 
 void Application::parseArguments(int argc, char *argv[]) {
+  // TODO not implement
   try {
     if (argc > 1) {
       for (int i{}; i < argc; ++i) {
@@ -84,18 +84,5 @@ EventImpFactory *Application::eventFactory() {
 
 void Application::notify(Window *window, std::unique_ptr<Event> event) const {
   EventNotifyer::notify(window, std::move(event));
-}
-
-int Application::ups() {
-  if (instancePtr && instancePtr->imp_) {
-    return instancePtr->imp_->ups();
-  }
-  return 0;
-}
-
-void Application::setUps(int ups) {
-  if (instancePtr && instancePtr->imp_) {
-    instancePtr->imp_->setUps(ups);
-  }
 }
 } // namespace KaliLaska

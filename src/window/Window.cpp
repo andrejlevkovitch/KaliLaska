@@ -43,6 +43,7 @@ Window::Window(const char *title, Point pos, Size size)
 }
 
 Window::~Window() {
+  // also if we manually remove window it have to unregisterd itself
   Application::windowFactory()->resetWindow(this);
 }
 
@@ -87,43 +88,46 @@ void Window::close() {
 }
 
 void Window::closeEvent(std::unique_ptr<CloseEvent> event) {
-  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
+  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
+  // first we have to unregister window in factory
+  Application::windowFactory()->resetWindow(this);
+  // and after we destroy implementation
   imp_.reset();
 }
 
 void Window::mouseMoveEvent(std::unique_ptr<MouseMoveEvent> event) {
-  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
+  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::mousePressEvent(std::unique_ptr<MousePressEvent> event) {
-  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
+  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::mouseReleaseEvent(std::unique_ptr<MouseReleaseEvent> event) {
-  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
+  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::mouseWheelEvent(std::unique_ptr<MouseWheelEvent> event) {
-  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
+  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event) {
-  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
+  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::showEvent(std::unique_ptr<ShowEvent> event) {
-  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
+  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::resizeEvent(std::unique_ptr<ResizeEvent> event) {
-  std::cerr << reinterpret_cast<const Event &>(*event.get()) << std::endl;
+  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 } // namespace KaliLaska

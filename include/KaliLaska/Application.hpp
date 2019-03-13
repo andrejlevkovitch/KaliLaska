@@ -33,15 +33,17 @@ public:
    */
   static int exec();
 
+  /**\brief break main loop and ser return value of this as code (return from
+   * method exec)
+   */
   static void exit(int code);
 
-  static WindowImpFactory *windowFactory();
-  static EventImpFactory * eventFactory();
-
-  /**\return update per second (count of cikle intervals in one second)
+  /**\return abstract factory, which create implementaion for window
    */
-  static int  ups();
-  static void setUps(int ups);
+  static WindowImpFactory *windowFactory();
+  /**\return abstract factory, which create custom user events
+   */
+  static EventImpFactory *eventFactory();
 
   /**\brief send event to window
    */
