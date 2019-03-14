@@ -2,13 +2,15 @@
 
 #pragma once
 
+#include "KaliLaska/kalilaska_export.h"
+
 namespace KaliLaska {
 class WindowImpFactory;
 class EventImpFactory;
 
 /**\brief interface for Application
  */
-class ApplicationImp {
+class KALILASKA_EXPORT ApplicationImp {
 public:
   virtual ~ApplicationImp() = default;
 

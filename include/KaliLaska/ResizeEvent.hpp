@@ -5,10 +5,11 @@
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Size.hpp"
 #include "KaliLaska/imp/ResizeEventImp.hpp"
+#include "KaliLaska/kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
-class ResizeEvent final : public Event {
+class KALILASKA_EXPORT ResizeEvent final : public Event {
 public:
   /**\brief use this constructor for create custom event.
    * \warning window will not be resized by this event if you set it manually to

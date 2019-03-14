@@ -5,10 +5,11 @@
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/imp/MouseWheelEventImp.hpp"
+#include "KaliLaska/kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
-class MouseWheelEvent final : public Event {
+class KALILASKA_EXPORT MouseWheelEvent final : public Event {
 public:
   MouseWheelEvent(Mouse::Scale scale);
 

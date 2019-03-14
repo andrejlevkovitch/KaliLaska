@@ -3,9 +3,10 @@
 #pragma once
 
 #include "KaliLaska/Size.hpp"
+#include "KaliLaska/kalilaska_export.h"
 
 namespace KaliLaska {
-class ResizeEventImp {
+class KALILASKA_EXPORT ResizeEventImp {
 public:
   virtual ~ResizeEventImp() = default;
 

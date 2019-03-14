@@ -4,6 +4,7 @@
 
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
+#include "KaliLaska/kalilaska.h"
 #include <memory>
 
 namespace KaliLaska {
@@ -19,7 +20,7 @@ class MouseMoveEvent;
 class MouseReleaseEvent;
 class MouseWheelEvent;
 
-class Window {
+class KALILASKA_EXPORT Window {
   friend EventNotifyer;
 
 public:

@@ -3,9 +3,10 @@
 #pragma once
 
 #include "KaliLaska/Event.hpp"
+#include "KaliLaska/kalilaska_export.h"
 
 namespace KaliLaska {
-class MouseFocusEventImp {
+class KALILASKA_EXPORT MouseFocusEventImp {
 public:
   virtual ~MouseFocusEventImp() = default;
 

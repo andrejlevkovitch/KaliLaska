@@ -4,13 +4,14 @@
 
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
+#include "KaliLaska/kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
 class WindowImp;
 class Window;
 
-class WindowImpFactory {
+class KALILASKA_EXPORT WindowImpFactory {
 public:
   virtual ~WindowImpFactory() = default;
 

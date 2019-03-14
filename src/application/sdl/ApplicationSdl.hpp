@@ -29,8 +29,8 @@ public:
   EventImpFactory * eventFactory() const override;
 
 private:
-  std::atomic<bool> loop_;
-  int               return_code_;
+  std::atomic_bool loop_;
+  std::atomic_int  return_code_;
 
   std::unique_ptr<WindowSdlFactory> windowFactory_;
   std::unique_ptr<EventImpFactory>  eventFactory_;

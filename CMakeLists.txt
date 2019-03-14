@@ -14,9 +14,11 @@ find_package(tinyxml2 REQUIRED)
 
 include_directories(include)
 
-set(LIST_SUBDIRS third_party src tests)
+set(LIST_SUBDIRS third_party src tests examples)
 foreach(DIR ${LIST_SUBDIRS})
   add_subdirectory(${DIR})
 endforeach()
+
+add_library(KaliLaska::KaliLaska ALIAS ${PROJECT_NAME})
 
 message(STATUS "SUBDIRECTORIES: ${LIST_SUBDIRS}")

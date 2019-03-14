@@ -4,10 +4,11 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/imp/MouseFocusEventImp.hpp"
+#include "KaliLaska/kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
-class MouseFocusEvent final : public Event {
+class KALILASKA_EXPORT MouseFocusEvent final : public Event {
 public:
   /**\brief constructor for user events
    */

@@ -1,7 +1,7 @@
 // main.cpp
 
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/Window.hpp"
+#include "MyWindow.hpp"
 #include <cassert>
 #include <cstdlib>
 
@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 
   KaliLaska::Application app{argc, argv};
 
-  KaliLaska::Window w{"temp", KaliLaska::Size{600, 600}};
+  MyWindow w{"temp", KaliLaska::Size{600, 600}};
 
   int retval = KaliLaska::Application::exec();
 

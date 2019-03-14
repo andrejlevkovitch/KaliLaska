@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "KaliLaska/kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
@@ -15,7 +16,7 @@ class ApplicationImp;
 
 /**\brief initialize all parts of game engin and provide access to it. Singleton
  */
-class Application final {
+class KALILASKA_EXPORT Application final {
 public:
   /**\brief you need set here input arguments of main, because it is needed for
    * load game libraries and create main window

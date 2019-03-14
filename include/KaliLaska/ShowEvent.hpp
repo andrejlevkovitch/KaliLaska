@@ -4,12 +4,13 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/imp/ShowEventImp.hpp"
+#include "KaliLaska/kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
 /**\brief represent window events AFTER some action
  */
-class ShowEvent final : public Event {
+class KALILASKA_EXPORT ShowEvent final : public Event {
 public:
   ShowEvent(ShowAction action);
   ShowEvent(std::unique_ptr<ShowEventImp> imp);

@@ -1,5 +1,6 @@
 # cmake for src
 
+include(GenerateExportHeader)
 
 set(KaliLaska_SRC
   application/Application.cpp
@@ -37,11 +38,9 @@ set(KaliLaska_SRC
 
   window/sdl/WindowSdl.cpp
   window/sdl/WindowSdlFactory.cpp
-
-  main.cpp
   )
 
-add_executable(${PROJECT_NAME} ${KaliLaska_SRC})
+add_library(${PROJECT_NAME} ${KaliLaska_SRC})
 target_compile_features(${PROJECT_NAME}
   PRIVATE
     cxx_std_17
@@ -49,9 +48,15 @@ target_compile_features(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
   PRIVATE
     SDL2::SDL2
-    ${OPENGL_gl_LIBRARY}
+    OpenGL::GL
   )
 target_include_directories(${PROJECT_NAME}
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+generate_export_header(${PROJECT_NAME}
+  EXPORT_FILE_NAME
+    ${CMAKE_CURRENT_SOURCE_DIR}/../include/KaliLaska/kalilaska_export.h
   )

@@ -4,9 +4,10 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
+#include "KaliLaska/kalilaska_export.h"
 
 namespace KaliLaska {
-class MouseWheelEventImp {
+class KALILASKA_EXPORT MouseWheelEventImp {
 public:
   virtual ~MouseWheelEventImp() = default;
 

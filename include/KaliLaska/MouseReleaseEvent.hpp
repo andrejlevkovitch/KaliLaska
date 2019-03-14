@@ -5,12 +5,13 @@
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/imp/MouseReleaseEventImp.hpp"
+#include "KaliLaska/kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
 class MouseReleaseEventImp;
 
-class MouseReleaseEvent final : public Event {
+class KALILASKA_EXPORT MouseReleaseEvent final : public Event {
 public:
   MouseReleaseEvent(Mouse::Button button, Point clickPos);
 

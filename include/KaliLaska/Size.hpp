@@ -2,10 +2,11 @@
 
 #pragma once
 
+#include "KaliLaska/kalilaska_export.h"
 #include <ostream>
 
 namespace KaliLaska {
-class Size {
+class KALILASKA_EXPORT Size {
 public:
   Size();
   Size(int width, int height);

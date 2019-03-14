@@ -1,9 +1,5 @@
 // ApplicationSdl.cpp
 
-// TODO we can set cikle interval, but we whatever get events which we not need
-// for example we get many mouseMouveEvent-s, but we need only one. I think we
-// can change this
-
 #include "ApplicationSdl.hpp"
 #include "KaliLaska/EventNotifyer.hpp"
 #include "debug.hpp"
@@ -11,7 +7,6 @@
 #include "events/sdl/EventSdlFactory.hpp"
 #include "window/sdl/WindowSdlFactory.hpp"
 #include <SDL2/SDL.h>
-#include <iostream>
 #include <stdexcept>
 #include <thread>
 
@@ -20,7 +15,7 @@
 namespace KaliLaska {
 
 int quitCallback(void *app, SDL_Event *event) {
-  if (event && event->type == SDL_EventType::SDL_QUIT) {
+  if (event->type == SDL_EventType::SDL_QUIT) {
     DEBUG_OUT("exit sdl event");
     reinterpret_cast<ApplicationSdl *>(app)->exit(0);
   }
@@ -28,16 +23,13 @@ int quitCallback(void *app, SDL_Event *event) {
 }
 
 int eventFilter(void *factory, SDL_Event *sdlEvent) {
-  if (sdlEvent) {
-    auto [window, event] = EventConverterSdl::convert(
-        *sdlEvent, *reinterpret_cast<const WindowSdlFactory *>(factory));
-    if (window && event) {
-      EventNotifyer::notify(window, std::move(event));
-      return 0;
-    }
-    return 1;
+  auto [window, event] = EventConverterSdl::convert(
+      *sdlEvent, *reinterpret_cast<const WindowSdlFactory *>(factory));
+  if (window && event) {
+    EventNotifyer::notify(window, std::move(event));
+    return 0;
   }
-  return {};
+  return 1;
 }
 
 ApplicationSdl::ApplicationSdl()

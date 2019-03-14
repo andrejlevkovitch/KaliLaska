@@ -2,10 +2,11 @@
 
 #pragma once
 
+#include "KaliLaska/kalilaska_export.h"
 #include <ostream>
 
 namespace KaliLaska {
-class Point {
+class KALILASKA_EXPORT Point {
 public:
   Point();
   Point(int x, int y);

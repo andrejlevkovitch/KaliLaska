@@ -1,15 +1,17 @@
 # cmake for third_party
 
-# for include picopng
-include_directories(picopng)
-
-find_package(OpenGL REQUIRED)
-
+# init and update submodules if they not init at the moment
 if(NOT EXISTS Box2D)
   find_package(Git REQUIRED)
   execute_process(COMMAND ${GIT_EXECUTABLE} submodule init)
   execute_process(COMMAND ${GIT_EXECUTABLE} submodule update)
 endif()
+
+find_package(OpenGL REQUIRED)
+
+# for include picopng
+# TODO I not shore it work or not
+include_directories(picopng)
 
 add_library(base64 "base64/base64.cpp")
 target_include_directories(base64 PUBLIC "base64")

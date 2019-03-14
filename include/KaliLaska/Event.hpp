@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "KaliLaska/kalilaska_export.h"
 #include <cstdint>
 #include <ostream>
 
@@ -26,7 +27,7 @@ enum class ShowAction {
 
 /**\brief base class for all events
  */
-class Event {
+class KALILASKA_EXPORT Event {
 public:
   enum class Type {
     Invalid,

@@ -4,10 +4,11 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/imp/CloseEventImp.hpp"
+#include "KaliLaska/kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
-class CloseEvent final : public Event {
+class KALILASKA_EXPORT CloseEvent final : public Event {
 public:
   CloseEvent();
   CloseEvent(std::unique_ptr<CloseEventImp> imp);

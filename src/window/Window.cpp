@@ -6,7 +6,6 @@
 #include "KaliLaska/imp/WindowImp.hpp"
 #include "KaliLaska/imp/WindowImpFactory.hpp"
 #include "debug.hpp"
-#include <iostream>
 #include <stdexcept>
 
 #define WINDOW_CREATE_ERROR "Window can not be created"
@@ -88,7 +87,6 @@ void Window::close() {
 }
 
 void Window::closeEvent(std::unique_ptr<CloseEvent> event) {
-  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
   // first we have to unregister window in factory
   Application::windowFactory()->resetWindow(this);
@@ -97,37 +95,30 @@ void Window::closeEvent(std::unique_ptr<CloseEvent> event) {
 }
 
 void Window::mouseMoveEvent(std::unique_ptr<MouseMoveEvent> event) {
-  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::mousePressEvent(std::unique_ptr<MousePressEvent> event) {
-  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::mouseReleaseEvent(std::unique_ptr<MouseReleaseEvent> event) {
-  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::mouseWheelEvent(std::unique_ptr<MouseWheelEvent> event) {
-  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event) {
-  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::showEvent(std::unique_ptr<ShowEvent> event) {
-  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 
 void Window::resizeEvent(std::unique_ptr<ResizeEvent> event) {
-  DEBUG_OUT(reinterpret_cast<const Event &>(*event.get()));
   UNUSED(event);
 }
 } // namespace KaliLaska
