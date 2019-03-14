@@ -12,8 +12,6 @@ find_package(gl3w REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(tinyxml2 REQUIRED)
 
-include_directories(include)
-
 set(LIST_SUBDIRS third_party src tests examples)
 foreach(DIR ${LIST_SUBDIRS})
   add_subdirectory(${DIR})

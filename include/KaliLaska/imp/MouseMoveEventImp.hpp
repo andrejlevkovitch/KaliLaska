@@ -4,7 +4,7 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
-#include "KaliLaska/kalilaska_export.h"
+#include "kalilaska_export.h"
 
 namespace KaliLaska {
 class KALILASKA_EXPORT MouseMoveEventImp {

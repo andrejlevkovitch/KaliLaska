@@ -4,7 +4,7 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/imp/ShowEventImp.hpp"
-#include "KaliLaska/kalilaska_export.h"
+#include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {

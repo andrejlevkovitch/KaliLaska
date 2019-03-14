@@ -3,7 +3,7 @@
 #pragma once
 
 #include "KaliLaska/Event.hpp"
-#include "KaliLaska/kalilaska_export.h"
+#include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {

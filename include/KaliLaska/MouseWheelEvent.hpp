@@ -5,7 +5,7 @@
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/imp/MouseWheelEventImp.hpp"
-#include "KaliLaska/kalilaska_export.h"
+#include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {

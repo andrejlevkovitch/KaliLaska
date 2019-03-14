@@ -4,7 +4,7 @@
 
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
-#include "KaliLaska/kalilaska.h"
+#include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {

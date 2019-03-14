@@ -3,7 +3,7 @@
 #pragma once
 
 #include "KaliLaska/Size.hpp"
-#include "KaliLaska/kalilaska_export.h"
+#include "kalilaska_export.h"
 
 namespace KaliLaska {
 class KALILASKA_EXPORT ResizeEventImp {

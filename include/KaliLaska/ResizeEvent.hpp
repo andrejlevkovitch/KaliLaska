@@ -5,7 +5,7 @@
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Size.hpp"
 #include "KaliLaska/imp/ResizeEventImp.hpp"
-#include "KaliLaska/kalilaska_export.h"
+#include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {

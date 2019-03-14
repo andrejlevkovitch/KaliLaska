@@ -53,10 +53,11 @@ target_link_libraries(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
+  PUBLIC
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../include
   )
+# generate export header
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
-generate_export_header(${PROJECT_NAME}
-  EXPORT_FILE_NAME
-    ${CMAKE_CURRENT_SOURCE_DIR}/../include/KaliLaska/kalilaska_export.h
-  )
+generate_export_header(${PROJECT_NAME})

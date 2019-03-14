@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "KaliLaska/kalilaska_export.h"
+#include "kalilaska_export.h"
 #include <ostream>
 
 namespace KaliLaska {
