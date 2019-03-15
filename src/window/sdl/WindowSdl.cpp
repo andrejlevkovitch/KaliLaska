@@ -8,16 +8,14 @@
 
 namespace KaliLaska {
 WindowSdl::WindowSdl()
-    : window_{}
-    , hidden_{false} {
+    : window_{} {
   window_ = SDL_CreateWindow({}, 0, 0, 0, 0, SDL_WINDOW_OPENGL);
   if (!window_) {
     throw std::runtime_error{SDL_GetError()};
   }
 }
 WindowSdl::WindowSdl(const char *title, Size size)
-    : window_{}
-    , hidden_{false} {
+    : window_{} {
   window_ = SDL_CreateWindow(title,
                              SDL_WINDOWPOS_CENTERED,
                              SDL_WINDOWPOS_CENTERED,
@@ -30,8 +28,7 @@ WindowSdl::WindowSdl(const char *title, Size size)
 }
 
 WindowSdl::WindowSdl(const char *title, Point point, Size size)
-    : window_{}
-    , hidden_{false} {
+    : window_{} {
   window_ = SDL_CreateWindow(title,
                              point.x(),
                              point.y(),
@@ -89,20 +86,30 @@ void WindowSdl::setTitle(const char *title) {
 }
 
 bool WindowSdl::isHide() const {
-  return hidden_;
+  return SDL_GetWindowFlags(window_) & SDL_WINDOW_HIDDEN;
 }
 
 void WindowSdl::hide() {
   SDL_HideWindow(window_);
-  hidden_ = true;
 }
 
 void WindowSdl::show() {
   SDL_ShowWindow(window_);
-  hidden_ = false;
 }
 
 void WindowSdl::setFullScr() {
   ::SDL_SetWindowFullscreen(window_, SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+
+bool WindowSdl::isFullScr() const {
+  return SDL_GetWindowFlags(window_) & SDL_WINDOW_FULLSCREEN_DESKTOP;
+}
+
+void WindowSdl::setResizable(bool value) {
+  ::SDL_SetWindowResizable(window_, static_cast<SDL_bool>(value));
+}
+
+bool WindowSdl::isResizable() const {
+  return ::SDL_GetWindowFlags(window_) & SDL_WINDOW_RESIZABLE;
 }
 } // namespace KaliLaska

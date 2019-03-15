@@ -52,12 +52,6 @@ ShowAction showAction(uint8_t sdlAction) {
     return ShowAction::Shown;
   case SDL_WINDOWEVENT_HIDDEN:
     return ShowAction::Hidden;
-    // case SDL_WINDOWEVENT_MINIMIZED:
-    //  return ShowAction::Minimized;
-    // case SDL_WINDOWEVENT_MAXIMIZED:
-    //  return ShowAction::Maximized;
-    // case SDL_WINDOWEVENT_RESTORED:
-    //  return ShowAction::Restored;
   default:
     return ShowAction::Invalid;
   }
@@ -69,12 +63,6 @@ uint8_t sdlAction(ShowAction action) {
     return SDL_WINDOWEVENT_SHOWN;
   case ShowAction::Hidden:
     return SDL_WINDOWEVENT_HIDDEN;
-    // case ShowAction::Minimized:
-    //  return SDL_WINDOWEVENT_MINIMIZED;
-    // case ShowAction::Maximized:
-    //  return SDL_WINDOWEVENT_MAXIMIZED;
-    // case ShowAction::Restored:
-    //  return SDL_WINDOWEVENT_RESTORED;
   default:
     return SDL_WINDOWEVENT_NONE;
   }

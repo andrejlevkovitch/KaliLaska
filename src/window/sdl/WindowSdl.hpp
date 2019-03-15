@@ -41,9 +41,12 @@ public:
   void show() override;
 
   void setFullScr() override;
+  bool isFullScr() const override;
+
+  void setResizable(bool value) override;
+  bool isResizable() const override;
 
 private:
   SDL_Window *window_;
-  bool        hidden_;
 };
 } // namespace KaliLaska

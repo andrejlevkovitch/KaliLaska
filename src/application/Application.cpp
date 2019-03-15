@@ -5,7 +5,6 @@
 #include "KaliLaska/EventNotifyer.hpp"
 #include "KaliLaska/imp/ApplicationImp.hpp"
 #include "sdl/ApplicationSdl.hpp"
-#include <iostream>
 #include <stdexcept>
 #include <string.h>
 

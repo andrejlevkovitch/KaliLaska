@@ -10,7 +10,7 @@ namespace KaliLaska {
 class CloseEvent;
 
 /**\brief abstract base class which provides interface for winodw.
- * \except constructors of inheritor can throw runtime_error if window can not
+ * \throws constructors of inheritor can throw runtime_error if window can not
  * be created
  */
 class KALILASKA_EXPORT WindowImp {
@@ -42,7 +42,11 @@ public:
   virtual void hide() = 0;
   virtual void show() = 0;
 
-  virtual void setFullScr() = 0;
+  virtual void setFullScr()      = 0;
+  virtual bool isFullScr() const = 0;
+
+  virtual void setResizable(bool value) = 0;
+  virtual bool isResizable() const      = 0;
 
 private:
 };

@@ -66,6 +66,13 @@ public:
   void show();
 
   void setFullScr();
+  bool isFullScr();
+
+  /**\brief change resize state of window. By default window is resizable
+   * \warning you can not chang resizable state of fullscreen window
+   */
+  void setResizable(bool value);
+  bool isResizable() const;
 
   /**\brief generate close event for current window
    */

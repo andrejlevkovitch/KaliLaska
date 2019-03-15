@@ -82,6 +82,22 @@ void Window::show() {
   imp_->show();
 }
 
+void Window::setFullScr() {
+  imp_->setFullScr();
+}
+
+bool Window::isFullScr() const {
+  return imp_->isFullScr();
+}
+
+void Window::setResizable(bool value) {
+  imp_->setResizable(value);
+}
+
+bool Window::isResizable() const {
+  return imp_->isResizable();
+}
+
 void Window::close() {
   this->closeEvent(std::make_unique<CloseEvent>());
 }

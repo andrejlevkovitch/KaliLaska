@@ -16,7 +16,7 @@ class WindowSdlFactory;
  */
 class ApplicationSdl final : public ApplicationImp {
 public:
-  /**\except if sdl can not be initialized
+  /**\throws if sdl can not be initialized
    */
   ApplicationSdl();
   ~ApplicationSdl();

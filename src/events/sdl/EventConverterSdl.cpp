@@ -18,7 +18,6 @@
 #include "ResizeEventSdl.hpp"
 #include "ShowEventSdl.hpp"
 #include "window/sdl/WindowSdlFactory.hpp"
-#include <iostream>
 
 namespace KaliLaska {
 std::pair<Window *, std::unique_ptr<Event>>
@@ -86,9 +85,6 @@ EventConverterSdl::convertWindowEvent(const SDL_WindowEvent & event,
     return convertCloseEvent(event, factory);
   case SDL_WINDOWEVENT_SHOWN:
   case SDL_WINDOWEVENT_HIDDEN:
-    // case SDL_WINDOWEVENT_MINIMIZED:
-    // case SDL_WINDOWEVENT_MAXIMIZED:
-    // case SDL_WINDOWEVENT_RESTORED:
     return convertShowEvent(event, factory);
   case SDL_WINDOWEVENT_LEAVE:
   case SDL_WINDOWEVENT_ENTER:

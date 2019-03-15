@@ -20,7 +20,7 @@ class KALILASKA_EXPORT Application final {
 public:
   /**\brief you need set here input arguments of main, because it is needed for
    * load game libraries and create main window
-   * \except in case repeted initialization
+   * \throws in case repeted initialization
    */
   Application(int argc, char *argv[]);
 
@@ -28,8 +28,8 @@ public:
 
   ~Application();
 
-  /**\return 0 if programm finish correctly
-   * \except throw std::runtime_error if Application was not initialized
+  /**\return EXIT_SUCCESS if programm finish correctly, EXIT_FAILURE - otherwise
+   * \throws std::runtime_error if Application was not initialized
    * \brief event loop
    */
   static int exec();

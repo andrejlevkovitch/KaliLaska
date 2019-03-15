@@ -3,7 +3,6 @@
 #include "WindowSdlFactory.hpp"
 #include "WindowSdl.hpp"
 #include <algorithm>
-#include <iostream>
 
 namespace KaliLaska {
 std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &window) {

@@ -11,7 +11,6 @@
 #include "KaliLaska/ResizeEvent.hpp"
 #include "KaliLaska/ShowEvent.hpp"
 #include "KaliLaska/Window.hpp"
-#include <iostream>
 
 namespace KaliLaska {
 // custom unique cast

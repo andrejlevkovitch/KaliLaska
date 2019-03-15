@@ -20,9 +20,6 @@ enum class ShowAction {
   Invalid,
   Shown,
   Hidden,
-  // Minimized,
-  // Maximized,
-  // Restored
 };
 
 /**\brief base class for all events
