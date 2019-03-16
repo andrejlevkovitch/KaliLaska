@@ -3,11 +3,15 @@
 #include "KaliLaska/EventNotifyer.hpp"
 #include "KaliLaska/CloseEvent.hpp"
 #include "KaliLaska/Event.hpp"
+#include "KaliLaska/KeyPressEvent.hpp"
+#include "KaliLaska/KeyReleaseEvent.hpp"
+#include "KaliLaska/KeyboardFocusEvent.hpp"
 #include "KaliLaska/MouseFocusEvent.hpp"
 #include "KaliLaska/MouseMoveEvent.hpp"
 #include "KaliLaska/MousePressEvent.hpp"
 #include "KaliLaska/MouseReleaseEvent.hpp"
 #include "KaliLaska/MouseWheelEvent.hpp"
+#include "KaliLaska/MoveEvent.hpp"
 #include "KaliLaska/ResizeEvent.hpp"
 #include "KaliLaska/ShowEvent.hpp"
 #include "KaliLaska/Window.hpp"
@@ -32,6 +36,9 @@ void EventNotifyer::notify(Window *window, std::unique_ptr<Event> event) {
     case Event::Type::ResizeEvent:
       window->resizeEvent(uniqueCast<ResizeEvent>(event));
       break;
+    case Event::Type::MoveEvent:
+      window->moveEvent(uniqueCast<MoveEvent>(event));
+      break;
     case Event::Type::MouseMoveEvent:
       window->mouseMoveEvent(uniqueCast<MouseMoveEvent>(event));
       break;
@@ -47,7 +54,17 @@ void EventNotifyer::notify(Window *window, std::unique_ptr<Event> event) {
     case Event::Type::MouseFocusEvent:
       window->mouseFocusEvent(uniqueCast<MouseFocusEvent>(event));
       break;
+    case Event::Type::KeyboardFocusEvent:
+      window->keyboardFocusEvent(uniqueCast<KeyboardFocusEvent>(event));
+      break;
+    case Event::Type::KeyPressEvent:
+      window->keyPressEvent(uniqueCast<KeyPressEvent>(event));
+      break;
+    case Event::Type::KeyReleaseEvent:
+      window->keyReleaseEvent(uniqueCast<KeyReleaseEvent>(event));
+      break;
     default:
+      window->userEvent(std::move(event));
       break;
     }
   }

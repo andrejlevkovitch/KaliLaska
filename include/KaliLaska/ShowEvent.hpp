@@ -21,5 +21,6 @@ private:
   std::unique_ptr<ShowEventImp> imp_;
 };
 
-std::ostream &operator<<(std::ostream &stream, const ShowEvent &event);
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &   stream,
+                                          const ShowEvent &event);
 } // namespace KaliLaska

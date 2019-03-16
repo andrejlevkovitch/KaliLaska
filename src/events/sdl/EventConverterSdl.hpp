@@ -22,6 +22,8 @@ public:
   convert(const SDL_Event &event, const WindowSdlFactory &factory);
 
 private:
+  // mouse events---------------------------------------------------------------
+
   static std::pair<Window *, std::unique_ptr<Event>>
   convertMouseMoveEvent(const SDL_MouseMotionEvent &event,
                         const WindowSdlFactory &    factory);
@@ -38,6 +40,16 @@ private:
   convertMouseWheelEvent(const SDL_MouseWheelEvent &event,
                          const WindowSdlFactory &   factory);
 
+  // key events-----------------------------------------------------------------
+
+  static std::pair<Window *, std::unique_ptr<Event>>
+  convertKeyPressEvent(const SDL_KeyboardEvent &event,
+                       const WindowSdlFactory & factory);
+
+  static std::pair<Window *, std::unique_ptr<Event>>
+  convertKeyReleaseEvent(const SDL_KeyboardEvent &event,
+                         const WindowSdlFactory & factory);
+
   // window events--------------------------------------------------------------
 
   static std::pair<Window *, std::unique_ptr<Event>>
@@ -53,11 +65,19 @@ private:
                    const WindowSdlFactory &factory);
 
   static std::pair<Window *, std::unique_ptr<Event>>
+  convertResizeEvent(const SDL_WindowEvent & event,
+                     const WindowSdlFactory &factory);
+
+  static std::pair<Window *, std::unique_ptr<Event>>
+  convertMoveEvent(const SDL_WindowEvent & event,
+                   const WindowSdlFactory &factory);
+
+  static std::pair<Window *, std::unique_ptr<Event>>
   convertMouseFocusEvent(const SDL_WindowEvent & event,
                          const WindowSdlFactory &factory);
 
   static std::pair<Window *, std::unique_ptr<Event>>
-  convertResizeEvent(const SDL_WindowEvent & event,
-                     const WindowSdlFactory &factory);
+  convertKeyboardFocusEvent(const SDL_WindowEvent & event,
+                            const WindowSdlFactory &factory);
 };
 } // namespace KaliLaska

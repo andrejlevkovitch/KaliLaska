@@ -11,14 +11,22 @@ namespace KaliLaska {
 class WindowImp;
 class EventNotifyer;
 
+class Event;
+
 class CloseEvent;
 class ShowEvent;
 class ResizeEvent;
+class MoveEvent;
+
 class MouseFocusEvent;
 class MousePressEvent;
 class MouseMoveEvent;
 class MouseReleaseEvent;
 class MouseWheelEvent;
+
+class KeyboardFocusEvent;
+class KeyPressEvent;
+class KeyReleaseEvent;
 
 class KALILASKA_EXPORT Window {
   friend EventNotifyer;
@@ -66,9 +74,9 @@ public:
   void show();
 
   void setFullScr();
-  bool isFullScr();
+  bool isFullScr() const;
 
-  /**\brief change resize state of window. By default window is resizable
+  /**\brief change resize state of window. By default window is not resizable
    * \warning you can not chang resizable state of fullscreen window
    */
   void setResizable(bool value);
@@ -90,6 +98,10 @@ protected:
   /**\brief By default does nothing
    */
   virtual void resizeEvent(std::unique_ptr<ResizeEvent> event);
+  /**\brief By default does nothing
+   */
+  virtual void moveEvent(std::unique_ptr<MoveEvent> event);
+
   /**\brief call when mouse leave or enter in area of the window. By default
    * does nothing
    */
@@ -109,6 +121,21 @@ protected:
   /**\brief By default does nothing
    */
   virtual void mouseWheelEvent(std::unique_ptr<MouseWheelEvent> event);
+
+  /**\brief By default does nothing
+   */
+  virtual void keyboardFocusEvent(std::unique_ptr<KeyboardFocusEvent> event);
+  /**\brief By default does nothing
+   */
+  virtual void keyPressEvent(std::unique_ptr<KeyPressEvent> event);
+  /**\brief By default does nothing
+   */
+  virtual void keyReleaseEvent(std::unique_ptr<KeyReleaseEvent> event);
+
+  /**\brief if you implement you'r own type of events you can notify window from
+   * Application by the method. By default does nothing
+   */
+  virtual void userEvent(std::unique_ptr<Event> event);
 
 private:
   std::unique_ptr<WindowImp> imp_;

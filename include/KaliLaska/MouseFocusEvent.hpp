@@ -24,5 +24,6 @@ private:
   std::unique_ptr<MouseFocusEventImp> imp_;
 };
 
-std::ostream &operator<<(std::ostream &stream, const MouseFocusEvent &event);
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &         stream,
+                                          const MouseFocusEvent &event);
 } // namespace KaliLaska

@@ -22,5 +22,6 @@ private:
   std::unique_ptr<MouseWheelEventImp> imp_;
 };
 
-std::ostream &operator<<(std::ostream &stream, const MouseWheelEvent &event);
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &         stream,
+                                          const MouseWheelEvent &event);
 } // namespace KaliLaska

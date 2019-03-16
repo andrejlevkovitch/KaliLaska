@@ -17,5 +17,6 @@ private:
   std::unique_ptr<CloseEventImp> imp_;
 };
 
-std::ostream &operator<<(std::ostream &stream, const CloseEvent &event);
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &    stream,
+                                          const CloseEvent &event);
 } // namespace KaliLaska

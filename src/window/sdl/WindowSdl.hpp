@@ -12,6 +12,8 @@ namespace KaliLaska {
 
 class WindowSdl final : public WindowImp {
 public:
+  /**\throws when can not create window or OpenGL context
+   */
   WindowSdl();
   WindowSdl(const char *title, Size size);
   WindowSdl(const char *title, Point pos, Size size);
@@ -46,7 +48,18 @@ public:
   void setResizable(bool value) override;
   bool isResizable() const override;
 
+protected:
+  /**\return false when can not create window
+   * \brief call in constructor
+   */
+  bool createWindow(const char *title, Point pos, Size size);
+  /**\return false when can not create context
+   * \brief call in constructor
+   */
+  bool createGLContext();
+
 private:
   SDL_Window *window_;
+  void *      glContext_;
 };
 } // namespace KaliLaska

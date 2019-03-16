@@ -137,4 +137,24 @@ void Window::showEvent(std::unique_ptr<ShowEvent> event) {
 void Window::resizeEvent(std::unique_ptr<ResizeEvent> event) {
   UNUSED(event);
 }
+
+void Window::keyboardFocusEvent(std::unique_ptr<KeyboardFocusEvent> event) {
+  UNUSED(event);
+}
+
+void Window::keyPressEvent(std::unique_ptr<KeyPressEvent> event) {
+  UNUSED(event);
+}
+
+void Window::keyReleaseEvent(std::unique_ptr<KeyReleaseEvent> event) {
+  UNUSED(event);
+}
+
+void Window::userEvent(std::unique_ptr<Event> event) {
+  UNUSED(event);
+}
+
+void Window::moveEvent(std::unique_ptr<MoveEvent> event) {
+  UNUSED(event);
+}
 } // namespace KaliLaska

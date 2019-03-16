@@ -5,10 +5,9 @@
 #include "KaliLaska/imp/EventImpFactory.hpp"
 
 namespace KaliLaska {
-ResizeEvent::ResizeEvent(Size previousSize, Size newSize)
+ResizeEvent::ResizeEvent(Size newSize)
     : Event{Type::ResizeEvent}
-    , imp_{Application::eventFactory()->createResizeEventImp(previousSize,
-                                                             newSize)} {
+    , imp_{Application::eventFactory()->createResizeEventImp(newSize)} {
 }
 
 ResizeEvent::ResizeEvent(std::unique_ptr<ResizeEventImp> imp)
@@ -16,17 +15,12 @@ ResizeEvent::ResizeEvent(std::unique_ptr<ResizeEventImp> imp)
     , imp_{std::move(imp)} {
 }
 
-Size ResizeEvent::previousSize() const {
-  return imp_->previousSize();
-}
-
-Size ResizeEvent::newSize() const {
-  return imp_->newSize();
+Size ResizeEvent::currentSize() const {
+  return imp_->currentSize();
 }
 
 std::ostream &operator<<(std::ostream &stream, const ResizeEvent &event) {
-  stream << "ResizeEvent: prevSize " << event.previousSize() << ", newSize "
-         << event.newSize();
+  stream << "ResizeEvent: curSize " << event.currentSize();
   return stream;
 }
 } // namespace KaliLaska

@@ -8,12 +8,11 @@
 namespace KaliLaska {
 class ResizeEventSdl : public ResizeEventImp {
 public:
-  ResizeEventSdl(Size prev, Size news);
+  ResizeEventSdl(Size news);
 
   ResizeEventSdl(SDL_WindowEvent event);
 
-  Size previousSize() const override;
-  Size newSize() const override;
+  Size currentSize() const override;
 
 private:
   SDL_WindowEvent event_;

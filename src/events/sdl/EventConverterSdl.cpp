@@ -3,18 +3,26 @@
 #include "EventConverterSdl.hpp"
 #include "CloseEventSdl.hpp"
 #include "KaliLaska/CloseEvent.hpp"
+#include "KaliLaska/KeyPressEvent.hpp"
+#include "KaliLaska/KeyReleaseEvent.hpp"
+#include "KaliLaska/KeyboardFocusEvent.hpp"
 #include "KaliLaska/MouseFocusEvent.hpp"
 #include "KaliLaska/MouseMoveEvent.hpp"
 #include "KaliLaska/MousePressEvent.hpp"
 #include "KaliLaska/MouseReleaseEvent.hpp"
 #include "KaliLaska/MouseWheelEvent.hpp"
+#include "KaliLaska/MoveEvent.hpp"
 #include "KaliLaska/ResizeEvent.hpp"
 #include "KaliLaska/ShowEvent.hpp"
+#include "KeyPressEventSdl.hpp"
+#include "KeyReleaseEventSdl.hpp"
+#include "KeyboardFocusEventSdl.hpp"
 #include "MouseFocusEventSdl.hpp"
 #include "MouseMoveEventSdl.hpp"
 #include "MousePressEventSdl.hpp"
 #include "MouseReleaseEventSdl.hpp"
 #include "MouseWheelEventSdl.hpp"
+#include "MoveEventSdl.hpp"
 #include "ResizeEventSdl.hpp"
 #include "ShowEventSdl.hpp"
 #include "window/sdl/WindowSdlFactory.hpp"
@@ -34,6 +42,10 @@ EventConverterSdl::convert(const SDL_Event &       event,
     return convertMouseWheelEvent(event.wheel, factory);
   case SDL_WINDOWEVENT:
     return convertWindowEvent(event.window, factory);
+  case SDL_KEYUP:
+    return convertKeyReleaseEvent(event.key, factory);
+  case SDL_KEYDOWN:
+    return convertKeyPressEvent(event.key, factory);
   default:
     return {nullptr, nullptr};
   }
@@ -91,6 +103,11 @@ EventConverterSdl::convertWindowEvent(const SDL_WindowEvent & event,
     return convertMouseFocusEvent(event, factory);
   case SDL_WINDOWEVENT_RESIZED:
     return convertResizeEvent(event, factory);
+  case SDL_WINDOWEVENT_FOCUS_LOST:
+  case SDL_WINDOWEVENT_FOCUS_GAINED:
+    return convertKeyboardFocusEvent(event, factory);
+  case SDL_WINDOWEVENT_MOVED:
+    return convertMoveEvent(event, factory);
   default:
     return {nullptr, nullptr};
   }
@@ -124,5 +141,36 @@ EventConverterSdl::convertResizeEvent(const SDL_WindowEvent & event,
   return {
       factory.getWindowFromId(event.windowID),
       std::make_unique<ResizeEvent>(std::make_unique<ResizeEventSdl>(event))};
+}
+
+std::pair<Window *, std::unique_ptr<Event>>
+EventConverterSdl::convertKeyboardFocusEvent(const SDL_WindowEvent & event,
+                                             const WindowSdlFactory &factory) {
+  return {factory.getWindowFromId(event.windowID),
+          std::make_unique<KeyboardFocusEvent>(
+              std::make_unique<KeyboardFocusEventSdl>(event))};
+}
+
+std::pair<Window *, std::unique_ptr<Event>>
+EventConverterSdl::convertKeyPressEvent(const SDL_KeyboardEvent &event,
+                                        const WindowSdlFactory & factory) {
+  return {factory.getWindowFromId(event.windowID),
+          std::make_unique<KeyPressEvent>(
+              std::make_unique<KeyPressEventSdl>(event))};
+}
+
+std::pair<Window *, std::unique_ptr<Event>>
+EventConverterSdl::convertKeyReleaseEvent(const SDL_KeyboardEvent &event,
+                                          const WindowSdlFactory & factory) {
+  return {factory.getWindowFromId(event.windowID),
+          std::make_unique<KeyReleaseEvent>(
+              std::make_unique<KeyReleaseEventSdl>(event))};
+}
+
+std::pair<Window *, std::unique_ptr<Event>>
+EventConverterSdl::convertMoveEvent(const SDL_WindowEvent & event,
+                                    const WindowSdlFactory &factory) {
+  return {factory.getWindowFromId(event.windowID),
+          std::make_unique<MoveEvent>(std::make_unique<MoveEventSdl>(event))};
 }
 } // namespace KaliLaska

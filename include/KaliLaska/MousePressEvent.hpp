@@ -37,5 +37,6 @@ private:
   std::unique_ptr<MousePressEventImp> imp_;
 };
 
-std::ostream &operator<<(std::ostream &stream, const MousePressEvent &event);
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &         stream,
+                                          const MousePressEvent &event);
 } // namespace KaliLaska

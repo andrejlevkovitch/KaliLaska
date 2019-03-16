@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
   KaliLaska::Application app{argc, argv};
 
   MyWindow w{"temp", KaliLaska::Size{600, 600}};
-  w.setFullScr();
 
   int retval = KaliLaska::Application::exec();
 

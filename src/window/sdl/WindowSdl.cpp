@@ -4,44 +4,31 @@
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
 #include "debug.hpp"
+#include <GL/gl.h>
 #include <SDL2/SDL.h>
+
+#define WIN_IMP "implementation"
 
 namespace KaliLaska {
 WindowSdl::WindowSdl()
-    : window_{} {
-  window_ = SDL_CreateWindow({}, 0, 0, 0, 0, SDL_WINDOW_OPENGL);
-  if (!window_) {
-    throw std::runtime_error{SDL_GetError()};
-  }
+    : WindowSdl{nullptr, {}, {}} {
 }
 WindowSdl::WindowSdl(const char *title, Size size)
-    : window_{} {
-  window_ = SDL_CreateWindow(title,
-                             SDL_WINDOWPOS_CENTERED,
-                             SDL_WINDOWPOS_CENTERED,
-                             size.width(),
-                             size.height(),
-                             SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-  if (!window_) {
-    throw std::runtime_error{SDL_GetError()};
-  }
+    : WindowSdl{
+          title, Point{SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}, size} {
 }
 
-WindowSdl::WindowSdl(const char *title, Point point, Size size)
-    : window_{} {
-  window_ = SDL_CreateWindow(title,
-                             point.x(),
-                             point.y(),
-                             size.width(),
-                             size.height(),
-                             SDL_WINDOW_OPENGL);
-  if (!window_) {
+WindowSdl::WindowSdl(const char *title, Point pos, Size size)
+    : window_{}
+    , glContext_{} {
+  if (!createWindow(title, pos, size) || !createGLContext()) {
     throw std::runtime_error{SDL_GetError()};
   }
 }
 
 WindowSdl::~WindowSdl() {
   SDL_DestroyWindow(window_);
+  SDL_GL_DeleteContext(glContext_);
 }
 
 uint32_t WindowSdl::id() const {
@@ -111,5 +98,22 @@ void WindowSdl::setResizable(bool value) {
 
 bool WindowSdl::isResizable() const {
   return ::SDL_GetWindowFlags(window_) & SDL_WINDOW_RESIZABLE;
+}
+
+bool WindowSdl::createWindow(const char *title, Point pos, Size size) {
+  window_ = SDL_CreateWindow(
+      title, pos.x(), pos.y(), size.width(), size.height(), SDL_WINDOW_OPENGL);
+  return window_;
+}
+
+bool WindowSdl::createGLContext() {
+  glContext_ = SDL_GL_CreateContext(window_);
+  if (!glContext_) {
+    throw std::runtime_error{SDL_GetError()};
+  }
+  glClearColor(0, 0, 0, 1);
+  glClear(GL_COLOR_BUFFER_BIT);
+  ::SDL_GL_SwapWindow(window_);
+  return glContext_;
 }
 } // namespace KaliLaska

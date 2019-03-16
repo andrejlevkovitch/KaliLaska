@@ -12,12 +12,17 @@ set(KaliLaska_SRC
   events/CloseEvent.cpp
   events/ShowEvent.cpp
   events/ResizeEvent.cpp
+  events/MoveEvent.cpp
   events/MouseFocusEvent.cpp
   events/MouseMoveEvent.cpp
   events/MousePressEvent.cpp
   events/MouseReleaseEvent.cpp
   events/MouseWheelEvent.cpp
+  events/KeyboardFocusEvent.cpp
+  events/KeyPressEvent.cpp
+  events/KeyReleaseEvent.cpp
   events/EventNotifyer.cpp
+  events/KeyPrinter.cpp
 
   window/Window.cpp
 
@@ -27,11 +32,15 @@ set(KaliLaska_SRC
   events/sdl/CloseEventSdl.cpp
   events/sdl/ShowEventSdl.cpp
   events/sdl/ResizeEventSdl.cpp
+  events/sdl/MoveEventSdl.cpp
   events/sdl/MouseFocusEventSdl.cpp
   events/sdl/MouseMoveEventSdl.cpp
   events/sdl/MousePressEventSdl.cpp
   events/sdl/MouseReleaseEventSdl.cpp
   events/sdl/MouseWheelEventSdl.cpp
+  events/sdl/KeyboardFocusEventSdl.cpp
+  events/sdl/KeyPressEventSdl.cpp
+  events/sdl/KeyReleaseEventSdl.cpp
   events/sdl/SdlEvents.cpp
   events/sdl/EventConverterSdl.cpp
   events/sdl/EventSdlFactory.cpp

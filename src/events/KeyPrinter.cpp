@@ -1,0 +1,103 @@
+// KeyPrinter.hpp
+
+#include "KeyPrinter.hpp"
+
+namespace KaliLaska {
+const char *keyPrinter(Keyboard::Key key) {
+  switch (key) {
+  case Keyboard::Key::Key_0:
+    return "0";
+  case Keyboard::Key::Key_1:
+    return "1";
+  case Keyboard::Key::Key_2:
+    return "2";
+  case Keyboard::Key::Key_3:
+    return "3";
+  case Keyboard::Key::Key_4:
+    return "4";
+  case Keyboard::Key::Key_5:
+    return "5";
+  case Keyboard::Key::Key_6:
+    return "6";
+  case Keyboard::Key::Key_7:
+    return "7";
+  case Keyboard::Key::Key_8:
+    return "8";
+  case Keyboard::Key::Key_9:
+    return "9";
+  case Keyboard::Key::Key_A:
+    return "A";
+  case Keyboard::Key::Key_B:
+    return "B";
+  case Keyboard::Key::Key_C:
+    return "C";
+  case Keyboard::Key::Key_D:
+    return "D";
+  case Keyboard::Key::Key_E:
+    return "E";
+  case Keyboard::Key::Key_F:
+    return "F";
+  case Keyboard::Key::Key_G:
+    return "G";
+  case Keyboard::Key::Key_H:
+    return "H";
+  case Keyboard::Key::Key_I:
+    return "I";
+  case Keyboard::Key::Key_J:
+    return "J";
+  case Keyboard::Key::Key_K:
+    return "K";
+  case Keyboard::Key::Key_L:
+    return "L";
+  case Keyboard::Key::Key_M:
+    return "M";
+  case Keyboard::Key::Key_N:
+    return "N";
+  case Keyboard::Key::Key_O:
+    return "O";
+  case Keyboard::Key::Key_P:
+    return "P";
+  case Keyboard::Key::Key_Q:
+    return "Q";
+  case Keyboard::Key::Key_R:
+    return "R";
+  case Keyboard::Key::Key_S:
+    return "S";
+  case Keyboard::Key::Key_T:
+    return "T";
+  case Keyboard::Key::Key_U:
+    return "U";
+  case Keyboard::Key::Key_V:
+    return "V";
+  case Keyboard::Key::Key_W:
+    return "W";
+  case Keyboard::Key::Key_X:
+    return "X";
+  case Keyboard::Key::Key_Y:
+    return "Y";
+  case Keyboard::Key::Key_Z:
+    return "Z";
+  case Keyboard::Key::Key_Space:
+    return "Space";
+  case Keyboard::Key::Key_Enter:
+    return "Enter";
+  case Keyboard::Key::Key_Up:
+    return "Up";
+  case Keyboard::Key::Key_Down:
+    return "Down";
+  case Keyboard::Key::Key_Left:
+    return "Left";
+  case Keyboard::Key::Key_Right:
+    return "Right";
+  case Keyboard::Key::Key_Ctrl:
+    return "Ctrl";
+  case Keyboard::Key::Key_Alt:
+    return "Alt";
+  case Keyboard::Key::Key_Shift:
+    return "Shift";
+  case Keyboard::Key::Invalid:
+    break;
+  }
+  return "unknow";
+}
+} // namespace KaliLaska

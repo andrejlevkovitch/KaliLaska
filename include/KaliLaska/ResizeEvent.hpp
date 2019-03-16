@@ -15,20 +15,20 @@ public:
    * \warning window will not be resized by this event if you set it manually to
    * you window! The event only notify about change size of window!
    */
-  ResizeEvent(Size previousSize, Size newSize);
+  ResizeEvent(Size newSize);
 
   /**\warning do not use this manually!
    */
   ResizeEvent(std::unique_ptr<ResizeEventImp> imp);
 
-  Size previousSize() const;
   /**\return currently size, which was be set by this event
    */
-  Size newSize() const;
+  Size currentSize() const;
 
 private:
   std::unique_ptr<ResizeEventImp> imp_;
 };
 
-std::ostream &operator<<(std::ostream &stream, const ResizeEvent &event);
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &     stream,
+                                          const ResizeEvent &event);
 } // namespace KaliLaska
