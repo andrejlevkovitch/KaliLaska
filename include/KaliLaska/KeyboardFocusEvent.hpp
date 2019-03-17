@@ -11,9 +11,9 @@ class KALILASKA_EXPORT KeyboardFocusEvent final : public Event {
 public:
   /**\brief konstructor for user events
    */
-  KeyboardFocusEvent(Keyboard::Focus focus);
+  explicit KeyboardFocusEvent(Keyboard::Focus focus);
 
-  KeyboardFocusEvent(std::unique_ptr<KeyboardFocusEventImp> imp);
+  explicit KeyboardFocusEvent(std::unique_ptr<KeyboardFocusEventImp> imp);
 
   /**\brief current changed of keyboard focus
    */

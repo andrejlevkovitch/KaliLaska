@@ -134,7 +134,7 @@ public:
     UserType = 100,
   };
 
-  Event(Type type);
+  explicit Event(Type type);
   virtual ~Event() = default;
 
   Type type() const;

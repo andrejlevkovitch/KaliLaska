@@ -15,9 +15,9 @@ public:
   /**\brief konstructor for custom user events
    * \warning this is not move you window to new position!
    */
-  MoveEvent(Point curPos);
+  explicit MoveEvent(Point curPos);
 
-  MoveEvent(std::unique_ptr<MoveEventImp> imp);
+  explicit MoveEvent(std::unique_ptr<MoveEventImp> imp);
 
   Point currentPos() const;
 

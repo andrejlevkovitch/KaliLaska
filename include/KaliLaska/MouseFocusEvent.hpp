@@ -12,11 +12,11 @@ class KALILASKA_EXPORT MouseFocusEvent final : public Event {
 public:
   /**\brief constructor for user events
    */
-  MouseFocusEvent(Mouse::Focus focus);
+  explicit MouseFocusEvent(Mouse::Focus focus);
 
   /**\warning this constructor can not be used by user!
    */
-  MouseFocusEvent(std::unique_ptr<MouseFocusEventImp> imp);
+  explicit MouseFocusEvent(std::unique_ptr<MouseFocusEventImp> imp);
 
   Mouse::Focus focus() const;
 

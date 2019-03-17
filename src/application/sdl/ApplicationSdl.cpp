@@ -18,7 +18,6 @@ namespace KaliLaska {
 
 int quitCallback(void *app, SDL_Event *event) {
   if (event->type == SDL_EventType::SDL_QUIT) {
-    DEBUG_OUT("exit sdl event");
     reinterpret_cast<ApplicationSdl *>(app)->exit(EXIT_SUCCESS);
   }
   return {};
@@ -30,6 +29,14 @@ ApplicationSdl::ApplicationSdl()
     , windowFactory_{std::make_unique<WindowSdlFactory>()}
     , eventFactory_{std::make_unique<EventSdlFactory>()} {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS)) {
+    throw std::runtime_error{SDL_GetError()};
+  }
+
+  // set OpenGL attributes
+  if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3) < 0 ||
+      SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0) < 0 ||
+      SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+                          SDL_GL_CONTEXT_PROFILE_CORE)) {
     throw std::runtime_error{SDL_GetError()};
   }
 }

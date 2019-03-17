@@ -11,9 +11,9 @@
 namespace KaliLaska {
 class KALILASKA_EXPORT MouseWheelEvent final : public Event {
 public:
-  MouseWheelEvent(Mouse::Scale scale);
+  explicit MouseWheelEvent(Mouse::Scale scale);
 
-  MouseWheelEvent(std::unique_ptr<MouseWheelEventImp> imp);
+  explicit MouseWheelEvent(std::unique_ptr<MouseWheelEventImp> imp);
 
   Point        position() const;
   Mouse::Scale scale() const;

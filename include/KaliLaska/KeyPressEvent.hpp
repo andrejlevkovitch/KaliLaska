@@ -16,7 +16,7 @@ public:
                 Keyboard::Modifyers mode,
                 bool                isRepeat = false);
 
-  KeyPressEvent(std::unique_ptr<KeyPressEventImp> imp);
+  explicit KeyPressEvent(std::unique_ptr<KeyPressEventImp> imp);
 
   /**\brief bit mask of currently pressed modifyers
    */

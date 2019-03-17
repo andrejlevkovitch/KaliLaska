@@ -12,8 +12,8 @@ namespace KaliLaska {
  */
 class KALILASKA_EXPORT ShowEvent final : public Event {
 public:
-  ShowEvent(ShowAction action);
-  ShowEvent(std::unique_ptr<ShowEventImp> imp);
+  explicit ShowEvent(ShowAction action);
+  explicit ShowEvent(std::unique_ptr<ShowEventImp> imp);
 
   ShowAction action() const;
 

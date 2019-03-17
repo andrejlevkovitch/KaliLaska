@@ -14,7 +14,7 @@ public:
    */
   KeyReleaseEvent(Keyboard::Key key, Keyboard::Modifyers modifyers);
 
-  KeyReleaseEvent(std::unique_ptr<KeyReleaseEventImp> event);
+  explicit KeyReleaseEvent(std::unique_ptr<KeyReleaseEventImp> event);
 
   /**\brief return currently pressed modifyers
    */

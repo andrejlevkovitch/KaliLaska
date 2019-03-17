@@ -10,8 +10,11 @@
 namespace KaliLaska {
 class KALILASKA_EXPORT CloseEvent final : public Event {
 public:
+  /**\brief konsturctor for user custom events
+   * \warning after window get this event you can not call the window
+   */
   CloseEvent();
-  CloseEvent(std::unique_ptr<CloseEventImp> imp);
+  explicit CloseEvent(std::unique_ptr<CloseEventImp> imp);
 
 private:
   std::unique_ptr<CloseEventImp> imp_;

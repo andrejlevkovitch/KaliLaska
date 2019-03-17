@@ -8,6 +8,7 @@
 
 namespace KaliLaska {
 class CloseEvent;
+class Color;
 
 /**\brief abstract base class which provides interface for winodw.
  * \throws constructors of inheritor can throw runtime_error if window can not

@@ -15,7 +15,7 @@ class KALILASKA_EXPORT MousePressEvent final : public Event {
 public:
   MousePressEvent(Mouse::Button button, Mouse::Click click, Point pos);
 
-  MousePressEvent(std::unique_ptr<MousePressEventImp> imp);
+  explicit MousePressEvent(std::unique_ptr<MousePressEventImp> imp);
 
   /**\return pressed button (currently)
    */

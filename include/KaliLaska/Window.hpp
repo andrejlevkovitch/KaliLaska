@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "KaliLaska/Color.hpp"
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
 #include "kalilaska_export.h"
@@ -30,6 +31,7 @@ class KeyReleaseEvent;
 
 /**\warning if you close last window Application break the cikle and program
  * finish
+ * \brief uses OpenGL for rendering
  */
 class KALILASKA_EXPORT Window {
   friend EventNotifyer;

@@ -13,7 +13,7 @@ class KALILASKA_EXPORT MouseMoveEvent final : public Event {
 public:
   MouseMoveEvent(Mouse::Buttons buttons, Point currentPos, Point previousPos);
 
-  MouseMoveEvent(std::unique_ptr<MouseMoveEventImp> imp);
+  explicit MouseMoveEvent(std::unique_ptr<MouseMoveEventImp> imp);
   ~MouseMoveEvent() override = default;
 
   Mouse::Buttons buttons() const;

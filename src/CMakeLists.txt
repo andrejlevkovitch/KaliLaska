@@ -5,6 +5,7 @@ include(GenerateExportHeader)
 set(KaliLaska_SRC
   core/Point.cpp
   core/Size.cpp
+  core/Color.cpp
 
 
   application/Application.cpp

@@ -15,7 +15,7 @@ class KALILASKA_EXPORT MouseReleaseEvent final : public Event {
 public:
   MouseReleaseEvent(Mouse::Button button, Point clickPos);
 
-  MouseReleaseEvent(std::unique_ptr<MouseReleaseEventImp> imp);
+  explicit MouseReleaseEvent(std::unique_ptr<MouseReleaseEventImp> imp);
 
   /**\return released button (only one)
    */

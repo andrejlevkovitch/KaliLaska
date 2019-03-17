@@ -1,13 +1,12 @@
 // WindowSdl.cpp
 
 #include "WindowSdl.hpp"
+#include "KaliLaska/Color.hpp"
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
 #include "debug.hpp"
-#include <GL/gl.h>
 #include <SDL2/SDL.h>
-
-#define WIN_IMP "implementation"
+#include <SDL2/SDL_opengl.h>
 
 namespace KaliLaska {
 WindowSdl::WindowSdl()
@@ -27,8 +26,8 @@ WindowSdl::WindowSdl(const char *title, Point pos, Size size)
 }
 
 WindowSdl::~WindowSdl() {
-  SDL_DestroyWindow(window_);
   SDL_GL_DeleteContext(glContext_);
+  SDL_DestroyWindow(window_);
 }
 
 uint32_t WindowSdl::id() const {
@@ -108,12 +107,9 @@ bool WindowSdl::createWindow(const char *title, Point pos, Size size) {
 
 bool WindowSdl::createGLContext() {
   glContext_ = SDL_GL_CreateContext(window_);
-  if (!glContext_) {
-    throw std::runtime_error{SDL_GetError()};
-  }
   glClearColor(0, 0, 0, 1);
   glClear(GL_COLOR_BUFFER_BIT);
-  ::SDL_GL_SwapWindow(window_);
+  SDL_GL_SwapWindow(window_);
   return glContext_;
 }
 } // namespace KaliLaska
