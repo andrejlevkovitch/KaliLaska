@@ -22,7 +22,7 @@ public:
   std::unique_ptr<MouseFocusEventImp>
   createMouseFocusEventImp(Mouse::Focus focus) const override;
 
-  std::unique_ptr<MousePressEventImp> createMousePressImp(
+  std::unique_ptr<MousePressEventImp> createMousePressEventImp(
       Mouse::Button button, Mouse::Click click, Point clickPos) const override;
 
   std::unique_ptr<MouseReleaseEventImp>

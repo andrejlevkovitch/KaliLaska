@@ -30,6 +30,14 @@ void Point::setY(int y) {
   y_ = y;
 }
 
+bool Point::operator!=(const Point &rhs) const {
+  return (x_ != rhs.x_ || y_ != rhs.y_);
+}
+
+bool Point::operator==(const Point &rhs) const {
+  return (x_ == rhs.x_ && y_ == rhs.y_);
+}
+
 std::ostream &operator<<(std::ostream &stream, const Point &point) {
   stream << "x " << point.x() << ", y " << point.y();
   return stream;

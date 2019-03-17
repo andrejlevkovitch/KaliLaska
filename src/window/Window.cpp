@@ -58,6 +58,10 @@ Size Window::size() const {
   return imp_->size();
 }
 
+void Window::setSize(Size size) {
+  imp_->setSize(size);
+}
+
 Size Window::drawSize() const {
   return imp_->drawSize();
 }

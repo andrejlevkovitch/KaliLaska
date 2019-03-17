@@ -17,10 +17,14 @@ public:
   void setX(int x);
   void setY(int y);
 
+  bool operator!=(const Point &rhs) const;
+  bool operator==(const Point &rhs) const;
+
 private:
   int x_;
   int y_;
 };
 
-std::ostream &operator<<(std::ostream &stream, const Point &point);
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &stream,
+                                          const Point & point);
 } // namespace KaliLaska

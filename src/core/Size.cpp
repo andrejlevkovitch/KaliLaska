@@ -30,6 +30,14 @@ void Size::setHeight(int height) {
   height_ = height;
 }
 
+bool Size::operator!=(const Size &rhs) const {
+  return (width_ != rhs.width_ || height_ != rhs.height_);
+}
+
+bool Size::operator==(const Size &rhs) const {
+  return (width_ == rhs.width_ && height_ == rhs.height_);
+}
+
 std::ostream &operator<<(std::ostream &stream, const Size &size) {
   stream << "width " << size.width() << ", height " << size.height();
   return stream;

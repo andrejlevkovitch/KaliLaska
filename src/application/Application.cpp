@@ -1,8 +1,8 @@
 // Application.cpp
 
 #include "KaliLaska/Application.hpp"
+#include "EventNotifyer.hpp"
 #include "KaliLaska/Event.hpp"
-#include "KaliLaska/EventNotifyer.hpp"
 #include "KaliLaska/imp/ApplicationImp.hpp"
 #include "sdl/ApplicationSdl.hpp"
 #include <stdexcept>
@@ -23,7 +23,7 @@ Application::Application(int argc, char *argv[])
   }
   try {
     // TODO maybe we can use factory or somthing else?
-    imp_ = new ApplicationSdl{};
+    imp_ = std::make_unique<ApplicationSdl>();
     parseArguments(argc, argv);
   } catch (std::runtime_error &) {
     throw;
@@ -31,7 +31,6 @@ Application::Application(int argc, char *argv[])
 }
 
 Application::~Application() {
-  delete imp_;
 }
 
 Application *Application::instance() {
@@ -81,7 +80,11 @@ EventImpFactory *Application::eventFactory() {
   return nullptr;
 }
 
-void Application::notify(Window *window, std::unique_ptr<Event> event) const {
+void Application::notify(Window *window, std::unique_ptr<Event> event) {
   EventNotifyer::notify(window, std::move(event));
+}
+
+void Application::processEvents() {
+  imp_->processEvents();
 }
 } // namespace KaliLaska

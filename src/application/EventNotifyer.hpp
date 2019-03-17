@@ -9,8 +9,10 @@ namespace KaliLaska {
 class Window;
 class Event;
 
-class KALILASKA_EXPORT EventNotifyer {
+/**\brief main function of the class - call protected members of Window
+ */
+class EventNotifyer {
 public:
-  static void notify(Window *, std::unique_ptr<Event> event);
+  static void notify(Window *window, std::unique_ptr<Event> event);
 };
 } // namespace KaliLaska

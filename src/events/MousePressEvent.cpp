@@ -9,8 +9,8 @@ namespace KaliLaska {
 MousePressEvent::MousePressEvent(Mouse::Button button,
                                  Mouse::Click  click,
                                  Point         pos)
-    : Event{Type::MouseMoveEvent}
-    , imp_{Application::eventFactory()->createMousePressImp(
+    : Event{Type::MousePressEvent}
+    , imp_{Application::eventFactory()->createMousePressEventImp(
           button, click, pos)} {
 }
 

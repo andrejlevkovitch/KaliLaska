@@ -20,7 +20,7 @@ std::unique_ptr<CloseEventImp> EventSdlFactory::createCloseEventImp() const {
   return std::make_unique<CloseEventSdl>();
 }
 
-std::unique_ptr<MousePressEventImp> EventSdlFactory::createMousePressImp(
+std::unique_ptr<MousePressEventImp> EventSdlFactory::createMousePressEventImp(
     Mouse::Button button, Mouse::Click click, Point clickPos) const {
   return std::make_unique<MousePressEventSdl>(button, click, clickPos);
 }

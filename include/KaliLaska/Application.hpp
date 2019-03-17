@@ -46,14 +46,21 @@ public:
    */
   static EventImpFactory *eventFactory();
 
-  /**\brief send event to window
+  /**\brief send event to window. This event will be delivered momentally (in
+   * current iteration of the main cikle).
+   * \warning custom user event as MoveEvent or ResizeEvent will not change
+   * window. This events only notify about changing
    */
-  void notify(Window *, std::unique_ptr<Event> event) const;
+  static void notify(Window *, std::unique_ptr<Event> event);
+
+  /**\brief this method handle all queue of events and notify all objects
+   */
+  void processEvents();
 
 private:
   void parseArguments(int argc, char *argv[]);
 
 private:
-  ApplicationImp *imp_;
+  std::unique_ptr<ApplicationImp> imp_;
 };
 } // namespace KaliLaska

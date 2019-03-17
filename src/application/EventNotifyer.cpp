@@ -1,6 +1,6 @@
 // EventNotifyer.cpp
 
-#include "KaliLaska/EventNotifyer.hpp"
+#include "EventNotifyer.hpp"
 #include "KaliLaska/CloseEvent.hpp"
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"

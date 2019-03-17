@@ -46,7 +46,7 @@ public:
 
   //----------------------------------------------------------------------------
 
-  virtual std::unique_ptr<MousePressEventImp> createMousePressImp(
+  virtual std::unique_ptr<MousePressEventImp> createMousePressEventImp(
       Mouse::Button button, Mouse::Click click, Point clickPos) const = 0;
 
   virtual std::unique_ptr<MouseReleaseEventImp>

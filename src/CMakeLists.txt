@@ -3,10 +3,15 @@
 include(GenerateExportHeader)
 
 set(KaliLaska_SRC
-  application/Application.cpp
-
   core/Point.cpp
   core/Size.cpp
+
+
+  application/Application.cpp
+  application/EventNotifyer.cpp
+
+  application/sdl/ApplicationSdl.cpp
+
 
   events/Event.cpp
   events/CloseEvent.cpp
@@ -21,13 +26,8 @@ set(KaliLaska_SRC
   events/KeyboardFocusEvent.cpp
   events/KeyPressEvent.cpp
   events/KeyReleaseEvent.cpp
-  events/EventNotifyer.cpp
   events/KeyPrinter.cpp
 
-  window/Window.cpp
-
-
-  application/sdl/ApplicationSdl.cpp
 
   events/sdl/CloseEventSdl.cpp
   events/sdl/ShowEventSdl.cpp
@@ -44,6 +44,9 @@ set(KaliLaska_SRC
   events/sdl/SdlEvents.cpp
   events/sdl/EventConverterSdl.cpp
   events/sdl/EventSdlFactory.cpp
+
+
+  window/Window.cpp
 
   window/sdl/WindowSdl.cpp
   window/sdl/WindowSdlFactory.cpp

@@ -34,5 +34,7 @@ private:
 
   std::unique_ptr<WindowSdlFactory> windowFactory_;
   std::unique_ptr<EventImpFactory>  eventFactory_;
+
+  virtual void processEvents() override;
 };
 } // namespace KaliLaska

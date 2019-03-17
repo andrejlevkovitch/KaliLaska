@@ -25,5 +25,9 @@ public:
 
   virtual WindowImpFactory *windowFactory() const = 0;
   virtual EventImpFactory * eventFactory() const  = 0;
+
+  /**\brief handle quieue of events
+   */
+  virtual void processEvents() = 0;
 };
 } // namespace KaliLaska

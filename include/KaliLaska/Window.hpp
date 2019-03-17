@@ -28,6 +28,9 @@ class KeyboardFocusEvent;
 class KeyPressEvent;
 class KeyReleaseEvent;
 
+/**\warning if you close last window Application break the cikle and program
+ * finish
+ */
 class KALILASKA_EXPORT Window {
   friend EventNotifyer;
 
@@ -62,6 +65,8 @@ public:
 
   void setSize(Size size);
 
+  /**\return title of window. If title not set return void string
+   */
   const char *title() const;
 
   void setTitle(const char *title);

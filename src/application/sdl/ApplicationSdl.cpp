@@ -1,7 +1,7 @@
 // ApplicationSdl.cpp
 
 #include "ApplicationSdl.hpp"
-#include "KaliLaska/EventNotifyer.hpp"
+#include "application/EventNotifyer.hpp"
 #include "debug.hpp"
 #include "events/sdl/EventConverterSdl.hpp"
 #include "events/sdl/EventSdlFactory.hpp"
@@ -11,7 +11,8 @@
 #include <stdexcept>
 #include <thread>
 
-#define WAIT_TIMEOUT 300
+// TODO I think this value have to be set outside
+#define WAIT_TIMEOUT 30
 
 namespace KaliLaska {
 
@@ -65,5 +66,14 @@ WindowImpFactory *ApplicationSdl::windowFactory() const {
 
 EventImpFactory *ApplicationSdl::eventFactory() const {
   return eventFactory_.get();
+}
+
+void ApplicationSdl::processEvents() {
+  SDL_Event sdlEvent;
+  while (SDL_PollEvent(&sdlEvent)) {
+    auto [window, event] =
+        EventConverterSdl::convert(sdlEvent, *windowFactory_);
+    EventNotifyer::notify(window, std::move(event));
+  }
 }
 } // namespace KaliLaska
