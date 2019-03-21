@@ -7,8 +7,6 @@ if(NOT EXISTS Box2D)
   execute_process(COMMAND ${GIT_EXECUTABLE} submodule update)
 endif()
 
-find_package(OpenGL REQUIRED)
-
 # for include picopng
 # TODO I not shore it work or not
 include_directories(picopng)

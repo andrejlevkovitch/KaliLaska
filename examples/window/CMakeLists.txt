@@ -2,8 +2,6 @@
 
 project(window)
 
-find_package(gl3w REQUIRED)
-
 set(WINDOW_SRC
   MyWindow.cpp
   main.cpp
