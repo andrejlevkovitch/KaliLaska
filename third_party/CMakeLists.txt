@@ -1,7 +1,7 @@
 # cmake for third_party
 
 # init and update submodules if they not init at the moment
-if(NOT EXISTS Box2D OR NOT EXISTS gl3w)
+if(NOT EXISTS Box2D OR NOT EXISTS gl3w OR NOT EXISTS Catch2)
   find_package(Git REQUIRED)
   execute_process(COMMAND ${GIT_EXECUTABLE} submodule init)
   execute_process(COMMAND ${GIT_EXECUTABLE} submodule update)
@@ -36,6 +36,7 @@ set(imgui_SRC
 add_library(imgui ${imgui_SRC})
 target_include_directories(imgui PUBLIC "imgui")
 target_link_libraries(imgui PRIVATE SDL2::SDL2 gl3w)
+add_dependencies(imgui gl3w)
 
 add_subdirectory(Box2D)
 add_subdirectory(Catch2)
