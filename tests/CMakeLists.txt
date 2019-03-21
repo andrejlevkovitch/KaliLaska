@@ -5,13 +5,14 @@ cmake_minimum_required(VERSION 3.10)
 
 project(tests)
 
-find_package(Qt5 COMPONENTS Test)
+find_package(gl3w REQUIRED)
 
 # every cpp file - one test
 set(TEST_LIST
   src/test_Application.cpp
   src/test_Window.cpp
   src/test_CustomEvents.cpp
+  src/test_openGL.cpp
   )
 
 list(LENGTH TEST_LIST TEST_CAPACITY)
@@ -39,6 +40,7 @@ if(TEST_CAPACITY)
       PRIVATE
         KaliLaska::KaliLaska
         Catch2::Catch2
+        gl3w
       )
     target_compile_features(${CUR_TEST}
       PRIVATE
