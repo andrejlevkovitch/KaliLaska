@@ -5,8 +5,6 @@ cmake_minimum_required(VERSION 3.10)
 
 project(tests)
 
-find_package(gl3w REQUIRED)
-
 # every cpp file - one test
 set(TEST_LIST
   src/test_Application.cpp

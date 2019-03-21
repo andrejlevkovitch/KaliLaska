@@ -2,8 +2,6 @@
 
 project(windowGL)
 
-find_package(gl3w REQUIRED)
-
 set(WINDOW_SRC
   WindowGL.cpp
   main.cpp

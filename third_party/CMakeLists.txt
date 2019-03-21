@@ -1,13 +1,13 @@
 # cmake for third_party
 
 # init and update submodules if they not init at the moment
-if(NOT EXISTS Box2D)
+if(NOT EXISTS Box2D OR NOT EXISTS gl3w)
   find_package(Git REQUIRED)
   execute_process(COMMAND ${GIT_EXECUTABLE} submodule init)
   execute_process(COMMAND ${GIT_EXECUTABLE} submodule update)
 endif()
 
-find_package(OpenGL REQUIRED)
+add_subdirectory(gl3w)
 
 # for include picopng
 # TODO I not shore it work or not

@@ -61,7 +61,7 @@ target_compile_features(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
   PRIVATE
     SDL2::SDL2
-    OpenGL::GL
+    gl3w
   )
 target_include_directories(${PROJECT_NAME}
   PRIVATE
