@@ -6,6 +6,7 @@
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
 #include "kalilaska_export.h"
+#include <chrono>
 #include <memory>
 
 namespace KaliLaska {
@@ -93,8 +94,28 @@ public:
    */
   void close();
 
+  /**\brief this method call by Application every cickle iteration. By default
+   * does nothing
+   */
+  virtual void update();
+
+protected:
+  /**\brief prepare window for rendering. Because uses openGL for rendering
+   * we first have to change OpenGL context, and only after draw somthing.
+   *
+   * \warning be carefull with use with threads! All rendering have to be
+   * between makeCurrent and swapWindow methods
+   */
+  void makeCurrent();
+
+  /**\brief Window uses openGL with double bufferization for rendering, so for
+   * display some changes you need swap openGL buffers by the method
+   */
+  void swapWindow();
+
 protected:
   /**\warning after call this method you can not call the object
+   *
    * \brief call before window will be closed. If you reimplemend this method
    * you have to call Window::closeEvent, other way window will not be closed!
    */

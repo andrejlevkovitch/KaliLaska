@@ -1,11 +1,11 @@
 # cmake for window example
 
-project(window)
+project(windowGL)
 
 find_package(gl3w REQUIRED)
 
 set(WINDOW_SRC
-  MyWindow.cpp
+  WindowGL.cpp
   main.cpp
   )
 
@@ -14,4 +14,5 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 target_link_libraries(${PROJECT_NAME}
   PRIVATE
     KaliLaska::KaliLaska
+    gl3w
   )

@@ -99,6 +99,10 @@ bool WindowSdl::isResizable() const {
   return ::SDL_GetWindowFlags(window_) & SDL_WINDOW_RESIZABLE;
 }
 
+void WindowSdl::swapWindow() {
+  SDL_GL_SwapWindow(window_);
+}
+
 bool WindowSdl::createWindow(const char *title, Point pos, Size size) {
   window_ = SDL_CreateWindow(
       title, pos.x(), pos.y(), size.width(), size.height(), SDL_WINDOW_OPENGL);
@@ -109,7 +113,11 @@ bool WindowSdl::createGLContext() {
   glContext_ = SDL_GL_CreateContext(window_);
   glClearColor(0, 0, 0, 1);
   glClear(GL_COLOR_BUFFER_BIT);
-  SDL_GL_SwapWindow(window_);
+  swapWindow();
   return glContext_;
+}
+
+void WindowSdl::makeCurrent() {
+  SDL_GL_MakeCurrent(window_, glContext_);
 }
 } // namespace KaliLaska

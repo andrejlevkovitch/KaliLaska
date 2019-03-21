@@ -106,6 +106,14 @@ void Window::close() {
   this->closeEvent(std::make_unique<CloseEvent>());
 }
 
+void Window::swapWindow() {
+  imp_->swapWindow();
+}
+
+void Window::makeCurrent() {
+  imp_->makeCurrent();
+}
+
 void Window::closeEvent(std::unique_ptr<CloseEvent> event) {
   UNUSED(event);
   // first we have to unregister window in factory
@@ -160,5 +168,8 @@ void Window::userEvent(std::unique_ptr<Event> event) {
 
 void Window::moveEvent(std::unique_ptr<MoveEvent> event) {
   UNUSED(event);
+}
+
+void Window::update() {
 }
 } // namespace KaliLaska

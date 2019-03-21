@@ -3,6 +3,7 @@
 #pragma once
 
 #include "KaliLaska/imp/WindowImpFactory.hpp"
+#include <list>
 #include <map>
 
 namespace KaliLaska {
@@ -24,6 +25,8 @@ public:
    * stored - does nothing
    */
   void resetWindow(Window *window) override;
+
+  std::list<Window *> allWindows();
 
 private:
   std::map<uint32_t, Window *> windows_;

@@ -8,6 +8,7 @@ class MyWindow : public KaliLaska::Window {
 public:
   using Window::Window;
 
+protected:
   void closeEvent(std::unique_ptr<KaliLaska::CloseEvent> event) override;
   void showEvent(std::unique_ptr<KaliLaska::ShowEvent> event) override;
   void resizeEvent(std::unique_ptr<KaliLaska::ResizeEvent> event) override;

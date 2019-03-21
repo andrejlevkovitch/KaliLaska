@@ -13,6 +13,16 @@ int main(int argc, char *argv[]) {
 
 SCENARIO("Test Application", "[Application]") {
   GIVEN("Application") {
+    REQUIRE(KaliLaska::Application::instance());
+
+    THEN("Check windowFactory") {
+      CHECK(KaliLaska::Application::windowFactory());
+    }
+
+    THEN("Check eventFactory") {
+      CHECK(KaliLaska::Application::eventFactory());
+    }
+
     WHEN("We get application") {
       THEN("Check Window creation") {
         std::unique_ptr<KaliLaska::Window> window;
@@ -22,17 +32,12 @@ SCENARIO("Test Application", "[Application]") {
       }
     }
 
-    WHEN("We create one window") {
-      KaliLaska::Window window;
-      THEN("Process events for Application") {
-        KaliLaska::Application::instance()->processEvents();
-
-        WHEN("We close last window") {
-          window.close();
-          KaliLaska::Application::instance()->processEvents();
-
-          // TODO
-        }
+    WHEN("We set new time interval") {
+      std::chrono::milliseconds newIterTime{682};
+      KaliLaska::Application::instance()->setIterationTimeInterval(newIterTime);
+      THEN("Check time interfal") {
+        CHECK(KaliLaska::Application::instance()->iterationTimeInterval() ==
+              newIterTime);
       }
     }
   }

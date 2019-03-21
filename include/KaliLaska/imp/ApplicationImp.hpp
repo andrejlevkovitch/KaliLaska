@@ -3,6 +3,7 @@
 #pragma once
 
 #include "kalilaska_export.h"
+#include <chrono>
 
 namespace KaliLaska {
 class WindowImpFactory;
@@ -26,8 +27,8 @@ public:
   virtual WindowImpFactory *windowFactory() const = 0;
   virtual EventImpFactory * eventFactory() const  = 0;
 
-  /**\brief handle quieue of events
-   */
-  virtual void processEvents() = 0;
+  virtual void setIterationTimeInterval(std::chrono::milliseconds time) = 0;
+
+  virtual std::chrono::milliseconds iterationTimeInterval() const = 0;
 };
 } // namespace KaliLaska

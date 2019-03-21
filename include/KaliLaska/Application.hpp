@@ -3,6 +3,7 @@
 #pragma once
 
 #include "kalilaska_export.h"
+#include <chrono>
 #include <memory>
 
 namespace KaliLaska {
@@ -51,11 +52,18 @@ public:
    * \warning custom user event as MoveEvent or ResizeEvent will not change
    * window. This events only notify about changing
    */
-  static void notify(Window *, std::unique_ptr<Event> event);
+  static void notify(Window *window, std::unique_ptr<Event> event);
 
-  /**\brief this method handle all queue of events and notify all objects
+  /**\brief set duration time of every iteration of cickle. By default - 50
+   * milliseconds
+   *
+   * \param time duration of iteration in milliseconds
    */
-  void processEvents();
+  void setIterationTimeInterval(std::chrono::milliseconds time);
+
+  /**\return current time interval of main cickle
+   */
+  std::chrono::milliseconds iterationTimeInterval() const;
 
 private:
   void parseArguments(int argc, char *argv[]);

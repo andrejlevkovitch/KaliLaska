@@ -5,6 +5,7 @@
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/imp/ApplicationImp.hpp"
 #include "sdl/ApplicationSdl.hpp"
+#include <chrono>
 #include <stdexcept>
 #include <string.h>
 
@@ -84,7 +85,11 @@ void Application::notify(Window *window, std::unique_ptr<Event> event) {
   EventNotifyer::notify(window, std::move(event));
 }
 
-void Application::processEvents() {
-  imp_->processEvents();
+void Application::setIterationTimeInterval(std::chrono::milliseconds time) {
+  imp_->setIterationTimeInterval(time);
+}
+
+std::chrono::milliseconds Application::iterationTimeInterval() const {
+  return imp_->iterationTimeInterval();
 }
 } // namespace KaliLaska

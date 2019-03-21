@@ -66,4 +66,14 @@ void WindowSdlFactory::resetWindow(Window *window) {
     windows_.erase(found);
   }
 }
+
+std::list<Window *> WindowSdlFactory::allWindows() {
+  std::list<Window *> retval;
+  std::transform(
+      windows_.begin(),
+      windows_.end(),
+      std::back_inserter(retval),
+      [](std::pair<uint32_t, Window *> element) { return element.second; });
+  return retval;
+}
 } // namespace KaliLaska

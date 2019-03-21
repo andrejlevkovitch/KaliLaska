@@ -48,6 +48,10 @@ public:
   void setResizable(bool value) override;
   bool isResizable() const override;
 
+  void swapWindow() override;
+
+  void makeCurrent() override;
+
 protected:
   /**\return false when can not create window
    * \brief call in constructor
