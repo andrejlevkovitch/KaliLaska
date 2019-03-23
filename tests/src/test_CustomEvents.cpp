@@ -24,7 +24,9 @@ public:
 SCENARIO("Test custom events", "[Event]") {
   // initialize window
   GIVEN("Window") {
-    TestWindow window;
+    TestWindow *created{};
+    REQUIRE_NOTHROW(created = new TestWindow{});
+    TestWindow &window = *created;
     WHEN("Notify by CloseEvent") {
       Application::notify(&window, std::make_unique<CloseEvent>());
       THEN("Chek receive") { CHECK(window.closeEvent_ != nullptr); }

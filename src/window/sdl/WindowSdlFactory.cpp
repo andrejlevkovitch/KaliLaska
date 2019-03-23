@@ -12,7 +12,7 @@ std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &window) {
     windows_.insert(std::pair{id, &window});
     return retval;
   } catch (const std::runtime_error &) {
-    return nullptr;
+    throw;
   }
 }
 
@@ -25,7 +25,7 @@ std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &    window,
     windows_.insert(std::pair{id, &window});
     return retval;
   } catch (const std::runtime_error &) {
-    return nullptr;
+    throw;
   }
 }
 
@@ -39,7 +39,7 @@ std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &    window,
     windows_.insert(std::pair{id, &window});
     return retval;
   } catch (const std::runtime_error &) {
-    return nullptr;
+    throw;
   }
 }
 

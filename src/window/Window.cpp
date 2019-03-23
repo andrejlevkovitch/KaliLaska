@@ -8,36 +8,46 @@
 #include "imp/WindowImpFactory.hpp"
 #include <stdexcept>
 
-#define WINDOW_CREATE_ERROR "Window can not be created"
+#define INVALID_FACTORY                                                        \
+  "Window factory is invalid. Maybe Application is not initialized?"
 
 namespace KaliLaska {
 Window::Window()
     : imp_{nullptr} {
-  if (auto factory = Application::windowFactory()) {
-    imp_ = factory->createWindowImp(*this);
-  }
-  if (imp_ == nullptr) {
-    throw std::runtime_error{WINDOW_CREATE_ERROR};
+  try {
+    if (auto factory = Application::windowFactory()) {
+      imp_ = factory->createWindowImp(*this);
+    } else {
+      throw std::runtime_error{INVALID_FACTORY};
+    }
+  } catch (std::runtime_error &) {
+    throw;
   }
 }
 
 Window::Window(const char *title, Size size)
     : imp_{nullptr} {
-  if (auto factory = Application::windowFactory()) {
-    imp_ = factory->createWindowImp(*this, title, size);
-  }
-  if (imp_ == nullptr) {
-    throw std::runtime_error{WINDOW_CREATE_ERROR};
+  try {
+    if (auto factory = Application::windowFactory()) {
+      imp_ = factory->createWindowImp(*this, title, size);
+    } else {
+      throw std::runtime_error{INVALID_FACTORY};
+    }
+  } catch (std::runtime_error &) {
+    throw;
   }
 }
 
 Window::Window(const char *title, Point pos, Size size)
     : imp_{nullptr} {
-  if (auto factory = Application::windowFactory()) {
-    imp_ = factory->createWindowImp(*this, title, pos, size);
-  }
-  if (imp_ == nullptr) {
-    throw std::runtime_error{WINDOW_CREATE_ERROR};
+  try {
+    if (auto factory = Application::windowFactory()) {
+      imp_ = factory->createWindowImp(*this, title, pos, size);
+    } else {
+      throw std::runtime_error{INVALID_FACTORY};
+    }
+  } catch (std::runtime_error &) {
+    throw;
   }
 }
 

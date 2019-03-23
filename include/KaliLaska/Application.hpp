@@ -40,7 +40,7 @@ public:
    */
   static void exit(int code);
 
-  /**\return abstract factory, which create implementaion for window
+  /**\return abstract factory, which create implementaion for window.
    */
   static WindowImpFactory *windowFactory();
   /**\return abstract factory, which create custom user events

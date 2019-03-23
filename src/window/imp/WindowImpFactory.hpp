@@ -15,14 +15,14 @@ public:
   virtual ~WindowImpFactory() = default;
 
   /**\param window object, for which create implementation
-   * \return if window can not be created - have to return nullptr
+   * \throw exceptions from WindowImp at creation time
    */
   virtual std::unique_ptr<WindowImp> createWindowImp(Window &window) = 0;
-  /**\return if window can not be created - have to return nullptr
+  /**\throw exceptions from WindowImp at creation time
    */
   virtual std::unique_ptr<WindowImp>
   createWindowImp(Window &window, const char *title, Size size) = 0;
-  /**\return if window can not be created - have to return nullptr
+  /**\throw exceptions from WindowImp at creation time
    */
   virtual std::unique_ptr<WindowImp> createWindowImp(Window &    window,
                                                      const char *title,
