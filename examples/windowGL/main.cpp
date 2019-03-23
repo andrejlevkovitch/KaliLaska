@@ -14,8 +14,8 @@ int main(int argc, char *argv[]) {
 
   KaliLaska::Application app{argc, argv};
 
-  WindowGL w{"temp", KaliLaska::Size{600, 600}};
-  WindowGL w2{"2", KaliLaska::Size{300, 200}};
+  WindowGL w{"big screen with triangles", KaliLaska::Size{600, 600}};
+  WindowGL w2{"mini screen with triangles", KaliLaska::Size{300, 200}};
   w2.setResizable(true);
 
   int retval = KaliLaska::Application::exec();

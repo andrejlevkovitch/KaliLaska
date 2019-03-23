@@ -62,13 +62,15 @@ target_compile_features(${PROJECT_NAME}
     cxx_std_17
   )
 target_link_libraries(${PROJECT_NAME}
-  PRIVATE
+  INTERFACE
     SDL2::SDL2
-    OpenGL::GL
+    gl3w
   )
 target_include_directories(${PROJECT_NAME}
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
+    $<TARGET_PROPERTY:SDL2::SDL2,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:gl3w,INTERFACE_INCLUDE_DIRECTORIES>
   PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/../include
