@@ -25,6 +25,7 @@
 #include "MoveEventSdl.hpp"
 #include "ResizeEventSdl.hpp"
 #include "ShowEventSdl.hpp"
+#include "events/EventFactory.hpp"
 #include "window/sdl/WindowSdlFactory.hpp"
 
 namespace KaliLaska {
@@ -55,26 +56,23 @@ std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertMouseMoveEvent(const SDL_MouseMotionEvent &event,
                                          const WindowSdlFactory &    factory) {
   return {factory.getWindowFromId(event.windowID),
-          std::make_unique<MouseMoveEvent>(
-              std::make_unique<MouseMoveEventSdl>(event))};
+          EventFactory::event(std::make_unique<MouseMoveEventSdl>(event))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertMousePressEvent(const SDL_MouseButtonEvent &event,
                                           const WindowSdlFactory &    factory) {
-  return {
-      factory.getWindowFromId(event.windowID),
-      std::make_unique<MousePressEvent>(std::make_unique<MousePressEventSdl>(
-          event, SDL_GetMouseState(nullptr, nullptr)))};
+  return {factory.getWindowFromId(event.windowID),
+          EventFactory::event(std::make_unique<MousePressEventSdl>(
+              event, SDL_GetMouseState(nullptr, nullptr)))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertMouseReleaseEvent(const SDL_MouseButtonEvent &event,
                                             const WindowSdlFactory &factory) {
   return {factory.getWindowFromId(event.windowID),
-          std::make_unique<MouseReleaseEvent>(
-              std::make_unique<MouseReleaseEventSdl>(
-                  event, SDL_GetMouseState(nullptr, nullptr)))};
+          EventFactory::event(std::make_unique<MouseReleaseEventSdl>(
+              event, SDL_GetMouseState(nullptr, nullptr)))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
@@ -83,10 +81,9 @@ EventConverterSdl::convertMouseWheelEvent(const SDL_MouseWheelEvent &event,
   int x{};
   int y{};
   SDL_GetMouseState(&x, &y);
-  return {
-      factory.getWindowFromId(event.windowID),
-      std::make_unique<MouseWheelEvent>(std::make_unique<MouseWheelEventSdl>(
-          event, SDL_GetMouseState(&x, &y), Point{x, y}))};
+  return {factory.getWindowFromId(event.windowID),
+          EventFactory::event(std::make_unique<MouseWheelEventSdl>(
+              event, SDL_GetMouseState(&x, &y), Point{x, y}))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
@@ -117,60 +114,55 @@ std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertCloseEvent(const SDL_WindowEvent & event,
                                      const WindowSdlFactory &factory) {
   return {factory.getWindowFromId(event.windowID),
-          std::make_unique<CloseEvent>(std::make_unique<CloseEventSdl>(event))};
+          EventFactory::event(std::make_unique<CloseEventSdl>(event))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertShowEvent(const SDL_WindowEvent & event,
                                     const WindowSdlFactory &factory) {
   return {factory.getWindowFromId(event.windowID),
-          std::make_unique<ShowEvent>(std::make_unique<ShowEventSdl>(event))};
+          EventFactory::event(std::make_unique<ShowEventSdl>(event))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertMouseFocusEvent(const SDL_WindowEvent & event,
                                           const WindowSdlFactory &factory) {
   return {factory.getWindowFromId(event.windowID),
-          std::make_unique<MouseFocusEvent>(
-              std::make_unique<MouseFocusEventSdl>(event))};
+          EventFactory::event(std::make_unique<MouseFocusEventSdl>(event))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertResizeEvent(const SDL_WindowEvent & event,
                                       const WindowSdlFactory &factory) {
-  return {
-      factory.getWindowFromId(event.windowID),
-      std::make_unique<ResizeEvent>(std::make_unique<ResizeEventSdl>(event))};
+  return {factory.getWindowFromId(event.windowID),
+          EventFactory::event(std::make_unique<ResizeEventSdl>(event))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertKeyboardFocusEvent(const SDL_WindowEvent & event,
                                              const WindowSdlFactory &factory) {
   return {factory.getWindowFromId(event.windowID),
-          std::make_unique<KeyboardFocusEvent>(
-              std::make_unique<KeyboardFocusEventSdl>(event))};
+          EventFactory::event(std::make_unique<KeyboardFocusEventSdl>(event))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertKeyPressEvent(const SDL_KeyboardEvent &event,
                                         const WindowSdlFactory & factory) {
   return {factory.getWindowFromId(event.windowID),
-          std::make_unique<KeyPressEvent>(
-              std::make_unique<KeyPressEventSdl>(event))};
+          EventFactory::event(std::make_unique<KeyPressEventSdl>(event))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertKeyReleaseEvent(const SDL_KeyboardEvent &event,
                                           const WindowSdlFactory & factory) {
   return {factory.getWindowFromId(event.windowID),
-          std::make_unique<KeyReleaseEvent>(
-              std::make_unique<KeyReleaseEventSdl>(event))};
+          EventFactory::event(std::make_unique<KeyReleaseEventSdl>(event))};
 }
 
 std::pair<Window *, std::unique_ptr<Event>>
 EventConverterSdl::convertMoveEvent(const SDL_WindowEvent & event,
                                     const WindowSdlFactory &factory) {
   return {factory.getWindowFromId(event.windowID),
-          std::make_unique<MoveEvent>(std::make_unique<MoveEventSdl>(event))};
+          EventFactory::event(std::make_unique<MoveEventSdl>(event))};
 }
 } // namespace KaliLaska

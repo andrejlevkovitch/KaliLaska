@@ -3,9 +3,9 @@
 #include "KaliLaska/Window.hpp"
 #include "KaliLaska/Application.hpp"
 #include "KaliLaska/CloseEvent.hpp"
-#include "KaliLaska/imp/WindowImp.hpp"
-#include "KaliLaska/imp/WindowImpFactory.hpp"
 #include "debug.hpp"
+#include "imp/WindowImp.hpp"
+#include "imp/WindowImpFactory.hpp"
 #include <stdexcept>
 
 #define WINDOW_CREATE_ERROR "Window can not be created"

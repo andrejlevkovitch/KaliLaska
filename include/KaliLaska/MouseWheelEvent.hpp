@@ -4,19 +4,28 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
-#include "KaliLaska/imp/MouseWheelEventImp.hpp"
 #include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
+class MouseWheelEventImp;
+class EventFactory;
+
+/**\brief generates after change wheel state above window
+ */
 class KALILASKA_EXPORT MouseWheelEvent final : public Event {
+  friend EventFactory;
+
 public:
   explicit MouseWheelEvent(Mouse::Scale scale);
 
-  explicit MouseWheelEvent(std::unique_ptr<MouseWheelEventImp> imp);
+  ~MouseWheelEvent() override;
 
   Point        position() const;
   Mouse::Scale scale() const;
+
+private:
+  explicit MouseWheelEvent(std::unique_ptr<MouseWheelEventImp> imp);
 
 private:
   std::unique_ptr<MouseWheelEventImp> imp_;

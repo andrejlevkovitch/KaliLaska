@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "KaliLaska/imp/MouseMoveEventImp.hpp"
+#include "events/imp/MouseMoveEventImp.hpp"
 #include <SDL2/SDL.h>
 
 namespace KaliLaska {

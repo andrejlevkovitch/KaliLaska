@@ -4,18 +4,22 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
-#include "KaliLaska/imp/MousePressEventImp.hpp"
 #include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
 class MousePressEventImp;
+class EventFactory;
 
+/**\brief generates after press on window screen
+ */
 class KALILASKA_EXPORT MousePressEvent final : public Event {
+  friend EventFactory;
+
 public:
   MousePressEvent(Mouse::Button button, Mouse::Click click, Point pos);
 
-  explicit MousePressEvent(std::unique_ptr<MousePressEventImp> imp);
+  ~MousePressEvent() override;
 
   /**\return pressed button (currently)
    */
@@ -32,6 +36,9 @@ public:
   /**\return click position in window coordinates
    */
   Point clickPos() const;
+
+private:
+  explicit MousePressEvent(std::unique_ptr<MousePressEventImp> imp);
 
 private:
   std::unique_ptr<MousePressEventImp> imp_;

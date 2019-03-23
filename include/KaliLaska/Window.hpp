@@ -52,6 +52,9 @@ public:
   Window(const char *title, Point pos, Size size);
   virtual ~Window();
 
+  // Window(Window &&rhs);
+  // Window &operator=(Window &&rhs);
+
   Window(const Window &) = delete;
   Window &operator=(const Window &) = delete;
 

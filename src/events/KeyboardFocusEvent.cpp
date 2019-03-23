@@ -2,7 +2,8 @@
 
 #include "KaliLaska/KeyboardFocusEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/imp/EventImpFactory.hpp"
+#include "imp/EventImpFactory.hpp"
+#include "imp/KeyboardFocusEventImp.hpp"
 
 namespace KaliLaska {
 KeyboardFocusEvent::KeyboardFocusEvent(Keyboard::Focus focus)
@@ -14,6 +15,9 @@ KeyboardFocusEvent::KeyboardFocusEvent(
     std::unique_ptr<KeyboardFocusEventImp> imp)
     : Event{Type::KeyboardFocusEvent}
     , imp_{std::move(imp)} {
+}
+
+KeyboardFocusEvent::~KeyboardFocusEvent() {
 }
 
 Keyboard::Focus KeyboardFocusEvent::focus() const {

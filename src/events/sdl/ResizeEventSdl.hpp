@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "KaliLaska/imp/ResizeEventImp.hpp"
+#include "events/imp/ResizeEventImp.hpp"
 #include <SDL2/SDL.h>
 
 namespace KaliLaska {

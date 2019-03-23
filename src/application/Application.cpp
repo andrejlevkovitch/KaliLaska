@@ -3,7 +3,7 @@
 #include "KaliLaska/Application.hpp"
 #include "EventNotifyer.hpp"
 #include "KaliLaska/Event.hpp"
-#include "KaliLaska/imp/ApplicationImp.hpp"
+#include "imp/ApplicationImp.hpp"
 #include "sdl/ApplicationSdl.hpp"
 #include <chrono>
 #include <stdexcept>

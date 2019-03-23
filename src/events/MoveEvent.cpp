@@ -2,7 +2,8 @@
 
 #include "KaliLaska/MoveEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/imp/EventImpFactory.hpp"
+#include "imp/EventImpFactory.hpp"
+#include "imp/MoveEventImp.hpp"
 
 namespace KaliLaska {
 MoveEvent::MoveEvent(Point curPos)
@@ -13,6 +14,9 @@ MoveEvent::MoveEvent(Point curPos)
 MoveEvent::MoveEvent(std::unique_ptr<MoveEventImp> imp)
     : Event{Type::MoveEvent}
     , imp_{std::move(imp)} {
+}
+
+MoveEvent::~MoveEvent() {
 }
 
 Point MoveEvent::currentPos() const {

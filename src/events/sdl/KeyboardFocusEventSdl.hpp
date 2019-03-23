@@ -1,6 +1,6 @@
 // KeyboardFocusEventSdl.hpp
 
-#include "KaliLaska/imp/KeyboardFocusEventImp.hpp"
+#include "events/imp/KeyboardFocusEventImp.hpp"
 #include <SDL2/SDL.h>
 
 namespace KaliLaska {

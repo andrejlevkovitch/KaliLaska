@@ -4,12 +4,18 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Size.hpp"
-#include "KaliLaska/imp/ResizeEventImp.hpp"
 #include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
+class ResizeEventImp;
+class EventFactory;
+
+/**\brief generates after resizing of window
+ */
 class KALILASKA_EXPORT ResizeEvent final : public Event {
+  friend EventFactory;
+
 public:
   /**\brief use this constructor for create custom event.
    * \warning window will not be resized by this event if you set it manually to
@@ -17,13 +23,14 @@ public:
    */
   explicit ResizeEvent(Size newSize);
 
-  /**\warning do not use this manually!
-   */
-  explicit ResizeEvent(std::unique_ptr<ResizeEventImp> imp);
+  ~ResizeEvent() override;
 
   /**\return currently size, which was be set by this event
    */
   Size currentSize() const;
+
+private:
+  explicit ResizeEvent(std::unique_ptr<ResizeEventImp> imp);
 
 private:
   std::unique_ptr<ResizeEventImp> imp_;

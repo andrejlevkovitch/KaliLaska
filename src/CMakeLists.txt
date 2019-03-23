@@ -8,11 +8,13 @@ set(KaliLaska_SRC
   core/Color.cpp
 
 
-  application/Application.cpp
   application/EventNotifyer.cpp
+  application/Application.cpp
 
   application/sdl/ApplicationSdl.cpp
 
+
+  events/EventFactory.cpp
 
   events/Event.cpp
   events/CloseEvent.cpp
@@ -30,6 +32,10 @@ set(KaliLaska_SRC
   events/KeyPrinter.cpp
 
 
+  events/sdl/EventConverterSdl.cpp
+  events/sdl/EventSdlFactory.cpp
+  events/sdl/SdlEvents.cpp
+
   events/sdl/CloseEventSdl.cpp
   events/sdl/ShowEventSdl.cpp
   events/sdl/ResizeEventSdl.cpp
@@ -42,9 +48,6 @@ set(KaliLaska_SRC
   events/sdl/KeyboardFocusEventSdl.cpp
   events/sdl/KeyPressEventSdl.cpp
   events/sdl/KeyReleaseEventSdl.cpp
-  events/sdl/SdlEvents.cpp
-  events/sdl/EventConverterSdl.cpp
-  events/sdl/EventSdlFactory.cpp
 
 
   window/Window.cpp

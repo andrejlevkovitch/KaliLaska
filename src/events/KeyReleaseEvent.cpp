@@ -2,8 +2,9 @@
 
 #include "KaliLaska/KeyReleaseEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/imp/EventImpFactory.hpp"
 #include "KeyPrinter.hpp"
+#include "imp/EventImpFactory.hpp"
+#include "imp/KeyReleaseEventImp.hpp"
 
 namespace KaliLaska {
 KeyReleaseEvent::KeyReleaseEvent(Keyboard::Key       key,
@@ -16,6 +17,9 @@ KeyReleaseEvent::KeyReleaseEvent(Keyboard::Key       key,
 KeyReleaseEvent::KeyReleaseEvent(std::unique_ptr<KeyReleaseEventImp> imp)
     : Event{Type::KeyReleaseEvent}
     , imp_{std::move(imp)} {
+}
+
+KeyReleaseEvent::~KeyReleaseEvent() {
 }
 
 Keyboard::Modifyers KeyReleaseEvent::modifyers() const {

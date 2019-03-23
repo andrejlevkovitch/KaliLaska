@@ -4,7 +4,6 @@
 
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
-#include "kalilaska_export.h"
 
 namespace KaliLaska {
 class CloseEvent;
@@ -14,7 +13,7 @@ class Color;
  * \throws constructors of inheritor can throw runtime_error if window can not
  * be created
  */
-class KALILASKA_EXPORT WindowImp {
+class WindowImp {
 public:
   virtual ~WindowImp() = default;
 

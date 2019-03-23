@@ -2,8 +2,8 @@
 
 #include "KaliLaska/MouseWheelEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/imp/EventImpFactory.hpp"
-#include "KaliLaska/imp/MouseWheelEventImp.hpp"
+#include "imp/EventImpFactory.hpp"
+#include "imp/MouseWheelEventImp.hpp"
 
 namespace KaliLaska {
 MouseWheelEvent::MouseWheelEvent(Mouse::Scale scale)
@@ -14,6 +14,9 @@ MouseWheelEvent::MouseWheelEvent(Mouse::Scale scale)
 MouseWheelEvent::MouseWheelEvent(std::unique_ptr<MouseWheelEventImp> imp)
     : Event{Type::MouseWheelEvent}
     , imp_{std::move(imp)} {
+}
+
+MouseWheelEvent::~MouseWheelEvent() {
 }
 
 Point MouseWheelEvent::position() const {

@@ -4,21 +4,29 @@
 
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
-#include "KaliLaska/imp/MouseMoveEventImp.hpp"
 #include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
+class MouseMoveEventImp;
+class EventFactory;
+
+/**\brief generates after move mouse above window
+ */
 class KALILASKA_EXPORT MouseMoveEvent final : public Event {
+  friend EventFactory;
+
 public:
   MouseMoveEvent(Mouse::Buttons buttons, Point currentPos, Point previousPos);
 
-  explicit MouseMoveEvent(std::unique_ptr<MouseMoveEventImp> imp);
-  ~MouseMoveEvent() override = default;
+  ~MouseMoveEvent() override;
 
   Mouse::Buttons buttons() const;
   Point          currentPos() const;
   Point          previousPos() const;
+
+private:
+  explicit MouseMoveEvent(std::unique_ptr<MouseMoveEventImp> imp);
 
 private:
   std::unique_ptr<MouseMoveEventImp> imp_;

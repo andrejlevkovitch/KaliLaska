@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "KaliLaska/imp/EventImpFactory.hpp"
+#include "events/imp/EventImpFactory.hpp"
 
 namespace KaliLaska {
 class EventSdlFactory final : public EventImpFactory {

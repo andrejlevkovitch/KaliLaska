@@ -3,10 +3,9 @@
 #pragma once
 
 #include "KaliLaska/Event.hpp"
-#include "kalilaska_export.h"
 
 namespace KaliLaska {
-class KALILASKA_EXPORT KeyPressEventImp {
+class KeyPressEventImp {
 public:
   virtual ~KeyPressEventImp() = default;
 

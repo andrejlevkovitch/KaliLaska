@@ -2,8 +2,9 @@
 
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/imp/EventImpFactory.hpp"
 #include "KeyPrinter.hpp"
+#include "imp/EventImpFactory.hpp"
+#include "imp/KeyPressEventImp.hpp"
 
 namespace KaliLaska {
 KeyPressEvent::KeyPressEvent(Keyboard::Key       key,
@@ -17,6 +18,9 @@ KeyPressEvent::KeyPressEvent(Keyboard::Key       key,
 KeyPressEvent::KeyPressEvent(std::unique_ptr<KeyPressEventImp> imp)
     : Event{Type::KeyPressEvent}
     , imp_{std::move(imp)} {
+}
+
+KeyPressEvent::~KeyPressEvent() {
 }
 
 Keyboard::Modifyers KeyPressEvent::modifyers() const {

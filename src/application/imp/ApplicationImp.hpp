@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "kalilaska_export.h"
 #include <chrono>
 
 namespace KaliLaska {
@@ -11,7 +10,7 @@ class EventImpFactory;
 
 /**\brief interface for Application
  */
-class KALILASKA_EXPORT ApplicationImp {
+class ApplicationImp {
 public:
   virtual ~ApplicationImp() = default;
 

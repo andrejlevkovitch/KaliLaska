@@ -1,6 +1,6 @@
 // MoveEvent.hpp
 
-#include "KaliLaska/imp/MoveEventImp.hpp"
+#include "events/imp/MoveEventImp.hpp"
 #include <SDL2/SDL.h>
 
 namespace KaliLaska {

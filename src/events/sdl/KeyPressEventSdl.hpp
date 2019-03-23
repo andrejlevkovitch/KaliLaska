@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "KaliLaska/imp/KeyPressEventImp.hpp"
+#include "events/imp/KeyPressEventImp.hpp"
 #include <SDL2/SDL.h>
 
 namespace KaliLaska {

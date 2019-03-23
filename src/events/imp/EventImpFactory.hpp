@@ -3,7 +3,6 @@
 #pragma once
 
 #include "KaliLaska/Event.hpp"
-#include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
@@ -30,7 +29,7 @@ class Size;
  * certain implementation (because it hide from us). So we need abstract
  * factory, which will be create this. Access to factory provide Application
  */
-class KALILASKA_EXPORT EventImpFactory {
+class EventImpFactory {
 public:
   virtual ~EventImpFactory() = default;
 

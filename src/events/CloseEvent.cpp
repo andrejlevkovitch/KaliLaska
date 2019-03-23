@@ -2,9 +2,9 @@
 
 #include "KaliLaska/CloseEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/imp/CloseEventImp.hpp"
-#include "KaliLaska/imp/EventImpFactory.hpp"
 #include "debug.hpp"
+#include "imp/CloseEventImp.hpp"
+#include "imp/EventImpFactory.hpp"
 
 namespace KaliLaska {
 CloseEvent::CloseEvent()
@@ -15,6 +15,9 @@ CloseEvent::CloseEvent()
 CloseEvent::CloseEvent(std::unique_ptr<CloseEventImp> imp)
     : Event{Event::Type::CloseEvent}
     , imp_{std::move(imp)} {
+}
+
+CloseEvent::~CloseEvent() {
 }
 
 std::ostream &operator<<(std::ostream &stream, const CloseEvent &event) {

@@ -2,8 +2,8 @@
 
 #include "KaliLaska/MousePressEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/imp/EventImpFactory.hpp"
-#include "KaliLaska/imp/MousePressEventImp.hpp"
+#include "imp/EventImpFactory.hpp"
+#include "imp/MousePressEventImp.hpp"
 
 namespace KaliLaska {
 MousePressEvent::MousePressEvent(Mouse::Button button,
@@ -17,6 +17,9 @@ MousePressEvent::MousePressEvent(Mouse::Button button,
 MousePressEvent::MousePressEvent(std::unique_ptr<MousePressEventImp> imp)
     : Event{Type::MousePressEvent}
     , imp_{std::move(imp)} {
+}
+
+MousePressEvent::~MousePressEvent() {
 }
 
 Mouse::Button MousePressEvent::button() const {

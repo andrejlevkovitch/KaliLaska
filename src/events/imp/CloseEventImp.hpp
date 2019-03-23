@@ -2,10 +2,8 @@
 
 #pragma once
 
-#include "kalilaska_export.h"
-
 namespace KaliLaska {
-class KALILASKA_EXPORT CloseEventImp {
+class CloseEventImp {
 public:
   virtual ~CloseEventImp() = default;
 };
