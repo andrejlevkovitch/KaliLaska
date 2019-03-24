@@ -13,7 +13,7 @@ class EventFactory;
 
 /**\brief generates after resizing of window
  */
-class KALILASKA_EXPORT ResizeEvent final : public Event {
+class KALILASKA_EXPORT ResizeEvent : public Event {
   friend EventFactory;
 
 public:
@@ -35,7 +35,7 @@ private:
 private:
   std::unique_ptr<ResizeEventImp> imp_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &     stream,
-                                          const ResizeEvent &event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &                stream,
+                                          const KaliLaska::ResizeEvent &event);

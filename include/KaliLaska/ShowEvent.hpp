@@ -12,7 +12,7 @@ class EventFactory;
 
 /**\brief represent window events AFTER some action
  */
-class KALILASKA_EXPORT ShowEvent final : public Event {
+class KALILASKA_EXPORT ShowEvent : public Event {
   friend EventFactory;
 
 public:
@@ -28,7 +28,7 @@ private:
 private:
   std::unique_ptr<ShowEventImp> imp_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &   stream,
-                                          const ShowEvent &event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &              stream,
+                                          const KaliLaska::ShowEvent &event);

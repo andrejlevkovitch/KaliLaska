@@ -23,15 +23,16 @@ KeyboardFocusEvent::~KeyboardFocusEvent() {
 Keyboard::Focus KeyboardFocusEvent::focus() const {
   return imp_->focus();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &            stream,
-                         const KeyboardFocusEvent &event) {
+std::ostream &operator<<(std::ostream &                       stream,
+                         const KaliLaska::KeyboardFocusEvent &event) {
   stream << "KeyboardFocusEvent: focus ";
   switch (event.focus()) {
-  case Keyboard::Focus::Gained:
+  case KaliLaska::Keyboard::Focus::Gained:
     stream << "Gained";
     break;
-  case Keyboard::Focus::Lost:
+  case KaliLaska::Keyboard::Focus::Lost:
     stream << "Lost";
     break;
   default:
@@ -40,4 +41,3 @@ std::ostream &operator<<(std::ostream &            stream,
   }
   return stream;
 }
-} // namespace KaliLaska

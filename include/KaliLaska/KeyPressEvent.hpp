@@ -42,7 +42,7 @@ private:
 private:
   std::unique_ptr<KeyPressEventImp> imp_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &       stream,
-                                          const KeyPressEvent &event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &
+                 operator<<(std::ostream &stream, const KaliLaska::KeyPressEvent &event);

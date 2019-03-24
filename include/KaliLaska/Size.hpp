@@ -6,7 +6,7 @@
 #include <ostream>
 
 namespace KaliLaska {
-class KALILASKA_EXPORT Size {
+class KALILASKA_EXPORT Size final {
 public:
   Size();
   Size(int width, int height);
@@ -24,7 +24,7 @@ private:
   int width_;
   int height_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &stream,
-                                          const Size &  size);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &         stream,
+                                          const KaliLaska::Size &size);

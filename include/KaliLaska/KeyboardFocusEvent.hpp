@@ -11,7 +11,7 @@ class EventFactory;
 
 /**\brief generates when window get or loses focus of keyboard
  */
-class KALILASKA_EXPORT KeyboardFocusEvent final : public Event {
+class KALILASKA_EXPORT KeyboardFocusEvent : public Event {
   friend EventFactory;
 
 public:
@@ -31,7 +31,7 @@ private:
 private:
   std::unique_ptr<KeyboardFocusEventImp> imp_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &            stream,
-                                          const KeyboardFocusEvent &event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &
+                 operator<<(std::ostream &stream, const KaliLaska::KeyboardFocusEvent &event);

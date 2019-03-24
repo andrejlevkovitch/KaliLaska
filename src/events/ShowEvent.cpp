@@ -22,8 +22,11 @@ ShowEvent::~ShowEvent() {
 ShowAction ShowEvent::action() const {
   return imp_->action();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const ShowEvent &event) {
+std::ostream &operator<<(std::ostream &              stream,
+                         const KaliLaska::ShowEvent &event) {
+  using namespace KaliLaska;
   stream << "ShowEvent: action ";
   switch (event.action()) {
   case ShowAction::Shown:
@@ -38,4 +41,3 @@ std::ostream &operator<<(std::ostream &stream, const ShowEvent &event) {
   }
   return stream;
 }
-} // namespace KaliLaska

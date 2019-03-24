@@ -1,5 +1,7 @@
 # cmake for src
 
+find_package(Boost REQUIRED)
+
 include(GenerateExportHeader)
 
 set(KaliLaska_SRC
@@ -54,6 +56,21 @@ set(KaliLaska_SRC
 
   window/sdl/WindowSdl.cpp
   window/sdl/WindowSdlFactory.cpp
+
+  opengl/Attacher.cpp
+  opengl/GLFactory.cpp
+  opengl/Program.cpp
+  opengl/Shader.cpp
+
+  graphics/GraphicsItem.cpp
+  graphics/GraphicsScene.cpp
+  graphics/GraphicsView.cpp
+  graphics/SceneMouseMoveEvent.cpp
+  graphics/SceneMousePressEvent.cpp
+  graphics/SceneMouseReleaseEvent.cpp
+
+  graphics/rtree/GraphicsSceneRTree.cpp
+  graphics/rtree/GraphicsSceneRTreeFactory.cpp
   )
 
 add_library(${PROJECT_NAME} ${KaliLaska_SRC})
@@ -61,20 +78,39 @@ target_compile_features(${PROJECT_NAME}
   PRIVATE
     cxx_std_17
   )
-target_link_libraries(${PROJECT_NAME}
-  INTERFACE
-    SDL2::SDL2
-    gl3w
-  )
-target_include_directories(${PROJECT_NAME}
-  PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    $<TARGET_PROPERTY:SDL2::SDL2,INTERFACE_INCLUDE_DIRECTORIES>
-    $<TARGET_PROPERTY:gl3w,INTERFACE_INCLUDE_DIRECTORIES>
-  PUBLIC
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/../include
-  )
+
+# because dll can not compile without all dependencies
+if(WIN32)
+  target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+      SDL2::SDL2
+      gl3w
+    )
+  target_include_directories(${PROJECT_NAME}
+    PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}
+    PUBLIC
+      ${CMAKE_CURRENT_BINARY_DIR}
+      ${CMAKE_CURRENT_SOURCE_DIR}/../include
+    )
+else()
+  target_link_libraries(${PROJECT_NAME}
+    INTERFACE
+      SDL2::SDL2
+      gl3w
+    )
+  target_include_directories(${PROJECT_NAME}
+    PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}
+      $<TARGET_PROPERTY:SDL2::SDL2,INTERFACE_INCLUDE_DIRECTORIES>
+      $<TARGET_PROPERTY:gl3w,INTERFACE_INCLUDE_DIRECTORIES>
+      ${Boost_INCLUDE_DIRS}
+    PUBLIC
+      ${CMAKE_CURRENT_BINARY_DIR}
+      ${CMAKE_CURRENT_SOURCE_DIR}/../include
+    )
+endif()
+
 # generate export header
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)

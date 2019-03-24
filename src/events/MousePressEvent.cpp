@@ -37,8 +37,11 @@ Mouse::Click MousePressEvent::click() const {
 Point MousePressEvent::clickPos() const {
   return imp_->clickPos();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const MousePressEvent &event) {
+std::ostream &operator<<(std::ostream &                    stream,
+                         const KaliLaska::MousePressEvent &event) {
+  using namespace KaliLaska;
   stream << "MousePressEvent: clickPos " << event.clickPos() << ", button ";
   switch (event.button()) {
   case Mouse::Button::Left:
@@ -57,4 +60,3 @@ std::ostream &operator<<(std::ostream &stream, const MousePressEvent &event) {
   stream << ", click " << static_cast<int>(event.click());
   return stream;
 }
-} // namespace KaliLaska

@@ -19,10 +19,11 @@ CloseEvent::CloseEvent(std::unique_ptr<CloseEventImp> imp)
 
 CloseEvent::~CloseEvent() {
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const CloseEvent &event) {
+std::ostream &operator<<(std::ostream &               stream,
+                         const KaliLaska::CloseEvent &event) {
   UNUSED(event);
   stream << "CloseEvent";
   return stream;
 }
-} // namespace KaliLaska

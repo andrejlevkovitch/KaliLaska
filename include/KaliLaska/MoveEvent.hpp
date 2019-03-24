@@ -32,7 +32,7 @@ private:
 private:
   std::unique_ptr<MoveEventImp> imp_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &   stream,
-                                          const MoveEvent &event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &              stream,
+                                          const KaliLaska::MoveEvent &event);

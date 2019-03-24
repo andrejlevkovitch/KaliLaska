@@ -12,7 +12,7 @@ class EventFactory;
 
 /**\brief generates before close window (for example when you push close button)
  */
-class KALILASKA_EXPORT CloseEvent final : public Event {
+class KALILASKA_EXPORT CloseEvent : public Event {
   friend EventFactory;
 
 public:
@@ -29,7 +29,7 @@ private:
 private:
   std::unique_ptr<CloseEventImp> imp_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &    stream,
-                                          const CloseEvent &event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &               stream,
+                                          const KaliLaska::CloseEvent &event);

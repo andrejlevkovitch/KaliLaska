@@ -13,7 +13,7 @@ class EventFactory;
 
 /**\brief generates after release mouse button above screen
  */
-class KALILASKA_EXPORT MouseReleaseEvent final : public Event {
+class KALILASKA_EXPORT MouseReleaseEvent : public Event {
   friend EventFactory;
 
 public:
@@ -39,7 +39,7 @@ private:
 private:
   std::unique_ptr<MouseReleaseEventImp> imp_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &           stream,
-                                          const MouseReleaseEvent &event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &
+                 operator<<(std::ostream &stream, const KaliLaska::MouseReleaseEvent &event);

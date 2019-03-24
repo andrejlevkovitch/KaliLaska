@@ -33,16 +33,17 @@ Point MouseMoveEvent::currentPos() const {
 Point MouseMoveEvent::previousPos() const {
   return imp_->previousPos();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const MouseMoveEvent &event) {
-  stream << "MouseMoveEvent: curPos " << event.currentPos()
-         << ", prevPos: " << event.previousPos();
+std::ostream &operator<<(std::ostream &                   stream,
+                         const KaliLaska::MouseMoveEvent &event) {
+  stream << "MouseMoveEvent: curPos " << event.currentPos() << ", prevPos "
+         << event.previousPos();
   if (auto buttons = event.buttons()) {
-    stream << "buttons";
-    stream << ((buttons & Mouse::Button::Left) ? " Left" : "");
-    stream << ((buttons & Mouse::Button::Right) ? " Right" : "");
-    stream << ((buttons & Mouse::Button::Middle) ? " Middle" : "");
+    stream << ", buttons";
+    stream << ((buttons & KaliLaska::Mouse::Button::Left) ? " Left" : "");
+    stream << ((buttons & KaliLaska::Mouse::Button::Right) ? " Right" : "");
+    stream << ((buttons & KaliLaska::Mouse::Button::Middle) ? " Middle" : "");
   }
   return stream;
 }
-} // namespace KaliLaska

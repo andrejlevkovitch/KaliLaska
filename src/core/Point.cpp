@@ -1,45 +1,17 @@
 // Point.cpp
 
 #include "KaliLaska/Point.hpp"
+#include <boost/geometry.hpp>
 
-namespace KaliLaska {
-
-Point::Point()
-    : x_{}
-    , y_{} {
+bool operator==(const KaliLaska::Point &lhs, const KaliLaska::Point &rhs) {
+  return (lhs.x() == rhs.x() && lhs.y() == rhs.y());
 }
 
-Point::Point(int x, int y)
-    : x_{x}
-    , y_{y} {
+bool operator!=(const KaliLaska::Point &lhs, const KaliLaska::Point &rhs) {
+  return (lhs.x() != rhs.x() || lhs.y() != rhs.y());
 }
 
-int Point::x() const {
-  return x_;
-}
-
-int Point::y() const {
-  return y_;
-}
-
-void Point::setX(int x) {
-  x_ = x;
-}
-
-void Point::setY(int y) {
-  y_ = y;
-}
-
-bool Point::operator!=(const Point &rhs) const {
-  return (x_ != rhs.x_ || y_ != rhs.y_);
-}
-
-bool Point::operator==(const Point &rhs) const {
-  return (x_ == rhs.x_ && y_ == rhs.y_);
-}
-
-std::ostream &operator<<(std::ostream &stream, const Point &point) {
+std::ostream &operator<<(std::ostream &stream, const KaliLaska::Point &point) {
   stream << "x " << point.x() << ", y " << point.y();
   return stream;
 }
-} // namespace KaliLaska

@@ -3,10 +3,11 @@
 #pragma once
 
 #include "KaliLaska/Window.hpp"
+#include "KaliLaska/opengl.hpp"
 
 class WindowGL : public KaliLaska::Window {
 public:
-  WindowGL(const char *title, KaliLaska::Size size);
+  WindowGL(std::string_view title, const KaliLaska::Size &size);
 
   ~WindowGL() override;
 
@@ -15,7 +16,7 @@ public:
 private:
   std::chrono::time_point<std::chrono::system_clock> last_;
 
-  uint32_t shaderProgram_;
-  uint32_t vertexShader_;
-  uint32_t fragmentShader_;
+  KaliLaska::GL::Program shaderProgram_;
+  KaliLaska::GL::Shader  vertexShader_;
+  KaliLaska::GL::Shader  fragmentShader_;
 };

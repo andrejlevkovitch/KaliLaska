@@ -128,6 +128,10 @@ public:
     KeyPressEvent,
     KeyReleaseEvent,
 
+    SceneMouseMoveEvent,
+    SceneMousePressEvent,
+    SceneMouseReleaseEvent,
+
     /**\brief if you want to implement you'r event type - use values after the
      * value
      */
@@ -142,7 +146,7 @@ public:
 private:
   Type type_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &stream,
-                                          const Event & event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &          stream,
+                                          const KaliLaska::Event &event);

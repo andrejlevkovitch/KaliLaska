@@ -10,7 +10,7 @@ namespace KaliLaska {
 class MouseFocusEventImp;
 class EventFactory;
 
-class KALILASKA_EXPORT MouseFocusEvent final : public Event {
+class KALILASKA_EXPORT MouseFocusEvent : public Event {
   friend EventFactory;
 
 public:
@@ -28,7 +28,7 @@ private:
 private:
   std::unique_ptr<MouseFocusEventImp> imp_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &         stream,
-                                          const MouseFocusEvent &event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &
+                 operator<<(std::ostream &stream, const KaliLaska::MouseFocusEvent &event);

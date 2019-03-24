@@ -9,6 +9,7 @@
 namespace KaliLaska {
 class WindowImpFactory;
 class EventImpFactory;
+class GraphicsSceneImpFactory;
 
 class Window;
 class Event;
@@ -20,8 +21,8 @@ class ApplicationImp;
 class KALILASKA_EXPORT Application final {
 public:
   /**\brief you need set here input arguments of main, because it is needed for
-   * load game libraries and create main window
-   * \throws in case repeted initialization
+   * load game libraries and create main window. Also initialize opengl library
+   * (by gl3w) \throws in case repeted initialization
    */
   Application(int argc, char *argv[]);
 
@@ -46,6 +47,10 @@ public:
   /**\return abstract factory, which create custom user events
    */
   static EventImpFactory *eventFactory();
+
+  /**\return abstract factory, which create implementation for GraphicsScene
+   */
+  static GraphicsSceneImpFactory *sceneFactory();
 
   /**\brief send event to window. This event will be delivered momentally (in
    * current iteration of the main cikle).

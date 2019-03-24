@@ -3,14 +3,8 @@
 #pragma once
 
 #include "KaliLaska/Window.hpp"
+#include "KaliLaska/opengl.hpp"
 #include <GL/gl3w.h>
-
-#define GL_CHECK()                                                             \
-  {                                                                            \
-    if (glGetError()) {                                                        \
-      throw std::runtime_error{"opengl error"};                                \
-    }                                                                          \
-  }
 
 const std::string vertexShader{R"(
 #version 300 es
@@ -40,72 +34,20 @@ void main() {
 class OpenGLWindow : public KaliLaska::Window {
 public:
   OpenGLWindow()
-      : KaliLaska::Window{"", KaliLaska::Size{100, 100}} {
-    gl3wInit();
-    shaderProgram_ = glCreateProgram();
-    GL_CHECK();
+      : KaliLaska::Window{"", KaliLaska::Size{100, 100}}
+      , shaderProgram_{KaliLaska::GL::GLFactory::createProgram()}
+      , vertexShader_{KaliLaska::GL::GLFactory::createShader(
+            KaliLaska::GL::GLFactory::ShaderType::Fragment, fragmentShader)}
+      , fragmentShader_{KaliLaska::GL::GLFactory::createShader(
+            KaliLaska::GL::GLFactory::ShaderType::Vertex, vertexShader)} {}
 
-    // create shaders
-    vertexShader_ = glCreateShader(GL_VERTEX_SHADER);
-    GL_CHECK();
-    fragmentShader_ = glCreateShader(GL_FRAGMENT_SHADER);
-    GL_CHECK();
-
-    // compile shaders
-    GLint status{};
-    auto  code = &vertexShader[0];
-    glShaderSource(vertexShader_, 1, &code, nullptr);
-    GL_CHECK();
-    glCompileShader(vertexShader_);
-    GL_CHECK();
-    glGetShaderiv(vertexShader_, GL_COMPILE_STATUS, &status);
-    if (!status) {
-      throw std::runtime_error{"compile error vertex shader"};
-    }
-
-    code = &fragmentShader[0];
-    glShaderSource(fragmentShader_, 1, &code, nullptr);
-    GL_CHECK();
-    glCompileShader(fragmentShader_);
-    GL_CHECK();
-    glGetShaderiv(fragmentShader_, GL_COMPILE_STATUS, &status);
-    if (!status) {
-      throw std::runtime_error{"compile error fragment shader"};
-    }
-
-    // attach shaders
-    glAttachShader(shaderProgram_, vertexShader_);
-    GL_CHECK();
-    glAttachShader(shaderProgram_, fragmentShader_);
-    GL_CHECK();
-
-    // set attrib locations
-    glBindAttribLocation(shaderProgram_, 0, "pos");
-    GL_CHECK();
-    glBindAttribLocation(shaderProgram_, 1, "color");
-    GL_CHECK();
-
-    // set using program
-    glLinkProgram(shaderProgram_);
-    GL_CHECK();
-    glGetProgramiv(shaderProgram_, GL_LINK_STATUS, &status);
-    if (!status) {
-      throw std::runtime_error{"link not complete"};
-    }
-    glValidateProgram(shaderProgram_);
-    GL_CHECK();
-    glUseProgram(shaderProgram_);
-    GL_CHECK();
-  }
-
-  ~OpenGLWindow() {
-    glDeleteShader(vertexShader_);
-    glDeleteShader(fragmentShader_);
-    glDeleteProgram(shaderProgram_);
-  }
+  ~OpenGLWindow() {}
 
   void update() {
     Window::makeCurrent();
+
+    KaliLaska::GL::Attacher attacher(
+        shaderProgram_, vertexShader_, fragmentShader_);
 
     glViewport(0, 0, drawSize().width(), drawSize().height());
     glClearColor(0, 0, 0, 1);
@@ -160,7 +102,7 @@ public:
   }
 
 private:
-  uint32_t shaderProgram_;
-  uint32_t vertexShader_;
-  uint32_t fragmentShader_;
+  KaliLaska::GL::Program shaderProgram_;
+  KaliLaska::GL::Shader  vertexShader_;
+  KaliLaska::GL::Shader  fragmentShader_;
 };

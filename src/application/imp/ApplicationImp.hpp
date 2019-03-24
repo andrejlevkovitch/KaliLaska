@@ -7,6 +7,7 @@
 namespace KaliLaska {
 class WindowImpFactory;
 class EventImpFactory;
+class GraphicsSceneImpFactory;
 
 /**\brief interface for Application
  */
@@ -29,5 +30,7 @@ public:
   virtual void setIterationTimeInterval(std::chrono::milliseconds time) = 0;
 
   virtual std::chrono::milliseconds iterationTimeInterval() const = 0;
+
+  virtual GraphicsSceneImpFactory *sceneFactory() = 0;
 };
 } // namespace KaliLaska

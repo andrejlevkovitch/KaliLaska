@@ -25,11 +25,11 @@ Window::Window()
   }
 }
 
-Window::Window(const char *title, Size size)
+Window::Window(std::string_view title, const Size &size)
     : imp_{nullptr} {
   try {
     if (auto factory = Application::windowFactory()) {
-      imp_ = factory->createWindowImp(*this, title, size);
+      imp_ = factory->createWindowImp(*this, title.data(), size);
     } else {
       throw std::runtime_error{INVALID_FACTORY};
     }
@@ -38,11 +38,11 @@ Window::Window(const char *title, Size size)
   }
 }
 
-Window::Window(const char *title, Point pos, Size size)
+Window::Window(std::string_view title, const Point &pos, const Size &size)
     : imp_{nullptr} {
   try {
     if (auto factory = Application::windowFactory()) {
-      imp_ = factory->createWindowImp(*this, title, pos, size);
+      imp_ = factory->createWindowImp(*this, title.data(), pos, size);
     } else {
       throw std::runtime_error{INVALID_FACTORY};
     }

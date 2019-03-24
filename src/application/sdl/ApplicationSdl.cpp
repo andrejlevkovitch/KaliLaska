@@ -6,6 +6,7 @@
 #include "debug.hpp"
 #include "events/sdl/EventConverterSdl.hpp"
 #include "events/sdl/EventSdlFactory.hpp"
+#include "graphics/rtree/GraphicsSceneRTreeFactory.hpp"
 #include "window/sdl/WindowSdlFactory.hpp"
 #include <SDL2/SDL.h>
 #include <chrono>
@@ -29,7 +30,8 @@ ApplicationSdl::ApplicationSdl()
     , return_code_{EXIT_SUCCESS}
     , iterationTime_{DEFAULT_WAIT_TIMEOUT}
     , windowFactory_{std::make_unique<WindowSdlFactory>()}
-    , eventFactory_{std::make_unique<EventSdlFactory>()} {
+    , eventFactory_{std::make_unique<EventSdlFactory>()}
+    , sceneFactory_{std::make_unique<GraphicsSceneRTreeFactory>()} {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS)) {
     throw std::runtime_error{SDL_GetError()};
   }
@@ -111,6 +113,10 @@ WindowImpFactory *ApplicationSdl::windowFactory() const {
 
 EventImpFactory *ApplicationSdl::eventFactory() const {
   return eventFactory_.get();
+}
+
+GraphicsSceneImpFactory *ApplicationSdl::sceneFactory() {
+  return sceneFactory_.get();
 }
 
 void ApplicationSdl::setIterationTimeInterval(std::chrono::milliseconds time) {

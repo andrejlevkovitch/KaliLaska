@@ -26,8 +26,11 @@ Point MouseWheelEvent::position() const {
 Mouse::Scale MouseWheelEvent::scale() const {
   return imp_->scale();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const MouseWheelEvent &event) {
+std::ostream &operator<<(std::ostream &                    stream,
+                         const KaliLaska::MouseWheelEvent &event) {
+  using namespace KaliLaska;
   stream << "MouseWheelEvent: position " << event.position() << ", scale ";
   if (event.scale() != Mouse::Scale::Invalid) {
     stream << ((event.scale() == Mouse::Scale::ScaleDown) ? "Down" : "Up");
@@ -36,4 +39,3 @@ std::ostream &operator<<(std::ostream &stream, const MouseWheelEvent &event) {
   }
   return stream;
 }
-} // namespace KaliLaska

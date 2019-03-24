@@ -3,6 +3,8 @@
 #pragma once
 
 #include "KaliLaska/Event.hpp"
+#include "KaliLaska/Point.hpp"
+#include "KaliLaska/Size.hpp"
 #include <memory>
 
 namespace KaliLaska {
@@ -20,9 +22,6 @@ class MouseWheelEventImp;
 class KeyboardFocusEventImp;
 class KeyPressEventImp;
 class KeyReleaseEventImp;
-
-class Point;
-class Size;
 
 /**\brief this factory create event implementations from user data. This class
  * needed because we can not create abstract base class, and we can not set

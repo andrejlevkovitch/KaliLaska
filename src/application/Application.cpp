@@ -5,6 +5,7 @@
 #include "KaliLaska/Event.hpp"
 #include "imp/ApplicationImp.hpp"
 #include "sdl/ApplicationSdl.hpp"
+#include <GL/gl3w.h>
 #include <chrono>
 #include <stdexcept>
 #include <string.h>
@@ -29,6 +30,9 @@ Application::Application(int argc, char *argv[])
   } catch (std::runtime_error &) {
     throw;
   }
+
+  // TODO here I also initialize gl3w - I do not like it
+  gl3wInit();
 }
 
 Application::~Application() {
@@ -91,5 +95,12 @@ void Application::setIterationTimeInterval(std::chrono::milliseconds time) {
 
 std::chrono::milliseconds Application::iterationTimeInterval() const {
   return imp_->iterationTimeInterval();
+}
+
+GraphicsSceneImpFactory *Application::sceneFactory() {
+  if (instancePtr && instancePtr->imp_) {
+    return instancePtr->imp_->sceneFactory();
+  }
+  return nullptr;
 }
 } // namespace KaliLaska

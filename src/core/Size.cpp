@@ -37,9 +37,9 @@ bool Size::operator!=(const Size &rhs) const {
 bool Size::operator==(const Size &rhs) const {
   return (width_ == rhs.width_ && height_ == rhs.height_);
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const Size &size) {
+std::ostream &operator<<(std::ostream &stream, const KaliLaska::Size &size) {
   stream << "width " << size.width() << ", height " << size.height();
   return stream;
 }
-} // namespace KaliLaska

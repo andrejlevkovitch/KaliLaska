@@ -13,7 +13,7 @@ class EventFactory;
 
 /**\brief generates after change wheel state above window
  */
-class KALILASKA_EXPORT MouseWheelEvent final : public Event {
+class KALILASKA_EXPORT MouseWheelEvent : public Event {
   friend EventFactory;
 
 public:
@@ -30,7 +30,7 @@ private:
 private:
   std::unique_ptr<MouseWheelEventImp> imp_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &         stream,
-                                          const MouseWheelEvent &event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &
+                 operator<<(std::ostream &stream, const KaliLaska::MouseWheelEvent &event);

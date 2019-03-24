@@ -22,14 +22,16 @@ MouseFocusEvent::~MouseFocusEvent() {
 Mouse::Focus MouseFocusEvent::focus() const {
   return imp_->focus();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const MouseFocusEvent &event) {
+std::ostream &operator<<(std::ostream &                    stream,
+                         const KaliLaska::MouseFocusEvent &event) {
   stream << "MouseFocusEvent: focus ";
   switch (event.focus()) {
-  case Mouse::Focus::Enter:
+  case KaliLaska::Mouse::Focus::Enter:
     stream << "Enter";
     break;
-  case Mouse::Focus::Leave:
+  case KaliLaska::Mouse::Focus::Leave:
     stream << "Leave";
     break;
   default:
@@ -38,4 +40,3 @@ std::ostream &operator<<(std::ostream &stream, const MouseFocusEvent &event) {
   }
   return stream;
 }
-} // namespace KaliLaska

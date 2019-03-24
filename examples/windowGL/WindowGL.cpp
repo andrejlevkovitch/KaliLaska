@@ -31,85 +31,33 @@ void main() {
 }
 )"};
 
-WindowGL::WindowGL(const char *title, KaliLaska::Size size)
+using KaliLaska::GL::GLFactory;
+
+WindowGL::WindowGL(std::string_view title, const KaliLaska::Size &size)
     : Window{title, size}
-    , shaderProgram_{}
-    , vertexShader_{}
-    , fragmentShader_{} {
-  // create shader program
-  gl3wInit();
+    , shaderProgram_{GLFactory::createProgram()}
+    , vertexShader_{GLFactory::createShader(GLFactory::ShaderType::Vertex,
+                                            vertexShader)}
+    , fragmentShader_{GLFactory::createShader(GLFactory::ShaderType::Fragment,
+                                              fragmentShader)} {
   std::cerr << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-  shaderProgram_ = glCreateProgram();
-  GL_CHECK();
-
-  // create shaders
-  vertexShader_ = glCreateShader(GL_VERTEX_SHADER);
-  GL_CHECK();
-  fragmentShader_ = glCreateShader(GL_FRAGMENT_SHADER);
-  GL_CHECK();
-
-  // compile shaders
-  GLint status{};
-  auto  code = &vertexShader[0];
-  glShaderSource(vertexShader_, 1, &code, nullptr);
-  GL_CHECK();
-  glCompileShader(vertexShader_);
-  GL_CHECK();
-  glGetShaderiv(vertexShader_, GL_COMPILE_STATUS, &status);
-  if (!status) {
-    throw std::runtime_error{"compile error vertex shader"};
-  }
-
-  code = &fragmentShader[0];
-  glShaderSource(fragmentShader_, 1, &code, nullptr);
-  GL_CHECK();
-  glCompileShader(fragmentShader_);
-  GL_CHECK();
-  glGetShaderiv(fragmentShader_, GL_COMPILE_STATUS, &status);
-  if (!status) {
-    throw std::runtime_error{"compile error fragment shader"};
-  }
-
-  // attach shaders
-  glAttachShader(shaderProgram_, vertexShader_);
-  GL_CHECK();
-  glAttachShader(shaderProgram_, fragmentShader_);
-  GL_CHECK();
-
-  // set attrib locations
-  glBindAttribLocation(shaderProgram_, 0, "pos");
-  GL_CHECK();
-  glBindAttribLocation(shaderProgram_, 1, "color");
-  GL_CHECK();
-
-  // set using program
-  glLinkProgram(shaderProgram_);
-  GL_CHECK();
-  glGetProgramiv(shaderProgram_, GL_LINK_STATUS, &status);
-  if (!status) {
-    throw std::runtime_error{"link not complete"};
-  }
-  glValidateProgram(shaderProgram_);
-  GL_CHECK();
-  glUseProgram(shaderProgram_);
-  GL_CHECK();
 }
 
 WindowGL::~WindowGL() {
-  glDeleteShader(vertexShader_);
-  glDeleteShader(fragmentShader_);
-  glDeleteProgram(shaderProgram_);
 }
 
 void WindowGL::update() {
   auto now = std::chrono::system_clock::now();
-  if (auto duration = now - last_; duration >= std::chrono::milliseconds{300}) {
+  if (auto duration = now - last_; duration >= std::chrono::milliseconds{500}) {
     Window::makeCurrent();
 
     std::random_device                    rd{};
     std::default_random_engine            engine{rd()};
     std::uniform_real_distribution<float> colorDistrib{0, 1};
     std::uniform_real_distribution<float> vertexDistrib{-1, 1};
+
+    KaliLaska::GL::Attacher attacher(
+        shaderProgram_, vertexShader_, fragmentShader_);
 
     glViewport(0, 0, drawSize().width(), drawSize().height());
     glClearColor(0, 0, 0, 1);

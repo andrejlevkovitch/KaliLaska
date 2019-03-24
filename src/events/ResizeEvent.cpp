@@ -22,9 +22,10 @@ ResizeEvent::~ResizeEvent() {
 Size ResizeEvent::currentSize() const {
   return imp_->currentSize();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const ResizeEvent &event) {
+std::ostream &operator<<(std::ostream &                stream,
+                         const KaliLaska::ResizeEvent &event) {
   stream << "ResizeEvent: curSize " << event.currentSize();
   return stream;
 }
-} // namespace KaliLaska

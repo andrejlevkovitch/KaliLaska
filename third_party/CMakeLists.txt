@@ -33,11 +33,19 @@ set(imgui_SRC
   )
 add_library(imgui ${imgui_SRC})
 target_include_directories(imgui PUBLIC "imgui")
-target_link_libraries(imgui
-  INTERFACE
-    SDL2::SDL2
-    gl3w
-  )
+if (WIN32)
+  target_link_libraries(imgui
+    PRIVATE
+      SDL2::SDL2
+      gl3w
+    )
+elseif()
+  target_link_libraries(imgui
+    INTERFACE
+      SDL2::SDL2
+      gl3w
+    )
+endif()
 target_include_directories(imgui
   PRIVATE
     $<TARGET_PROPERTY:SDL2::SDL2,INTERFACE_INCLUDE_DIRECTORIES>

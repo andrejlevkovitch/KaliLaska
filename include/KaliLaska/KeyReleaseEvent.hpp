@@ -12,7 +12,7 @@ class EventFactory;
 
 /**\brief generates after release some button
  */
-class KALILASKA_EXPORT KeyReleaseEvent final : public Event {
+class KALILASKA_EXPORT KeyReleaseEvent : public Event {
   friend EventFactory;
 
 public:
@@ -36,7 +36,7 @@ private:
 private:
   std::unique_ptr<KeyReleaseEventImp> imp_;
 };
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &         stream,
-                                          const KeyReleaseEvent &event);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT std::ostream &
+                 operator<<(std::ostream &stream, const KaliLaska::KeyReleaseEvent &event);

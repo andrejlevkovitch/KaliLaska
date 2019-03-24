@@ -34,8 +34,11 @@ Keyboard::Key KeyPressEvent::key() const {
 bool KeyPressEvent::isRepeat() const {
   return imp_->isRepeat();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const KeyPressEvent &event) {
+std::ostream &operator<<(std::ostream &                  stream,
+                         const KaliLaska::KeyPressEvent &event) {
+  using namespace KaliLaska;
   stream << "KeyPressEvent: mod";
   if (auto mod = event.modifyers(); mod != Keyboard::Mod::Invalid) {
     stream << ((mod & Keyboard::Mod::Alt) ? " Alt" : "");
@@ -48,4 +51,3 @@ std::ostream &operator<<(std::ostream &stream, const KeyPressEvent &event) {
          << (event.isRepeat() ? " , repeated" : "");
   return stream;
 }
-} // namespace KaliLaska

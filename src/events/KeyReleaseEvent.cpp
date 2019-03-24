@@ -29,8 +29,11 @@ Keyboard::Modifyers KeyReleaseEvent::modifyers() const {
 Keyboard::Key KeyReleaseEvent::key() const {
   return imp_->key();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const KeyReleaseEvent &event) {
+std::ostream &operator<<(std::ostream &                    stream,
+                         const KaliLaska::KeyReleaseEvent &event) {
+  using namespace KaliLaska;
   stream << "KeyReleaseEvent:";
   if (auto mod = event.modifyers(); mod != Keyboard::Mod::Invalid) {
     stream << ((mod & Keyboard::Mod::Alt) ? " Alt" : "");
@@ -42,4 +45,3 @@ std::ostream &operator<<(std::ostream &stream, const KeyReleaseEvent &event) {
   stream << ", key " << keyPrinter(event.key());
   return stream;
 }
-} // namespace KaliLaska

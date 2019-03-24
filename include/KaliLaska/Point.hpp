@@ -3,28 +3,21 @@
 #pragma once
 
 #include "kalilaska_export.h"
+#include <boost/geometry/geometries/point_xy.hpp>
 #include <ostream>
 
 namespace KaliLaska {
-class KALILASKA_EXPORT Point {
-public:
-  Point();
-  Point(int x, int y);
+/**\brief boost certesian (int) point
+ * \warning if not initialized - contain garbage
+ */
+using Point = boost::geometry::model::d2::point_xy<int>;
 
-  int x() const;
-  int y() const;
-
-  void setX(int x);
-  void setY(int y);
-
-  bool operator!=(const Point &rhs) const;
-  bool operator==(const Point &rhs) const;
-
-private:
-  int x_;
-  int y_;
-};
-
-KALILASKA_EXPORT std::ostream &operator<<(std::ostream &stream,
-                                          const Point & point);
 } // namespace KaliLaska
+
+KALILASKA_EXPORT bool operator==(const KaliLaska::Point &lhs,
+                                 const KaliLaska::Point &rhs);
+KALILASKA_EXPORT bool operator!=(const KaliLaska::Point &lhs,
+                                 const KaliLaska::Point &rhs);
+
+KALILASKA_EXPORT std::ostream &operator<<(std::ostream &          stream,
+                                          const KaliLaska::Point &point);

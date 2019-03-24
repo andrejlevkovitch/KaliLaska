@@ -4,6 +4,7 @@
 #include "WindowGL.hpp"
 #include <cassert>
 #include <cstdlib>
+#include <iostream>
 
 #ifdef __SANITIZE_ADDRESS__
 #  include <sanitizer/lsan_interface.h>

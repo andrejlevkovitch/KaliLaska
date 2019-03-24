@@ -22,8 +22,10 @@ Event::Event(Type type)
 Event::Type Event::type() const {
   return type_;
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const Event &event) {
+std::ostream &operator<<(std::ostream &stream, const KaliLaska::Event &event) {
+  using namespace KaliLaska;
   switch (event.type()) {
   case Event::Type::CloseEvent:
     stream << reinterpret_cast<const CloseEvent &>(event);
@@ -67,4 +69,3 @@ std::ostream &operator<<(std::ostream &stream, const Event &event) {
   }
   return stream;
 }
-} // namespace KaliLaska

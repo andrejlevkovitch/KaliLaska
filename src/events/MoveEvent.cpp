@@ -22,9 +22,10 @@ MoveEvent::~MoveEvent() {
 Point MoveEvent::currentPos() const {
   return imp_->currentPos();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const MoveEvent &event) {
+std::ostream &operator<<(std::ostream &              stream,
+                         const KaliLaska::MoveEvent &event) {
   stream << "MoveEvent: curPos " << event.currentPos();
   return stream;
 }
-} // namespace KaliLaska

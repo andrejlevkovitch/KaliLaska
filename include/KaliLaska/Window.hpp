@@ -45,11 +45,11 @@ public:
   /**\brief create centered window
    * \throw std::runtime_error if window can not be crated
    */
-  Window(const char *title, Size size);
+  Window(std::string_view title, const Size &size);
 
   /**\throw std::runtime_error if window can not be crated
    */
-  Window(const char *title, Point pos, Size size);
+  Window(std::string_view title, const Point &pos, const Size &size);
   virtual ~Window();
 
   // Window(Window &&rhs);

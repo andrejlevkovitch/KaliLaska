@@ -31,8 +31,11 @@ Mouse::Buttons MouseReleaseEvent::buttons() const {
 Point MouseReleaseEvent::clickPos() const {
   return imp_->clickPos();
 }
+} // namespace KaliLaska
 
-std::ostream &operator<<(std::ostream &stream, const MouseReleaseEvent &event) {
+std::ostream &operator<<(std::ostream &                      stream,
+                         const KaliLaska::MouseReleaseEvent &event) {
+  using namespace KaliLaska;
   stream << "MousePressEvent: clickPos " << event.clickPos() << ", button ";
   switch (event.button()) {
   case Mouse::Button::Left:
@@ -50,4 +53,3 @@ std::ostream &operator<<(std::ostream &stream, const MouseReleaseEvent &event) {
   }
   return stream;
 }
-} // namespace KaliLaska
