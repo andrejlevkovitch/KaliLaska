@@ -1,17 +1,10 @@
 // WindowGL.cpp
 
 #include "WindowGL.hpp"
+#include "KaliLaska/opengl.hpp"
 #include <GL/gl3w.h>
 #include <iostream>
 #include <random>
-
-#define GL_CHECK()                                                             \
-  {                                                                            \
-    if (glGetError()) {                                                        \
-      std::cerr << __LINE__ << std::endl;                                      \
-      throw std::runtime_error{"opengl error"};                                \
-    }                                                                          \
-  }
 
 static std::string vertexShader{R"(
 #version 300 es

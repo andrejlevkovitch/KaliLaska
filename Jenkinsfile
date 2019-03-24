@@ -23,6 +23,7 @@ pipeline {
       }
       steps {
         withEnv(['DISPLAY=:0']) {
+          sh 'sudo chown -R $USER:$USER $HOME/'
           sh 'Xvfb :0 -fbdir /tmp &'
           sh 'cmake --build build --target test'
         }
