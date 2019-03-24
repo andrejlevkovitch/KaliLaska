@@ -15,7 +15,6 @@ pipeline {
       }
     }
 
-    /*
     stage('test gnu') {
       agent {
         docker {
@@ -29,7 +28,6 @@ pipeline {
         }
       }
     }
-    */
 
     stage('build clang') {
       agent {
@@ -45,7 +43,6 @@ pipeline {
       }
     }
 
-    /*
     stage('test clang') {
       agent {
         docker {
@@ -59,7 +56,6 @@ pipeline {
         }
       }
     }  
-    */
 
     stage('build mingw') {
       agent {
@@ -75,7 +71,6 @@ pipeline {
       }
     }
 
-    /*
     stage('test mingw') {
       agent {
         docker {
@@ -89,6 +84,5 @@ pipeline {
         }
       }
     }  
-    */
   }
 }
