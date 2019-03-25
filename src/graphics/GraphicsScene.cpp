@@ -1,6 +1,7 @@
 // GraphicsScene.cpp
 
 #include "KaliLaska/GraphicsScene.hpp"
+#include "IteratorImp.hpp"
 #include "KaliLaska/Application.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/KeyReleaseEvent.hpp"
@@ -13,11 +14,18 @@
 
 namespace KaliLaska {
 GraphicsScene::GraphicsScene()
-    // TODO not preaty, maybe use abstract factory?
     : imp_{Application::sceneFactory()->createGraphicsScene()} {
 }
 
 GraphicsScene::~GraphicsScene() {
+}
+
+GraphicsScene::ConstIterator GraphicsScene::begin() const {
+  return ConstIterator{std::make_unique<IteratorImp>(imp_->begin())};
+}
+
+GraphicsScene::ConstIterator GraphicsScene::end() const {
+  return ConstIterator{std::make_unique<IteratorImp>(imp_->end())};
 }
 
 void GraphicsScene::mouseMoveEvent(std::unique_ptr<SceneMouseMoveEvent> event) {

@@ -1,7 +1,5 @@
 // GraphicSceneRTreeFactory.cpp
 
-#pragma once
-
 #include "GraphicsSceneRTreeFactory.hpp"
 #include "GraphicsSceneRTree.hpp"
 

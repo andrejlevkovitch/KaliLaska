@@ -64,12 +64,17 @@ set(KaliLaska_SRC
 
   graphics/GraphicsItem.cpp
   graphics/GraphicsScene.cpp
+  graphics/ConstIterator.cpp
+  graphics/IteratorImp.cpp
   graphics/GraphicsView.cpp
   graphics/SceneMouseMoveEvent.cpp
   graphics/SceneMousePressEvent.cpp
   graphics/SceneMouseReleaseEvent.cpp
 
+  graphics/imp/SceneIterator.cpp
+
   graphics/rtree/GraphicsSceneRTree.cpp
+  graphics/rtree/SceneIteratorRTree.cpp
   graphics/rtree/GraphicsSceneRTreeFactory.cpp
   )
 
