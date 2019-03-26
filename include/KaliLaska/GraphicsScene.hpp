@@ -20,9 +20,11 @@ class SceneMouseReleaseEvent;
 class KeyPressEvent;
 class KeyReleaseEvent;
 
-class IteratorImp;
+class SceneIterator;
 
-/**\brief store and manage GraphicsItem-s
+/**\brief store and manage GraphicsItem-s.
+ * \waring all operation with inserting or removing elements invalidate
+ * iterators
  */
 class GraphicsScene {
 public:
@@ -32,13 +34,23 @@ public:
   GraphicsItem *            itemAt(const Point &pos) const;
   std::list<GraphicsItem *> itemsAt(const Point &pos) const;
 
+  /**\warning after inserting all iterators invalidated
+   */
+  void addItem(std::shared_ptr<GraphicsItem> item);
+  /**\warning after removing all iterators invalidated
+   */
+  void removeItem(GraphicsItem *item);
+
 public:
-  class ConstIterator {
+  class ConstIterator final {
     friend GraphicsScene;
 
   public:
     ConstIterator() = default;
     ~ConstIterator();
+
+    ConstIterator(const ConstIterator &rhs);
+    ConstIterator &operator=(const ConstIterator &rhs);
 
     GraphicsItem *operator*() const;
     GraphicsItem *operator->() const;
@@ -46,15 +58,22 @@ public:
     ConstIterator &operator++();
     ConstIterator &operator++(int);
 
-  private:
-    ConstIterator(std::unique_ptr<IteratorImp> imp);
+    bool operator==(const ConstIterator &rhs) const;
+    bool operator!=(const ConstIterator &rhs) const;
 
   private:
-    std::unique_ptr<IteratorImp> imp_;
+    ConstIterator(std::unique_ptr<SceneIterator> imp);
+
+  private:
+    std::unique_ptr<SceneIterator> imp_;
   };
 
   ConstIterator begin() const;
   ConstIterator end() const;
+
+  /**\warning after removing all iterators invalidated
+   */
+  void removeItem(const ConstIterator &iter);
 
 protected:
   virtual void mouseMoveEvent(std::unique_ptr<SceneMouseMoveEvent> event);
@@ -78,5 +97,6 @@ struct iterator_traits<KaliLaska::GraphicsScene::ConstIterator> {
   using value_type        = KaliLaska::GraphicsItem *;
   using pointer           = KaliLaska::GraphicsItem *;
   using reference         = KaliLaska::GraphicsItem *;
+  using difference_type   = std::ptrdiff_t;
 };
 } // namespace std

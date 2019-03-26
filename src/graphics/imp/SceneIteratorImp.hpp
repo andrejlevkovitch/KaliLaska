@@ -3,6 +3,7 @@
 #pragma once
 
 #include <iterator>
+#include <memory>
 
 namespace KaliLaska {
 class GraphicsItem;
@@ -16,7 +17,13 @@ public:
   virtual SceneIteratorImp &operator++()    = 0;
   virtual SceneIteratorImp &operator++(int) = 0;
 
-private:
+  virtual bool operator==(const SceneIteratorImp &rhs) const = 0;
+  virtual bool operator!=(const SceneIteratorImp &rhs) const = 0;
+
+  /**\brief this method needed for copy SceneIterator, which contains unique_ptr
+   * with object of this class
+   */
+  virtual std::unique_ptr<SceneIteratorImp> copyItSelf() const = 0;
 };
 } // namespace KaliLaska
 

@@ -96,11 +96,4 @@ void Application::setIterationTimeInterval(std::chrono::milliseconds time) {
 std::chrono::milliseconds Application::iterationTimeInterval() const {
   return imp_->iterationTimeInterval();
 }
-
-GraphicsSceneImpFactory *Application::sceneFactory() {
-  if (instancePtr && instancePtr->imp_) {
-    return instancePtr->imp_->sceneFactory();
-  }
-  return nullptr;
-}
 } // namespace KaliLaska

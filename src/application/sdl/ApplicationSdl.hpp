@@ -25,9 +25,8 @@ public:
 
   void exit(int code) override;
 
-  WindowImpFactory *       windowFactory() const override;
-  EventImpFactory *        eventFactory() const override;
-  GraphicsSceneImpFactory *sceneFactory() override;
+  WindowImpFactory *windowFactory() const override;
+  EventImpFactory * eventFactory() const override;
 
   void setIterationTimeInterval(std::chrono::milliseconds time) override;
 
@@ -39,8 +38,7 @@ private:
 
   std::atomic_int iterationTime_;
 
-  std::unique_ptr<WindowSdlFactory>        windowFactory_;
-  std::unique_ptr<EventImpFactory>         eventFactory_;
-  std::unique_ptr<GraphicsSceneImpFactory> sceneFactory_;
+  std::unique_ptr<WindowSdlFactory> windowFactory_;
+  std::unique_ptr<EventImpFactory>  eventFactory_;
 };
 } // namespace KaliLaska

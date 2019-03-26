@@ -1,14 +1,24 @@
 // ConstIterator.cpp
 
-#include "IteratorImp.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
+#include "imp/GraphicsSceneImp.hpp"
 
 namespace KaliLaska {
 GraphicsScene::ConstIterator::~ConstIterator() {
 }
 
-GraphicsScene::ConstIterator::ConstIterator(std::unique_ptr<IteratorImp> imp)
+GraphicsScene::ConstIterator::ConstIterator(std::unique_ptr<SceneIterator> imp)
     : imp_{std::move(imp)} {
+}
+
+GraphicsScene::ConstIterator::ConstIterator(const ConstIterator &rhs)
+    : imp_{rhs.imp_->copyItSelf()} {
+}
+
+GraphicsScene::ConstIterator &GraphicsScene::ConstIterator::ConstIterator::
+                              operator=(const ConstIterator &rhs) {
+  imp_ = rhs.imp_->copyItSelf();
+  return *this;
 }
 
 GraphicsItem *GraphicsScene::ConstIterator::operator*() const {
@@ -37,5 +47,16 @@ GraphicsScene::ConstIterator &GraphicsScene::ConstIterator::operator++(int) {
     imp_->operator++();
   }
   return *this;
+}
+
+bool GraphicsScene::ConstIterator::operator==(const ConstIterator &rhs) const {
+  if (*imp_ == *rhs.imp_) {
+    return true;
+  }
+  return false;
+}
+
+bool GraphicsScene::ConstIterator::operator!=(const ConstIterator &rhs) const {
+  return !(*this == rhs);
 }
 } // namespace KaliLaska

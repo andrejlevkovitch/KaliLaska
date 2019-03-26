@@ -4,40 +4,53 @@
 #include "SceneIteratorImp.hpp"
 
 namespace KaliLaska {
-GraphicsSceneImp::SceneIterator::SceneIterator(
-    std::unique_ptr<SceneIteratorImp> imp)
+SceneIterator::SceneIterator(std::shared_ptr<SceneIteratorImp> imp)
     : imp_{std::move(imp)} {
 }
 
-GraphicsSceneImp::SceneIterator::SceneIterator(SceneIterator &&rhs)
-    : imp_{std::move(rhs.imp_)} {
+SceneIterator::~SceneIterator() {
 }
 
-GraphicsSceneImp::SceneIterator &GraphicsSceneImp::SceneIterator::
-                                 operator=(SceneIterator &&rhs) {
-  imp_ = std::move(rhs.imp_);
+SceneIterator::SceneIterator(const SceneIterator &rhs)
+    : imp_{rhs.imp_->copyItSelf()} {
+}
+
+SceneIterator &SceneIterator::operator=(const SceneIterator &rhs) {
+  imp_ = rhs.imp_->copyItSelf();
   return *this;
 }
 
-GraphicsSceneImp::SceneIterator::~SceneIterator() {
-}
-
-GraphicsItem *GraphicsSceneImp::SceneIterator::operator*() const {
+GraphicsItem *SceneIterator::operator*() const {
   return imp_->operator*();
 }
 
-GraphicsItem *GraphicsSceneImp::SceneIterator::operator->() const {
+GraphicsItem *SceneIterator::operator->() const {
   return imp_->operator->();
 }
 
-GraphicsSceneImp::SceneIterator &GraphicsSceneImp::SceneIterator::operator++() {
+SceneIterator &SceneIterator::operator++() {
   imp_->operator++();
   return *this;
 }
 
-GraphicsSceneImp::SceneIterator &GraphicsSceneImp::SceneIterator::
-                                 operator++(int) {
+SceneIterator &SceneIterator::operator++(int) {
   imp_->operator++();
   return *this;
+}
+
+bool SceneIterator::operator==(const SceneIterator &rhs) {
+  return imp_ == rhs.imp_;
+}
+
+bool SceneIterator::operator!=(const SceneIterator &rhs) {
+  return imp_ != rhs.imp_;
+}
+
+SceneIteratorImp *SceneIterator::imp() const {
+  return imp_.get();
+}
+
+std::unique_ptr<SceneIterator> SceneIterator::copyItSelf() const {
+  return std::make_unique<SceneIterator>(*this);
 }
 } // namespace KaliLaska

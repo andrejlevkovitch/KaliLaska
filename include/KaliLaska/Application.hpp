@@ -48,10 +48,6 @@ public:
    */
   static EventImpFactory *eventFactory();
 
-  /**\return abstract factory, which create implementation for GraphicsScene
-   */
-  static GraphicsSceneImpFactory *sceneFactory();
-
   /**\brief send event to window. This event will be delivered momentally (in
    * current iteration of the main cikle).
    * \warning custom user event as MoveEvent or ResizeEvent will not change

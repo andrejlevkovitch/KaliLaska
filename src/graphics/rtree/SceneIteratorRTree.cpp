@@ -12,11 +12,11 @@ SceneIteratorRTree::~SceneIteratorRTree() {
 }
 
 GraphicsItem *SceneIteratorRTree::operator*() const {
-  return it_.operator*().second;
+  return it_.operator*().second.get();
 }
 
 GraphicsItem *SceneIteratorRTree::operator->() const {
-  return it_.operator->()->second;
+  return it_.operator->()->second.get();
 }
 
 SceneIteratorRTree &SceneIteratorRTree::operator++() {
@@ -27,5 +27,29 @@ SceneIteratorRTree &SceneIteratorRTree::operator++() {
 SceneIteratorRTree &SceneIteratorRTree::operator++(int) {
   ++it_;
   return *this;
+}
+
+GraphicsSceneRTree::TreeType::const_iterator SceneIteratorRTree::imp() const {
+  return it_;
+}
+
+bool SceneIteratorRTree::operator==(const SceneIteratorImp &rhs) const {
+  try {
+    const auto &rIter = dynamic_cast<const SceneIteratorRTree &>(rhs);
+    if (it_ == rIter.it_) {
+      return true;
+    }
+    return false;
+  } catch (std::bad_cast &) {
+    return false;
+  }
+}
+
+bool SceneIteratorRTree::operator!=(const SceneIteratorImp &rhs) const {
+  return !(*this == rhs);
+}
+
+std::unique_ptr<SceneIteratorImp> SceneIteratorRTree::copyItSelf() const {
+  return std::make_unique<SceneIteratorRTree>(it_);
 }
 } // namespace KaliLaska

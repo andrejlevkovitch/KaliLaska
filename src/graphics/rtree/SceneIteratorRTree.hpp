@@ -17,6 +17,13 @@ public:
   SceneIteratorRTree &operator++() override;
   SceneIteratorRTree &operator++(int) override;
 
+  bool operator==(const SceneIteratorImp &rhs) const override;
+  bool operator!=(const SceneIteratorImp &rhs) const override;
+
+  GraphicsSceneRTree::TreeType::const_iterator imp() const;
+
+  virtual std::unique_ptr<SceneIteratorImp> copyItSelf() const override;
+
 private:
   GraphicsSceneRTree::TreeType::const_iterator it_;
 };
