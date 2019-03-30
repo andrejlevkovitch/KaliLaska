@@ -11,6 +11,7 @@ set(TEST_LIST
   src/test_Window.cpp
   src/test_CustomEvents.cpp
   src/test_openGL.cpp
+  src/test_GraphicsScene.cpp
   )
 
 list(LENGTH TEST_LIST TEST_CAPACITY)

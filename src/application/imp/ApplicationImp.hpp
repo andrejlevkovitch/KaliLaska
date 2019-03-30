@@ -7,6 +7,7 @@
 namespace KaliLaska {
 class WindowImpFactory;
 class EventImpFactory;
+class Object;
 
 /**\brief interface for Application
  */
@@ -29,5 +30,8 @@ public:
   virtual void setIterationTimeInterval(std::chrono::milliseconds time) = 0;
 
   virtual std::chrono::milliseconds iterationTimeInterval() const = 0;
+
+  virtual void registerObject(Object *obj)   = 0;
+  virtual void unregisterObject(Object *obj) = 0;
 };
 } // namespace KaliLaska

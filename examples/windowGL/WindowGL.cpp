@@ -92,6 +92,7 @@ void WindowGL::update() {
     GL_CHECK();
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     GL_CHECK();
+
     glBufferData(
         GL_ELEMENT_ARRAY_BUFFER, 3 * sizeof(int), elements, GL_STATIC_DRAW);
     GL_CHECK();

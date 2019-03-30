@@ -15,17 +15,25 @@
 namespace KaliLaska {
 GraphicsScene::GraphicsScene()
     : imp_{GraphicsSceneImpFactory::createImp()} {
+  Application::registerObject(this);
 }
 
 GraphicsScene::~GraphicsScene() {
+  Application::unregisterObject(this);
 }
 
-GraphicsItem *GraphicsScene::itemAt(const Point &pos) const {
-  return imp_->itemAt(pos);
+GraphicsItem *GraphicsScene::itemAt(const PointF &pos, Spatials spat) const {
+  return imp_->itemAt(pos, spat);
 }
 
-std::list<GraphicsItem *> GraphicsScene::itemsAt(const Point &pos) const {
-  return imp_->itemsAt(pos);
+std::list<GraphicsItem *> GraphicsScene::itemsAt(const PointF &pos,
+                                                 Spatials      spat) const {
+  return imp_->itemsAt(pos, spat);
+}
+
+std::list<GraphicsItem *> GraphicsScene::itemsAt(const Box &box,
+                                                 Spatials   spat) const {
+  return imp_->itemsAt(box, spat);
 }
 
 void GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
@@ -36,12 +44,32 @@ void GraphicsScene::removeItem(GraphicsItem *item) {
   imp_->removeItem(item);
 }
 
+void GraphicsScene::removeItem(const ConstIterator &iter) {
+  imp_->removeItem(*(iter.imp_));
+}
+
 GraphicsScene::ConstIterator GraphicsScene::begin() const {
   return ConstIterator{std::make_unique<SceneIterator>(imp_->begin())};
 }
 
 GraphicsScene::ConstIterator GraphicsScene::end() const {
   return ConstIterator{std::make_unique<SceneIterator>(imp_->end())};
+}
+
+size_t GraphicsScene::size() const {
+  return imp_->size();
+}
+
+bool GraphicsScene::empty() const {
+  return imp_->empty();
+}
+
+void GraphicsScene::clear() {
+  return imp_->clear();
+}
+
+Box GraphicsScene::bounds() const {
+  return imp_->bounds();
 }
 
 void GraphicsScene::mouseMoveEvent(std::unique_ptr<SceneMouseMoveEvent> event) {
@@ -74,5 +102,11 @@ void GraphicsScene::keyReleaseEvent(std::unique_ptr<KeyReleaseEvent> event) {
 void GraphicsScene::event(std::unique_ptr<Event> event) {
   // TODO not implement
   UNUSED(event);
+}
+
+void GraphicsScene::update() {
+  for (auto i : *this) {
+    i->update();
+  }
 }
 } // namespace KaliLaska

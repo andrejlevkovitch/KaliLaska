@@ -2,7 +2,10 @@
 
 #pragma once
 
+#include "KaliLaska/Box.hpp"
+#include "KaliLaska/Object.hpp"
 #include "KaliLaska/Point.hpp"
+#include "KaliLaska/geometry.hpp"
 #include <list>
 #include <memory>
 
@@ -26,13 +29,23 @@ class SceneIterator;
  * \waring all operation with inserting or removing elements invalidate
  * iterators
  */
-class GraphicsScene {
+class GraphicsScene : public Object {
 public:
+  class ConstIterator;
+
   GraphicsScene();
   virtual ~GraphicsScene();
 
-  GraphicsItem *            itemAt(const Point &pos) const;
-  std::list<GraphicsItem *> itemsAt(const Point &pos) const;
+  /**\breif call update for every item on the scene
+   */
+  void update() override;
+
+  GraphicsItem *            itemAt(const PointF &pos,
+                                   Spatials = Spatials::Intersects) const;
+  std::list<GraphicsItem *> itemsAt(const PointF &pos,
+                                    Spatials = Spatials::Intersects) const;
+  std::list<GraphicsItem *> itemsAt(const Box &pos,
+                                    Spatials = Spatials::Intersects) const;
 
   /**\warning after inserting all iterators invalidated
    */
@@ -40,13 +53,40 @@ public:
   /**\warning after removing all iterators invalidated
    */
   void removeItem(GraphicsItem *item);
+  /**\warning after removing all iterators invalidated
+   */
+  void removeItem(const ConstIterator &iter);
+
+  ConstIterator begin() const;
+  ConstIterator end() const;
+
+  size_t size() const;
+  bool   empty() const;
+
+  void clear();
+
+  /**\return minimal Box, which can contain all items
+   */
+  Box bounds() const;
+
+protected:
+  virtual void mouseMoveEvent(std::unique_ptr<SceneMouseMoveEvent> event);
+  virtual void mousePressEvent(std::unique_ptr<SceneMousePressEvent> event);
+  virtual void mouseReleaseEvent(std::unique_ptr<SceneMouseReleaseEvent> event);
+
+  virtual void keyPressEvent(std::unique_ptr<KeyPressEvent> event);
+  virtual void keyReleaseEvent(std::unique_ptr<KeyReleaseEvent> event);
+
+  virtual void event(std::unique_ptr<Event> event);
+
+private:
+  std::unique_ptr<GraphicsSceneImp> imp_;
 
 public:
   class ConstIterator final {
     friend GraphicsScene;
 
   public:
-    ConstIterator() = default;
     ~ConstIterator();
 
     ConstIterator(const ConstIterator &rhs);
@@ -67,26 +107,6 @@ public:
   private:
     std::unique_ptr<SceneIterator> imp_;
   };
-
-  ConstIterator begin() const;
-  ConstIterator end() const;
-
-  /**\warning after removing all iterators invalidated
-   */
-  void removeItem(const ConstIterator &iter);
-
-protected:
-  virtual void mouseMoveEvent(std::unique_ptr<SceneMouseMoveEvent> event);
-  virtual void mousePressEvent(std::unique_ptr<SceneMousePressEvent> event);
-  virtual void mouseReleaseEvent(std::unique_ptr<SceneMouseReleaseEvent> event);
-
-  virtual void keyPressEvent(std::unique_ptr<KeyPressEvent> event);
-  virtual void keyReleaseEvent(std::unique_ptr<KeyReleaseEvent> event);
-
-  virtual void event(std::unique_ptr<Event> event);
-
-private:
-  std::unique_ptr<GraphicsSceneImp> imp_;
 };
 } // namespace KaliLaska
 

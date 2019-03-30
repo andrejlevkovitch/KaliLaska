@@ -2,7 +2,9 @@
 
 #pragma once
 
-#include <KaliLaska/Point.hpp>
+#include "KaliLaska/Box.hpp"
+#include "KaliLaska/Point.hpp"
+#include "KaliLaska/TransformMatrix.hpp"
 #include <list>
 #include <memory>
 #include <set>
@@ -26,6 +28,20 @@ public:
   GraphicsItem(GraphicsItem &&) = delete;
   GraphicsItem &operator=(GraphicsItem &&) = delete;
 
+  /**\return box, which contains current item. Have to be in item koordinates.
+   * Rendering have to be in this box, otherwise it can have unexpected rezult
+   */
+  virtual Box boundingBox() const = 0;
+
+  /**\brief have to be used for rendering by opengl
+   */
+  virtual void render() const = 0;
+
+  /**\brief this method calls by scene for evety object on scene. Usually it
+   * calls every iteration of main loop. By default does nothing.
+   */
+  virtual void update();
+
   /**\return scene where currently be the element or nullptr if not assotiated
    * with any scene
    */
@@ -42,22 +58,24 @@ public:
   /**\return postion of item in parent koordinates. If parent is not set - in
    * scene koordinates
    */
-  Point pos() const;
+  PointF pos() const;
 
   /**\return position of item in scene koordinates
    */
-  Point scenePos() const;
+  PointF scenePos() const;
 
   /**\brief set current postion of item in parent koordinates. If parent is
    * nullptr - in scene koordinates
    */
-  void setPos(const Point &pos);
+  void setPos(const PointF &pos);
 
   /**\brief set current position of item in scene koordinates
    */
-  void setScenePos(const Point &pos);
+  void setScenePos(const PointF &pos);
 
   std::list<GraphicsItem *> children() const;
+
+  // TransformMatrix transformMatrix() const;
 
 protected:
   virtual void mouseMoveEvent(std::unique_ptr<SceneMouseMoveEvent> event);
@@ -75,5 +93,8 @@ private:
 
   GraphicsItem *           parent_;
   std::set<GraphicsItem *> children_;
+
+  // TODO need change this on matrix
+  PointF curPos_;
 };
 } // namespace KaliLaska

@@ -6,8 +6,8 @@
 #include <atomic>
 #include <chrono>
 #include <cstdint>
-#include <map>
 #include <memory>
+#include <set>
 
 namespace KaliLaska {
 class WindowSdlFactory;
@@ -32,6 +32,9 @@ public:
 
   std::chrono::milliseconds iterationTimeInterval() const override;
 
+  void registerObject(Object *obj) override;
+  void unregisterObject(Object *obj) override;
+
 private:
   std::atomic_bool loop_;
   std::atomic_int  return_code_;
@@ -40,5 +43,7 @@ private:
 
   std::unique_ptr<WindowSdlFactory> windowFactory_;
   std::unique_ptr<EventImpFactory>  eventFactory_;
+
+  std::set<Object *> objects_;
 };
 } // namespace KaliLaska

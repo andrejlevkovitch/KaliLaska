@@ -84,7 +84,7 @@ int ApplicationSdl::exec() {
 
     auto curDuration = std::chrono::system_clock::now() - lastTimePoint;
     if (curDuration >= std::chrono::milliseconds{iterationTime_}) {
-      for (const auto &i : windowFactory_->allWindows()) {
+      for (const auto &i : objects_) {
         if (i) {
           i->update();
         }
@@ -119,5 +119,13 @@ void ApplicationSdl::setIterationTimeInterval(std::chrono::milliseconds time) {
 
 std::chrono::milliseconds ApplicationSdl::iterationTimeInterval() const {
   return std::chrono::milliseconds{iterationTime_};
+}
+
+void ApplicationSdl::registerObject(Object *obj) {
+  objects_.insert(obj);
+}
+
+void ApplicationSdl::unregisterObject(Object *obj) {
+  objects_.erase(obj);
 }
 } // namespace KaliLaska

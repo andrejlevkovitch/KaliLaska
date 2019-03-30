@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "KaliLaska/Box.hpp"
+#include "KaliLaska/Color.hpp"
 #include "kalilaska_export.h"
 #include <string>
 
@@ -69,5 +71,12 @@ private:
   uint32_t program_;
   uint32_t vertexShader_;
   uint32_t fragmentShader_;
+};
+
+/**\brief 2D OpenGL renderer
+ */
+class KALILASKA_EXPORT Renderer final {
+public:
+  static void render(const Box &box, const Color &color);
 };
 } // namespace KaliLaska::GL

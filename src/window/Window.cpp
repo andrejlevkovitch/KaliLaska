@@ -23,6 +23,7 @@ Window::Window()
   } catch (std::runtime_error &) {
     throw;
   }
+  Application::registerObject(this);
 }
 
 Window::Window(std::string_view title, const Size &size)
@@ -36,6 +37,7 @@ Window::Window(std::string_view title, const Size &size)
   } catch (std::runtime_error &) {
     throw;
   }
+  Application::registerObject(this);
 }
 
 Window::Window(std::string_view title, const Point &pos, const Size &size)
@@ -49,10 +51,12 @@ Window::Window(std::string_view title, const Point &pos, const Size &size)
   } catch (std::runtime_error &) {
     throw;
   }
+  Application::registerObject(this);
 }
 
 Window::~Window() {
   // also if we manually remove window it have to unregisterd itself
+  Application::unregisterObject(this);
   Application::windowFactory()->resetWindow(this);
 }
 

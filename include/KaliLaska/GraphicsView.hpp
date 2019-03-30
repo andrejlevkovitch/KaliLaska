@@ -2,11 +2,11 @@
 
 #pragma once
 
+#include "KaliLaska/Box.hpp"
 #include "KaliLaska/Window.hpp"
 
 namespace KaliLaska {
 class GraphicsScene;
-class Rect;
 
 /**\brief display entity of GraphicsScen. One view can display only one scene
  */
@@ -15,13 +15,15 @@ public:
   GraphicsView(std::string_view title, const Point &pos, const Size &size);
   ~GraphicsView() override = default;
 
-  GraphicsScene *scene() const;
-
   /**\warning not set ownershiep of scene
    */
-  void setScene(GraphicsScene *scene);
+  virtual void   setScene(GraphicsScene *scene);
+  GraphicsScene *scene() const;
 
-  void setSceneRect(const Rect &sceneRect);
+  void setSceneBox(const Box &sceneBox);
+  Box  sceneBox() const;
+
+  void update() override;
 
 protected:
   void resizeEvent(std::unique_ptr<ResizeEvent> event) override;
@@ -38,5 +40,11 @@ protected:
 
 private:
   GraphicsScene *scene_;
+
+  /**\brief this is scene postion, which in the top left corner of view. By
+   * default {0, 0}
+   */
+  // TODO this is need change on matrix
+  Box sceneBox_;
 };
 } // namespace KaliLaska

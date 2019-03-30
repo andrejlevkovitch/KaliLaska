@@ -40,6 +40,6 @@ bool Size::operator==(const Size &rhs) const {
 } // namespace KaliLaska
 
 std::ostream &operator<<(std::ostream &stream, const KaliLaska::Size &size) {
-  stream << "width " << size.width() << ", height " << size.height();
+  stream << "Size: width " << size.width() << ", height " << size.height();
   return stream;
 }

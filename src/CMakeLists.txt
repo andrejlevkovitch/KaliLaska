@@ -1,13 +1,12 @@
 # cmake for src
 
-find_package(Boost REQUIRED)
-
 include(GenerateExportHeader)
 
 set(KaliLaska_SRC
   core/Point.cpp
   core/Size.cpp
   core/Color.cpp
+  core/Box.cpp
 
 
   application/EventNotifyer.cpp
@@ -57,10 +56,8 @@ set(KaliLaska_SRC
   window/sdl/WindowSdl.cpp
   window/sdl/WindowSdlFactory.cpp
 
-  opengl/Attacher.cpp
-  opengl/GLFactory.cpp
-  opengl/Program.cpp
-  opengl/Shader.cpp
+  opengl/ShaderProgram.cpp
+  opengl/Renderer.cpp
 
   graphics/GraphicsItem.cpp
   graphics/GraphicsScene.cpp

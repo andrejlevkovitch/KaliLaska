@@ -7,18 +7,22 @@
 #include <boost/geometry.hpp>
 #include <boost/iterator/function_output_iterator.hpp>
 
+namespace bg = boost::geometry;
+
 namespace KaliLaska {
 GraphicsSceneRTree::GraphicsSceneRTree() {
-  boost::geometry::index::rtree<ValueType, Indexable>::const_iterator it;
+  bg::index::rtree<ValueType, Indexable>::const_iterator it;
 }
 
 GraphicsSceneRTree::~GraphicsSceneRTree() {
 }
 
 void GraphicsSceneRTree::addItem(std::shared_ptr<GraphicsItem> item) {
-  // TODO implement
-  UNUSED(item);
-  // TODO use here std::move!!!
+  auto box = item->boundingBox();
+  bg::strategy::transform::translate_transformer<float, 2, 2> traslator{
+      bg::get<0>(item->pos()), bg::get<1>(item->pos())};
+  bg::transform(box, box, traslator);
+  tree_.insert(ValueType{std::move(box), std::move(item)});
 }
 
 void GraphicsSceneRTree::removeItem(GraphicsItem *item) {
@@ -42,16 +46,93 @@ void GraphicsSceneRTree::removeItem(const SceneIterator &iter) {
   tree_.remove(rtreeIter, std::next(rtreeIter));
 }
 
-GraphicsItem *GraphicsSceneRTree::itemAt(const Point &pos) const {
-  return tree_.qbegin(boost::geometry::index::contains(pos))->second.get();
+GraphicsItem *GraphicsSceneRTree::itemAt(const PointF &pos,
+                                         Spatials      spat) const {
+  switch (spat) {
+  case Spatials::Contains:
+    if (auto iter = tree_.qbegin(bg::index::contains(pos));
+        iter != tree_.qend()) {
+      return iter->second.get();
+    }
+    break;
+  case Spatials::Intersects:
+    if (auto iter = tree_.qbegin(bg::index::intersects(pos));
+        iter != tree_.qend()) {
+      return iter->second.get();
+    }
+    break;
+  case Spatials::Within:
+    break;
+  }
+  return nullptr;
 }
 
-std::list<GraphicsItem *> GraphicsSceneRTree::itemsAt(const Point &pos) const {
+std::list<GraphicsItem *> GraphicsSceneRTree::itemsAt(const PointF &pos,
+                                                      Spatials spat) const {
   std::list<GraphicsItem *> retval;
-  tree_.query(boost::geometry::index::contains(pos),
-              boost::make_function_output_iterator([&retval](const auto &val) {
-                retval.push_back(val.second.get());
-              }));
+  switch (spat) {
+  case Spatials::Contains:
+    tree_.query(
+        bg::index::contains(pos),
+        boost::make_function_output_iterator([&retval](const ValueType &val) {
+          retval.push_back(val.second.get());
+        }));
+    break;
+  case Spatials::Intersects:
+    tree_.query(
+        bg::index::intersects(pos),
+        boost::make_function_output_iterator([&retval](const ValueType &val) {
+          retval.push_back(val.second.get());
+        }));
+    break;
+  case Spatials::Within:
+    break;
+  }
   return retval;
+}
+
+std::list<GraphicsItem *> GraphicsSceneRTree::itemsAt(const Box &box,
+                                                      Spatials   spat) const {
+  std::list<GraphicsItem *> retval;
+  switch (spat) {
+  case Spatials::Contains:
+    tree_.query(
+        bg::index::contains(box),
+        boost::make_function_output_iterator([&retval](const ValueType &val) {
+          retval.push_back(val.second.get());
+        }));
+    break;
+  case Spatials::Intersects:
+    tree_.query(
+        bg::index::intersects(box),
+        boost::make_function_output_iterator([&retval](const ValueType &val) {
+          retval.push_back(val.second.get());
+        }));
+    break;
+  case Spatials::Within:
+    tree_.query(
+        bg::index::within(box),
+        boost::make_function_output_iterator([&retval](const ValueType &val) {
+          retval.push_back(val.second.get());
+        }));
+    break;
+  }
+  return retval;
+}
+
+size_t GraphicsSceneRTree::size() const {
+  return tree_.size();
+}
+
+bool GraphicsSceneRTree::empty() const {
+  return tree_.empty();
+}
+
+void GraphicsSceneRTree::clear() {
+  tree_.clear();
+}
+
+Box GraphicsSceneRTree::bounds() const {
+  return tree_.bounds();
 }
 } // namespace KaliLaska

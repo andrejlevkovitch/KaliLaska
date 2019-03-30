@@ -96,4 +96,16 @@ void Application::setIterationTimeInterval(std::chrono::milliseconds time) {
 std::chrono::milliseconds Application::iterationTimeInterval() const {
   return imp_->iterationTimeInterval();
 }
+
+void Application::registerObject(Object *obj) {
+  if (instancePtr && instancePtr->imp_) {
+    instancePtr->imp_->registerObject(obj);
+  }
+}
+
+void Application::unregisterObject(Object *obj) {
+  if (instancePtr && instancePtr->imp_) {
+    instancePtr->imp_->unregisterObject(obj);
+  }
+}
 } // namespace KaliLaska

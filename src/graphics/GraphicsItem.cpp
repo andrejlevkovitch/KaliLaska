@@ -5,7 +5,8 @@
 #include <algorithm>
 
 namespace KaliLaska {
-GraphicsItem::GraphicsItem() {
+GraphicsItem::GraphicsItem()
+    : curPos_{0, 0} {
 }
 
 GraphicsScene *GraphicsItem::scene() const {
@@ -19,7 +20,7 @@ GraphicsItem *GraphicsItem::parent() const {
 void GraphicsItem::setParent(GraphicsItem *parent) {
   // We have to save previous postion in parent koordinates and set it after all
   // operations
-  Point currentPos = pos();
+  PointF currentPos = pos();
   if (parent_) {
     parent_->removeFromChildren(this);
   }
@@ -30,22 +31,20 @@ void GraphicsItem::setParent(GraphicsItem *parent) {
   setPos(currentPos);
 }
 
-Point GraphicsItem::pos() const {
+PointF GraphicsItem::pos() const {
+  return curPos_;
+}
+
+PointF GraphicsItem::scenePos() const {
   // TODO implement
   return {};
 }
 
-Point GraphicsItem::scenePos() const {
-  // TODO implement
-  return {};
+void GraphicsItem::setPos(const PointF &pos) {
+  curPos_ = pos;
 }
 
-void GraphicsItem::setPos(const Point &pos) {
-  // TODO implement
-  UNUSED(pos);
-}
-
-void GraphicsItem::setScenePos(const Point &pos) {
+void GraphicsItem::setScenePos(const PointF &pos) {
   // TODO implement
   UNUSED(pos);
 }
@@ -86,5 +85,12 @@ void GraphicsItem::removeFromChildren(GraphicsItem *item) {
   if (auto found = children_.find(item); found != children_.end()) {
     children_.erase(found);
   }
+}
+
+// TransformMatrix GraphicsItem::transformMatrix() const {
+//  return transformMatrix_;
+//}
+
+void GraphicsItem::update() {
 }
 } // namespace KaliLaska

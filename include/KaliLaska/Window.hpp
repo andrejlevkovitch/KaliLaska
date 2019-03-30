@@ -3,6 +3,7 @@
 #pragma once
 
 #include "KaliLaska/Color.hpp"
+#include "KaliLaska/Object.hpp"
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
 #include "kalilaska_export.h"
@@ -34,7 +35,7 @@ class KeyReleaseEvent;
  * finish
  * \brief uses OpenGL for rendering
  */
-class KALILASKA_EXPORT Window {
+class KALILASKA_EXPORT Window : public Object {
   friend EventNotifyer;
 
 public:
@@ -100,7 +101,7 @@ public:
   /**\brief this method call by Application every cickle iteration. By default
    * does nothing
    */
-  virtual void update();
+  void update() override;
 
 protected:
   /**\brief prepare window for rendering. Because uses openGL for rendering

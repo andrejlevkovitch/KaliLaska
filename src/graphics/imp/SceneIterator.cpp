@@ -4,7 +4,7 @@
 #include "SceneIteratorImp.hpp"
 
 namespace KaliLaska {
-SceneIterator::SceneIterator(std::shared_ptr<SceneIteratorImp> imp)
+SceneIterator::SceneIterator(std::unique_ptr<SceneIteratorImp> imp)
     : imp_{std::move(imp)} {
 }
 
@@ -39,11 +39,11 @@ SceneIterator &SceneIterator::operator++(int) {
 }
 
 bool SceneIterator::operator==(const SceneIterator &rhs) {
-  return imp_ == rhs.imp_;
+  return *imp_ == *rhs.imp_;
 }
 
 bool SceneIterator::operator!=(const SceneIterator &rhs) {
-  return imp_ != rhs.imp_;
+  return *imp_ != *rhs.imp_;
 }
 
 SceneIteratorImp *SceneIterator::imp() const {

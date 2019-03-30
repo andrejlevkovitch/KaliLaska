@@ -5,6 +5,6 @@
 
 namespace KaliLaska {
 std::unique_ptr<GraphicsSceneImp> GraphicsSceneImpFactory::createImp() {
-  return std::unique_ptr<GraphicsSceneRTree>();
+  return std::make_unique<GraphicsSceneRTree>();
 }
 } // namespace KaliLaska

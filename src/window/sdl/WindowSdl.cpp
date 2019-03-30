@@ -31,7 +31,7 @@ WindowSdl::~WindowSdl() {
 }
 
 uint32_t WindowSdl::id() const {
-  return ::SDL_GetWindowID(window_);
+  return SDL_GetWindowID(window_);
 }
 
 Point WindowSdl::pos() const {
@@ -84,7 +84,7 @@ void WindowSdl::show() {
 }
 
 void WindowSdl::setFullScr() {
-  ::SDL_SetWindowFullscreen(window_, SDL_WINDOW_FULLSCREEN_DESKTOP);
+  SDL_SetWindowFullscreen(window_, SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 bool WindowSdl::isFullScr() const {
@@ -92,11 +92,11 @@ bool WindowSdl::isFullScr() const {
 }
 
 void WindowSdl::setResizable(bool value) {
-  ::SDL_SetWindowResizable(window_, static_cast<SDL_bool>(value));
+  SDL_SetWindowResizable(window_, static_cast<SDL_bool>(value));
 }
 
 bool WindowSdl::isResizable() const {
-  return ::SDL_GetWindowFlags(window_) & SDL_WINDOW_RESIZABLE;
+  return SDL_GetWindowFlags(window_) & SDL_WINDOW_RESIZABLE;
 }
 
 void WindowSdl::swapWindow() {

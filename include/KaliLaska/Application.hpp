@@ -14,6 +14,8 @@ class GraphicsSceneImpFactory;
 class Window;
 class Event;
 
+class Object;
+
 class ApplicationImp;
 
 /**\brief initialize all parts of game engin and provide access to it. Singleton
@@ -65,6 +67,11 @@ public:
   /**\return current time interval of main cickle
    */
   std::chrono::milliseconds iterationTimeInterval() const;
+
+  /**\brief registered object call by the application every loop iteration
+   */
+  static void registerObject(Object *obj);
+  static void unregisterObject(Object *obj);
 
 private:
   void parseArguments(int argc, char *argv[]);

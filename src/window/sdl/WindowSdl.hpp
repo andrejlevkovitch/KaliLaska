@@ -5,6 +5,7 @@
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
 #include "window/imp/WindowImp.hpp"
+#include <mutex>
 
 class SDL_Window;
 

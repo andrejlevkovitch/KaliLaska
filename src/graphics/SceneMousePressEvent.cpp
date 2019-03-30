@@ -15,8 +15,6 @@ SceneMousePressEvent::~SceneMousePressEvent() {
 
 Mouse::Button SceneMousePressEvent::button() const {
   return event_->button();
-
-  Point p{10, 10};
 }
 
 Mouse::Buttons SceneMousePressEvent::buttons() const {
