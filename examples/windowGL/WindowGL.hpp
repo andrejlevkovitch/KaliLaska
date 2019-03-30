@@ -16,7 +16,5 @@ public:
 private:
   std::chrono::time_point<std::chrono::system_clock> last_;
 
-  KaliLaska::GL::Program shaderProgram_;
-  KaliLaska::GL::Shader  vertexShader_;
-  KaliLaska::GL::Shader  fragmentShader_;
+  KaliLaska::GL::ShaderProgram shaderProgram_;
 };

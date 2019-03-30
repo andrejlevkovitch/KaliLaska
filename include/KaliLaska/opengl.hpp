@@ -43,95 +43,31 @@
     }                                                                          \
   }
 
-namespace KaliLaska {
-namespace GL {
+namespace KaliLaska::GL {
 class GLFactory;
+class Shader;
 
-/**\brief incapsulate shader object. In destructor destroy opengl shader object
- */
-class KALILASKA_EXPORT Shader final {
-  friend GLFactory;
-
+class KALILASKA_EXPORT ShaderProgram final {
 public:
-  ~Shader();
-
-  Shader &operator=(Shader &&rhs);
-
-  Shader(const Shader &) = delete;
-  Shader &operator=(const Shader &) = delete;
-
-  /**\return opengl shader object
+  /**\throw runtime_exception if shader or program can not be created
    */
-  uint32_t value() const;
+  ShaderProgram(std::string_view vertesShaderCode,
+                std::string_view fragmentShaderCode);
+  ~ShaderProgram();
 
-private:
-  explicit Shader(uint32_t openglShader);
-
-private:
-  uint32_t openglShader_;
-};
-
-class KALILASKA_EXPORT Program final {
-  friend GLFactory;
-
-public:
-  ~Program();
-
-  Program &operator=(Program &&rhs);
-
-  Program(const Program &) = delete;
-  Program &operator=(const Program &) = delete;
-
-  /**\return opengl program object
+  /**\throw runtime_exception if can not use current program
    */
-  uint32_t value() const;
+  void use();
 
-private:
-  explicit Program(uint32_t openglProgram);
+  ShaderProgram(ShaderProgram &&rhs);
+  ShaderProgram &operator=(ShaderProgram &&rhs);
 
-private:
-  uint32_t openglProgram_;
-};
-
-/**\brief attach shaders to program and link it in the konstructor and detach it
- * in destructor
- */
-class KALILASKA_EXPORT Attacher final {
-public:
-  /**\throw runtime_error if some shader already attached
-   */
-  Attacher(const Program &program,
-           const Shader & vertexShader,
-           const Shader & fragmentShader);
-  ~Attacher();
-
-  Attacher &operator=(Attacher &&);
-
-  Attacher(const Attacher &) = delete;
-  Attacher &operator=(const Attacher &) = delete;
+  ShaderProgram(const ShaderProgram &) = delete;
+  ShaderProgram &operator=(const ShaderProgram &) = delete;
 
 private:
   uint32_t program_;
   uint32_t vertexShader_;
   uint32_t fragmentShader_;
 };
-
-/**\brief factory for creating openGL objects
- */
-class KALILASKA_EXPORT GLFactory final {
-public:
-  enum class ShaderType { Vertex, Fragment };
-
-  /**\param code code of shader
-   * \return opengl shader
-   * \throw runtime_error if shader can not be compiled or if type is invalid
-   */
-  static Shader createShader(ShaderType type, std::string_view code);
-
-  /**\return opengl program
-   * \throw runtime_error if program can not be created
-   */
-  static Program createProgram();
-};
-} // namespace GL
-} // namespace KaliLaska
+} // namespace KaliLaska::GL

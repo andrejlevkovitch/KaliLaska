@@ -35,11 +35,9 @@ using KaliLaska::GL::GLFactory;
 
 WindowGL::WindowGL(std::string_view title, const KaliLaska::Size &size)
     : Window{title, size}
-    , shaderProgram_{GLFactory::createProgram()}
-    , vertexShader_{GLFactory::createShader(GLFactory::ShaderType::Vertex,
-                                            vertexShader)}
-    , fragmentShader_{GLFactory::createShader(GLFactory::ShaderType::Fragment,
-                                              fragmentShader)} {
+    , shaderProgram_{vertexShader, fragmentShader} {
+  shaderProgram_.use();
+
   std::cerr << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
 
@@ -55,9 +53,6 @@ void WindowGL::update() {
     std::default_random_engine            engine{rd()};
     std::uniform_real_distribution<float> colorDistrib{0, 1};
     std::uniform_real_distribution<float> vertexDistrib{-1, 1};
-
-    KaliLaska::GL::Attacher attacher(
-        shaderProgram_, vertexShader_, fragmentShader_);
 
     glViewport(0, 0, drawSize().width(), drawSize().height());
     glClearColor(0, 0, 0, 1);

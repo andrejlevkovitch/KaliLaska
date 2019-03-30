@@ -35,19 +35,18 @@ class OpenGLWindow : public KaliLaska::Window {
 public:
   OpenGLWindow()
       : KaliLaska::Window{"", KaliLaska::Size{100, 100}}
-      , shaderProgram_{KaliLaska::GL::GLFactory::createProgram()}
-      , vertexShader_{KaliLaska::GL::GLFactory::createShader(
-            KaliLaska::GL::GLFactory::ShaderType::Fragment, fragmentShader)}
-      , fragmentShader_{KaliLaska::GL::GLFactory::createShader(
-            KaliLaska::GL::GLFactory::ShaderType::Vertex, vertexShader)} {}
+      , shaderProgram_{vertexShader, fragmentShader} {
+    try {
+      shaderProgram_.use();
+    } catch (const std::runtime_error &) {
+      throw;
+    }
+  }
 
   ~OpenGLWindow() {}
 
   void update() {
     Window::makeCurrent();
-
-    KaliLaska::GL::Attacher attacher(
-        shaderProgram_, vertexShader_, fragmentShader_);
 
     glViewport(0, 0, drawSize().width(), drawSize().height());
     glClearColor(0, 0, 0, 1);
@@ -102,7 +101,5 @@ public:
   }
 
 private:
-  KaliLaska::GL::Program shaderProgram_;
-  KaliLaska::GL::Shader  vertexShader_;
-  KaliLaska::GL::Shader  fragmentShader_;
+  KaliLaska::GL::ShaderProgram shaderProgram_;
 };
