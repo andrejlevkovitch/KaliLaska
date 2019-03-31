@@ -80,6 +80,11 @@ public:
    */
   Box bounds() const;
 
+  /**\brief GraphicsItem call this in itemChanged method. It needed for change
+   * item in rtree \warning no reason use this manually
+   */
+  void itemChanged(const GraphicsItem *item, const PointF &prevPos);
+
 protected:
   /**\brief notify all items at position of event
    */

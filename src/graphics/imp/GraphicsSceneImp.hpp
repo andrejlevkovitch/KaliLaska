@@ -66,6 +66,8 @@ public:
 
   virtual Box bounds() const = 0;
 
+  virtual void itemChanged(const GraphicsItem *item, const PointF &prevPos) = 0;
+
 public:
   virtual SceneIterator begin() const                         = 0;
   virtual SceneIterator end() const                           = 0;

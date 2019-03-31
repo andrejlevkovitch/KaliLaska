@@ -12,7 +12,7 @@
 #include <boost/geometry.hpp>
 #include <iostream>
 
-#define SCALE_VAL 0.1
+#define SCALE_VAL 1.1
 
 namespace bg = boost::geometry;
 namespace bq = boost::qvm;
@@ -73,21 +73,16 @@ void ExampleView::setScene(KaliLaska::GraphicsScene *scene) {
 
 void ExampleView::mouseWheelEvent(
     std::unique_ptr<KaliLaska::MouseWheelEvent> event) {
-  auto &mat = matrix();
   switch (event->scale()) {
   case KaliLaska::Mouse::Scale::ScaleDown:
-    bq::mat_traits<KaliLaska::TransformMatrix>::write_element<0, 0>(mat) +=
-        SCALE_VAL;
-    bq::mat_traits<KaliLaska::TransformMatrix>::write_element<1, 1>(mat) +=
-        SCALE_VAL;
-
+    scale(SCALE_VAL,
+          SCALE_VAL,
+          KaliLaska::PointF(event->position().x(), event->position().y()));
     break;
   case KaliLaska::Mouse::Scale::ScaleUp:
-    bq::mat_traits<KaliLaska::TransformMatrix>::write_element<0, 0>(mat) -=
-        SCALE_VAL;
-    bq::mat_traits<KaliLaska::TransformMatrix>::write_element<1, 1>(mat) -=
-        SCALE_VAL;
-
+    scale(1 / SCALE_VAL,
+          1 / SCALE_VAL,
+          KaliLaska::PointF(event->position().x(), event->position().y()));
     break;
   default:
     break;

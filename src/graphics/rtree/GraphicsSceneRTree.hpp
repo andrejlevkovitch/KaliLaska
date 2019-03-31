@@ -43,6 +43,8 @@ public:
 
   Box bounds() const override;
 
+  void itemChanged(const GraphicsItem *item, const PointF &prevPos) override;
+
 private:
   TreeType tree_;
 };

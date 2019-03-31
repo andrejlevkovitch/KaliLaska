@@ -135,4 +135,27 @@ void GraphicsSceneRTree::clear() {
 Box GraphicsSceneRTree::bounds() const {
   return tree_.bounds();
 }
+
+void GraphicsSceneRTree::itemChanged(const GraphicsItem *item,
+                                     const PointF &      prevPos) {
+  if (item) {
+    std::shared_ptr<GraphicsItem> copyItem;
+
+    // first find item and save it, and remove for current tree
+    for (auto i = tree_.qbegin(bg::index::intersects(prevPos));
+         i != tree_.qend();
+         ++i) {
+      if (i->second.get() == item) {
+        copyItem = i->second;
+        tree_.remove(*i);
+        break;
+      }
+    }
+
+    // if we find it - add again in new position
+    if (copyItem) {
+      addItem(std::move(copyItem));
+    }
+  }
+}
 } // namespace KaliLaska

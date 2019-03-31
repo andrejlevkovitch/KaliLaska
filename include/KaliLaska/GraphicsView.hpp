@@ -50,11 +50,17 @@ public:
   void setSceneBox(const Box &sceneBox);
   Box  sceneBox() const;
 
+  /**\return box in view koordinates {0, 0, width, height}
+   */
   Box viewBox() const;
 
   void update() override;
 
   const TransformMatrix &matrix() const;
+
+  /**\param anchor position of view, relative to it will be scaled
+   */
+  void scale(float x, float y, const PointF &anchor = {0, 0});
 
 protected:
   TransformMatrix &matrix();

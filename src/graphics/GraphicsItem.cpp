@@ -1,6 +1,7 @@
 // GraphicsItem.cpp
 
 #include "KaliLaska/GraphicsItem.hpp"
+#include "KaliLaska/GraphicsScene.hpp"
 #include "debug.hpp"
 #include <algorithm>
 #include <boost/qvm/mat.hpp>
@@ -11,7 +12,9 @@ namespace bg = boost::geometry;
 
 namespace KaliLaska {
 GraphicsItem::GraphicsItem()
-    : matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}} {
+    : scene_{}
+    , parent_{}
+    , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}} {
 }
 
 GraphicsScene *GraphicsItem::scene() const {
@@ -38,25 +41,35 @@ void GraphicsItem::setParent(GraphicsItem *parent) {
 }
 
 PointF GraphicsItem::pos() const {
+  // FIXME now it return rezult of scene pos, I have to change it later
+  return scenePos();
+}
+
+PointF GraphicsItem::scenePos() const {
   return {bq::mat_traits<TransformMatrix>::read_element<0, 2>(matrix_),
           bq::mat_traits<TransformMatrix>::read_element<1, 2>(matrix_)};
 }
 
-PointF GraphicsItem::scenePos() const {
-  // TODO implement
-  return {};
+void GraphicsItem::setPos(const PointF &pos) {
+  // FIXME now it call setScenePos, I have ot change it later
+  setScenePos(pos);
 }
 
-void GraphicsItem::setPos(const PointF &pos) {
+void GraphicsItem::setScenePos(const PointF &pos) {
+  auto prevPos = scenePos();
+
   bq::mat_traits<TransformMatrix>::write_element<0, 2>(matrix_) =
       bg::get<0>(pos);
   bq::mat_traits<TransformMatrix>::write_element<1, 2>(matrix_) =
       bg::get<1>(pos);
+
+  itemChanged(prevPos);
 }
 
-void GraphicsItem::setScenePos(const PointF &pos) {
-  // TODO implement
-  UNUSED(pos);
+void GraphicsItem::itemChanged(const PointF &prevPos) const {
+  if (scene_) {
+    scene_->itemChanged(this, prevPos);
+  }
 }
 
 std::list<GraphicsItem *> GraphicsItem::children() const {
@@ -66,22 +79,18 @@ std::list<GraphicsItem *> GraphicsItem::children() const {
 }
 
 void GraphicsItem::mouseMoveEvent(SceneMouseMoveEvent *event) {
-  // TODO implement
   UNUSED(event);
 }
 
 void GraphicsItem::mousePressEvent(SceneMousePressEvent *event) {
-  // TODO implement
   UNUSED(event);
 }
 
 void GraphicsItem::mouseReleaseEvent(SceneMouseReleaseEvent *event) {
-  // TODO implement
   UNUSED(event);
 }
 
 void GraphicsItem::userEvent(Event *event) {
-  // TODO implement
   UNUSED(event);
 }
 
@@ -96,10 +105,6 @@ void GraphicsItem::removeFromChildren(GraphicsItem *item) {
 }
 
 const TransformMatrix &GraphicsItem::matrix() const {
-  return matrix_;
-}
-
-TransformMatrix &GraphicsItem::matrix() {
   return matrix_;
 }
 

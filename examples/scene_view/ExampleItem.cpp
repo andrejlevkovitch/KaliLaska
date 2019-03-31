@@ -28,6 +28,9 @@ void ExampleItem::render() const {
 }
 
 void ExampleItem::update() {
+  // KaliLaska::PointF newPos = pos();
+  // bg::add_point(newPos, KaliLaska::PointF{0.5, 0.5});
+  // setPos(newPos);
 }
 
 void ExampleItem::mouseMoveEvent(KaliLaska::SceneMouseMoveEvent *event) {

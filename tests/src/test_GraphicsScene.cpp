@@ -106,6 +106,19 @@ SCENARIO("Test GraphicsScene", "[GraphicsScene]") {
         CHECK(list.size() == 2);
       }
 
+      THEN("Check move item") {
+        auto              prevPos = item0->scenePos();
+        KaliLaska::PointF newPos{9000, 9000};
+        item0->setScenePos(newPos);
+        auto item = scene.itemAt(newPos);
+        REQUIRE(item);
+        REQUIRE(item == item0.get());
+
+        item = scene.itemAt(prevPos);
+        CHECK_FALSE(item);
+        CHECK_FALSE(item == item0.get());
+      }
+
       THEN("Check remove") {
         WHEN("We remove by pointer") {
           scene.removeItem(item0.get());

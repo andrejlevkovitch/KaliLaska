@@ -37,7 +37,10 @@ std::list<GraphicsItem *> GraphicsScene::itemsAt(const Box &box,
 }
 
 void GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
-  imp_->addItem(std::move(item));
+  if (item) {
+    item->scene_ = this;
+    imp_->addItem(std::move(item));
+  }
 }
 
 void GraphicsScene::removeItem(GraphicsItem *item) {
@@ -125,5 +128,10 @@ void GraphicsScene::update() {
   for (auto i : *this) {
     i->update();
   }
+}
+
+void GraphicsScene::itemChanged(const GraphicsItem *item,
+                                const PointF &      prevPos) {
+  imp_->itemChanged(item, prevPos);
 }
 } // namespace KaliLaska

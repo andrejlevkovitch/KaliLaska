@@ -118,4 +118,25 @@ void GraphicsView::mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event) {
 void GraphicsView::changeState(ViewState *state) {
   state_ = state;
 }
+
+void GraphicsView::scale(float x, float y, const PointF &anchor) {
+  // clang-format off
+  TransformMatrix scaleMat{{{x, 0, 0},
+                            {0, y, 0},
+                            {0, 0, 1}}};
+
+  TransformMatrix first{{   {1, 0, bg::get<0>(anchor)},
+                            {0, 1, bg::get<1>(anchor)},
+                            {0, 0, 1}}};
+
+  TransformMatrix second{{  {1, 0, -bg::get<0>(anchor)},
+                            {0, 1, -bg::get<1>(anchor)},
+                            {0, 0, 1}}};
+  // clang-format on
+
+  scaleMat *= second;
+  first *= scaleMat;
+
+  matrix_ *= first;
+}
 } // namespace KaliLaska

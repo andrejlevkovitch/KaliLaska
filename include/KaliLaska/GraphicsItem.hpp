@@ -32,6 +32,7 @@ public:
 
   /**\return box, which contains current item. Have to be in item koordinates.
    * Rendering have to be in this box, otherwise it can have unexpected rezult
+   * \warning you can not change this value after inserting in scene
    */
   virtual Box boundingBox() const = 0;
 
@@ -77,10 +78,11 @@ public:
 
   std::list<GraphicsItem *> children() const;
 
+  /**\return current transformation matrix
+   * \warning all changes of item (like change position) have to be from methods
+   * of item, because it change postion of item in rtree
+   */
   const TransformMatrix &matrix() const;
-
-protected:
-  TransformMatrix &matrix();
 
 protected:
   /**\brief by default does nothing
@@ -96,6 +98,12 @@ protected:
   /**\brief by default does nothing
    */
   virtual void userEvent(Event *event);
+
+protected:
+  /**\brief use this method if you need update item after unexpected change item
+   * (for example if you change boundingBox or matrix)
+   */
+  void itemChanged(const PointF &prevPos) const;
 
 private:
   void addToChildren(GraphicsItem *item);
