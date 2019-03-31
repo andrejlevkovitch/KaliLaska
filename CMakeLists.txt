@@ -14,6 +14,11 @@ find_package(Boost REQUIRED)
 message(STATUS "SDL2 version: ${SDL2_VERSION}")
 message(STATUS "Boost version: ${Boost_VERSION}")
 
+# by default build shared libraries
+if(NOT DEFINED BUILD_SHARED_LIBS)
+  set(BUILD_SHARED_LIBS 1)
+endif()
+
 set(LIST_SUBDIRS third_party src tests examples)
 foreach(DIR ${LIST_SUBDIRS})
   add_subdirectory(${DIR})

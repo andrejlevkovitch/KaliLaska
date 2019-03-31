@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
   KaliLaska::Application app{argc, argv};
 
   ExampleView view{"my graphics view", {0, 0}, {800, 800}};
-  ExampleView view2{"my two view", {800, 0}, {100, 100}};
+  ExampleView view2{"my two view", {800, 0}, {300, 300}};
 
   ExampleScene scene{};
   view.setScene(&scene);
