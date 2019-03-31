@@ -2,11 +2,16 @@
 
 #include "KaliLaska/SceneMouseMoveEvent.hpp"
 #include "KaliLaska/MouseMoveEvent.hpp"
+#include <boost/geometry.hpp>
+
+namespace bg = boost::geometry;
 
 namespace KaliLaska {
-SceneMouseMoveEvent::SceneMouseMoveEvent(std::unique_ptr<MouseMoveEvent> event)
-    : Event{Event::Type::SceneMouseMoveEvent}
-    , event_{std::move(event)} {
+SceneMouseMoveEvent::SceneMouseMoveEvent(std::unique_ptr<MouseMoveEvent> event,
+                                         const TransformMatrix &         matrix)
+    : SceneEvent{Event::Type::SceneMouseMoveEvent}
+    , event_{std::move(event)}
+    , matrix_{matrix} {
 }
 
 SceneMouseMoveEvent::~SceneMouseMoveEvent() {
@@ -24,14 +29,22 @@ Point SceneMouseMoveEvent::previousViewPos() const {
   return event_->previousPos();
 }
 
-Point SceneMouseMoveEvent::currentPos() const {
-  // FIXME not implement
-  return {};
+PointF SceneMouseMoveEvent::currentPos() const {
+  PointF rezultPos{0, 0};
+  bg::transform(
+      event_->currentPos(),
+      rezultPos,
+      bg::strategy::transform::matrix_transformer<float, 2, 2>(matrix_));
+  return rezultPos;
 }
 
-Point SceneMouseMoveEvent::previousPos() const {
-  // FIXME not implement
-  return {};
+PointF SceneMouseMoveEvent::previousPos() const {
+  PointF rezultPos{0, 0};
+  bg::transform(
+      event_->previousPos(),
+      rezultPos,
+      bg::strategy::transform::matrix_transformer<float, 2, 2>(matrix_));
+  return rezultPos;
 }
 } // namespace KaliLaska
 

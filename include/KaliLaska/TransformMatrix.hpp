@@ -2,9 +2,8 @@
 
 #pragma once
 
-#include <boost/geometry/strategies/transform/matrix_transformers.hpp>
+#include <boost/qvm/mat.hpp>
 
 namespace KaliLaska {
-using TransformMatrix =
-    boost::geometry::strategy::transform::matrix_transformer<float, 2, 2>;
+using TransformMatrix = boost::qvm::mat<float, 3, 3>;
 } // namespace KaliLaska

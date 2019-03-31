@@ -13,9 +13,12 @@
 int main(int argc, char *argv[]) {
   KaliLaska::Application app{argc, argv};
 
-  ExampleView  view{"my graphics view", {0, 0}, {800, 800}};
+  ExampleView view{"my graphics view", {0, 0}, {800, 800}};
+  ExampleView view2{"my two view", {800, 0}, {100, 100}};
+
   ExampleScene scene{};
   view.setScene(&scene);
+  view2.setScene(&scene);
 
   auto item1 = std::make_shared<ExampleItem>(KaliLaska::Color::Colors::Blue);
   item1->setPos({0, 0});

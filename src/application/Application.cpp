@@ -1,10 +1,10 @@
 // Application.cpp
 
 #include "KaliLaska/Application.hpp"
+#include "AppFactory.hpp"
 #include "EventNotifyer.hpp"
 #include "KaliLaska/Event.hpp"
 #include "imp/ApplicationImp.hpp"
-#include "sdl/ApplicationSdl.hpp"
 #include <GL/gl3w.h>
 #include <chrono>
 #include <stdexcept>
@@ -24,8 +24,7 @@ Application::Application(int argc, char *argv[])
     throw std::runtime_error{"Application can not be initialized twice"};
   }
   try {
-    // TODO maybe we can use factory or somthing else?
-    imp_ = std::make_unique<ApplicationSdl>();
+    imp_ = AppFactory::createAppImp();
     parseArguments(argc, argv);
   } catch (std::runtime_error &) {
     throw;

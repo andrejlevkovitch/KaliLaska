@@ -16,7 +16,7 @@ enum class Click {
 };
 /**\brief bit masks
  */
-enum Button {
+enum Button : uint8_t {
   Invalid = 0,
   Left    = 1,
   Middle  = 2,
@@ -44,7 +44,7 @@ enum class Focus {
 };
 /**\brief bit masks
  */
-enum Mod {
+enum Mod : uint8_t {
   Invalid = 0,
   Shift   = 1,
   Ctrl    = 2,

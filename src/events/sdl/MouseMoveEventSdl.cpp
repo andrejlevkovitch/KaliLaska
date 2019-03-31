@@ -30,4 +30,8 @@ Point MouseMoveEventSdl::currentPos() const {
 Point MouseMoveEventSdl::previousPos() const {
   return Point{event_.x - event_.xrel, event_.y - event_.yrel};
 }
+
+Point MouseMoveEventSdl::distance() const {
+  return Point{event_.xrel, event_.yrel};
+}
 } // namespace KaliLaska

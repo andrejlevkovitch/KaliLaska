@@ -33,6 +33,10 @@ Point MouseMoveEvent::currentPos() const {
 Point MouseMoveEvent::previousPos() const {
   return imp_->previousPos();
 }
+
+Point MouseMoveEvent::distance() const {
+  return imp_->distance();
+}
 } // namespace KaliLaska
 
 std::ostream &operator<<(std::ostream &                   stream,

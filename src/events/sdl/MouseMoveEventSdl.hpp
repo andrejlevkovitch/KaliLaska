@@ -16,6 +16,7 @@ public:
 
   Point currentPos() const override;
   Point previousPos() const override;
+  Point distance() const override;
 
 private:
   SDL_MouseMotionEvent event_;

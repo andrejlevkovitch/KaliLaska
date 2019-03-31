@@ -1,8 +1,12 @@
 // ExampleItem.cpp
 
 #include "ExampleItem.hpp"
+#include "KaliLaska/SceneMouseMoveEvent.hpp"
+#include "KaliLaska/SceneMousePressEvent.hpp"
+#include "KaliLaska/SceneMouseReleaseEvent.hpp"
 #include "KaliLaska/opengl.hpp"
 #include <boost/geometry.hpp>
+#include <iostream>
 
 namespace bg = boost::geometry;
 
@@ -24,4 +28,19 @@ void ExampleItem::render() const {
 }
 
 void ExampleItem::update() {
+}
+
+void ExampleItem::mouseMoveEvent(KaliLaska::SceneMouseMoveEvent *event) {
+  std::cout << "move event\n";
+  event->accept();
+}
+
+void ExampleItem::mousePressEvent(KaliLaska::SceneMousePressEvent *event) {
+  std::cout << "press event\n";
+  event->accept();
+}
+
+void ExampleItem::mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) {
+  std::cout << "release event\n";
+  event->accept();
 }

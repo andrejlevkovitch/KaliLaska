@@ -72,35 +72,52 @@ Box GraphicsScene::bounds() const {
   return imp_->bounds();
 }
 
-void GraphicsScene::mouseMoveEvent(std::unique_ptr<SceneMouseMoveEvent> event) {
-  // TODO not implement
+void GraphicsScene::mouseMoveEvent(SceneMouseMoveEvent *event) {
+  if (event && !event->accepted()) {
+    for (auto item : itemsAt(event->currentPos())) {
+      item->mouseMoveEvent(event);
+      if (event->accepted()) {
+        break;
+      }
+    }
+  }
+}
+
+void GraphicsScene::mousePressEvent(SceneMousePressEvent *event) {
+  if (event && !event->accepted()) {
+    for (auto item : itemsAt(event->clickPos())) {
+      item->mousePressEvent(event);
+      if (event->accepted()) {
+        break;
+      }
+    }
+  }
+}
+
+void GraphicsScene::mouseReleaseEvent(SceneMouseReleaseEvent *event) {
+  if (event && !event->accepted()) {
+    for (auto item : itemsAt(event->clickPos())) {
+      item->mouseReleaseEvent(event);
+      if (event->accepted()) {
+        break;
+      }
+    }
+  }
+}
+
+void GraphicsScene::mouseFocusEvent(MouseFocusEvent *event) {
   UNUSED(event);
 }
 
-void GraphicsScene::mousePressEvent(
-    std::unique_ptr<SceneMousePressEvent> event) {
-  // TODO not implement
+void GraphicsScene::keyPressEvent(KeyPressEvent *event) {
   UNUSED(event);
 }
 
-void GraphicsScene::mouseReleaseEvent(
-    std::unique_ptr<SceneMouseReleaseEvent> event) {
-  // TODO not implement
+void GraphicsScene::keyReleaseEvent(KeyReleaseEvent *event) {
   UNUSED(event);
 }
 
-void GraphicsScene::keyPressEvent(std::unique_ptr<KeyPressEvent> event) {
-  // TODO not implement
-  UNUSED(event);
-}
-
-void GraphicsScene::keyReleaseEvent(std::unique_ptr<KeyReleaseEvent> event) {
-  // TODO not implement
-  UNUSED(event);
-}
-
-void GraphicsScene::event(std::unique_ptr<Event> event) {
-  // TODO not implement
+void GraphicsScene::event(Event *event) {
   UNUSED(event);
 }
 

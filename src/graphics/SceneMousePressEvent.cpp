@@ -2,12 +2,16 @@
 
 #include "KaliLaska/SceneMousePressEvent.hpp"
 #include "KaliLaska/MousePressEvent.hpp"
+#include <boost/geometry.hpp>
+
+namespace bg = boost::geometry;
 
 namespace KaliLaska {
 SceneMousePressEvent::SceneMousePressEvent(
-    std::unique_ptr<MousePressEvent> event)
-    : Event{Type::SceneMousePressEvent}
-    , event_{std::move(event)} {
+    std::unique_ptr<MousePressEvent> event, const TransformMatrix &matrix)
+    : SceneEvent{Type::SceneMousePressEvent}
+    , event_{std::move(event)}
+    , matrix_{matrix} {
 }
 
 SceneMousePressEvent::~SceneMousePressEvent() {
@@ -25,9 +29,13 @@ Mouse::Click SceneMousePressEvent::click() const {
   return event_->click();
 }
 
-Point SceneMousePressEvent::clickPos() const {
-  // FIXME not implement
-  return {};
+PointF SceneMousePressEvent::clickPos() const {
+  PointF rezultPos{0, 0};
+  bg::transform(
+      event_->clickPos(),
+      rezultPos,
+      bg::strategy::transform::matrix_transformer<float, 2, 2>(matrix_));
+  return rezultPos;
 }
 
 Point SceneMousePressEvent::clickViewPos() const {

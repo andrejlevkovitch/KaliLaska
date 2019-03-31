@@ -2,12 +2,16 @@
 
 #include "KaliLaska/SceneMouseReleaseEvent.hpp"
 #include "KaliLaska/MouseReleaseEvent.hpp"
+#include <boost/geometry.hpp>
+
+namespace bg = boost::geometry;
 
 namespace KaliLaska {
 SceneMouseReleaseEvent::SceneMouseReleaseEvent(
-    std::unique_ptr<MouseReleaseEvent> event)
-    : Event{Type::SceneMouseReleaseEvent}
-    , event_{std::move(event)} {
+    std::unique_ptr<MouseReleaseEvent> event, const TransformMatrix &matrix)
+    : SceneEvent{Type::SceneMouseReleaseEvent}
+    , event_{std::move(event)}
+    , matrix_{matrix} {
 }
 
 SceneMouseReleaseEvent::~SceneMouseReleaseEvent() {
@@ -21,9 +25,13 @@ Mouse::Buttons SceneMouseReleaseEvent::buttons() const {
   return event_->buttons();
 }
 
-Point SceneMouseReleaseEvent::clickPos() const {
-  // FIXME not implement
-  return {};
+PointF SceneMouseReleaseEvent::clickPos() const {
+  PointF rezultPos{0, 0};
+  bg::transform(
+      event_->clickPos(),
+      rezultPos,
+      bg::strategy::transform::matrix_transformer<float, 2, 2>(matrix_));
+  return rezultPos;
 }
 
 Point SceneMouseReleaseEvent::clickViewPos() const {

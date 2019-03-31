@@ -11,6 +11,7 @@ set(KaliLaska_SRC
 
   application/EventNotifyer.cpp
   application/Application.cpp
+  application/AppFactory.cpp
 
   application/sdl/ApplicationSdl.cpp
 
@@ -67,6 +68,10 @@ set(KaliLaska_SRC
   graphics/SceneMousePressEvent.cpp
   graphics/SceneMouseReleaseEvent.cpp
   graphics/GraphicsSceneImpFactory.cpp
+
+  graphics/MoveSceneState.cpp
+  graphics/NotifySceneState.cpp
+  graphics/UnModificableState.cpp
 
   graphics/imp/SceneIterator.cpp
 

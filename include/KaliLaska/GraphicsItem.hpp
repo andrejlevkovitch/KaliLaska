@@ -21,6 +21,8 @@ class GraphicsScene;
 /**\brief represent graphical objects on scene
  */
 class GraphicsItem {
+  friend GraphicsScene;
+
 public:
   GraphicsItem();
   virtual ~GraphicsItem() = default;
@@ -75,14 +77,25 @@ public:
 
   std::list<GraphicsItem *> children() const;
 
-  // TransformMatrix transformMatrix() const;
+  const TransformMatrix &matrix() const;
 
 protected:
-  virtual void mouseMoveEvent(std::unique_ptr<SceneMouseMoveEvent> event);
-  virtual void mousePressEvent(std::unique_ptr<SceneMousePressEvent> event);
-  virtual void mouseReleaseEvent(std::unique_ptr<SceneMouseReleaseEvent> event);
+  TransformMatrix &matrix();
 
-  virtual void userEvent(std::unique_ptr<Event> event);
+protected:
+  /**\brief by default does nothing
+   */
+  virtual void mouseMoveEvent(SceneMouseMoveEvent *event);
+  /**\brief by default does nothing
+   */
+  virtual void mousePressEvent(SceneMousePressEvent *event);
+  /**\brief by default does nothing
+   */
+  virtual void mouseReleaseEvent(SceneMouseReleaseEvent *event);
+
+  /**\brief by default does nothing
+   */
+  virtual void userEvent(Event *event);
 
 private:
   void addToChildren(GraphicsItem *item);
@@ -94,7 +107,6 @@ private:
   GraphicsItem *           parent_;
   std::set<GraphicsItem *> children_;
 
-  // TODO need change this on matrix
-  PointF curPos_;
+  TransformMatrix matrix_;
 };
 } // namespace KaliLaska

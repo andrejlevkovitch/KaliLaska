@@ -24,6 +24,7 @@ public:
   Mouse::Buttons buttons() const;
   Point          currentPos() const;
   Point          previousPos() const;
+  Point          distance() const;
 
 private:
   explicit MouseMoveEvent(std::unique_ptr<MouseMoveEventImp> imp);

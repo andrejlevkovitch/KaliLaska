@@ -130,10 +130,7 @@ void Window::makeCurrent() {
 
 void Window::closeEvent(std::unique_ptr<CloseEvent> event) {
   UNUSED(event);
-  // first we have to unregister window in factory
-  Application::windowFactory()->resetWindow(this);
-  // and after we destroy implementation
-  imp_.reset();
+  this->~Window();
 }
 
 void Window::mouseMoveEvent(std::unique_ptr<MouseMoveEvent> event) {

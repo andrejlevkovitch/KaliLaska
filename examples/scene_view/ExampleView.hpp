@@ -17,16 +17,9 @@ public:
 
 protected:
   void
-       mousePressEvent(std::unique_ptr<KaliLaska::MousePressEvent> event) override;
-  void mouseReleaseEvent(
-      std::unique_ptr<KaliLaska::MouseReleaseEvent> event) override;
-  void
-  mouseMoveEvent(std::unique_ptr<KaliLaska::MouseMoveEvent> event) override;
-  void
-  mouseFocusEvent(std::unique_ptr<KaliLaska::MouseFocusEvent> event) override;
+  mouseWheelEvent(std::unique_ptr<KaliLaska::MouseWheelEvent> event) override;
 
 private:
   std::chrono::time_point<std::chrono::system_clock> last_;
   KaliLaska::GL::ShaderProgram                       prog_;
-  bool                                               moveState_;
 };

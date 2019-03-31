@@ -16,5 +16,6 @@ public:
 
   virtual Point currentPos() const  = 0;
   virtual Point previousPos() const = 0;
+  virtual Point distance() const    = 0;
 };
 } // namespace KaliLaska

@@ -10,6 +10,8 @@
 #include <memory>
 
 namespace KaliLaska {
+class GraphicsView;
+
 class GraphicsSceneImp;
 
 class GraphicsItem;
@@ -23,13 +25,22 @@ class SceneMouseReleaseEvent;
 class KeyPressEvent;
 class KeyReleaseEvent;
 
+class MouseFocusEvent;
+
 class SceneIterator;
+
+class NotModificableState;
+class NotifySceneState;
 
 /**\brief store and manage GraphicsItem-s.
  * \waring all operation with inserting or removing elements invalidate
  * iterators
  */
 class GraphicsScene : public Object {
+  friend GraphicsView;
+
+  friend NotifySceneState;
+
 public:
   class ConstIterator;
 
@@ -70,14 +81,30 @@ public:
   Box bounds() const;
 
 protected:
-  virtual void mouseMoveEvent(std::unique_ptr<SceneMouseMoveEvent> event);
-  virtual void mousePressEvent(std::unique_ptr<SceneMousePressEvent> event);
-  virtual void mouseReleaseEvent(std::unique_ptr<SceneMouseReleaseEvent> event);
+  /**\brief notify all items at position of event
+   */
+  virtual void mouseMoveEvent(SceneMouseMoveEvent *event);
+  /**\brief notify all items at position of event
+   */
+  virtual void mousePressEvent(SceneMousePressEvent *event);
+  /**\brief notify all items at position of event
+   */
+  virtual void mouseReleaseEvent(SceneMouseReleaseEvent *event);
 
-  virtual void keyPressEvent(std::unique_ptr<KeyPressEvent> event);
-  virtual void keyReleaseEvent(std::unique_ptr<KeyReleaseEvent> event);
+  /**\brief by default does nothing
+   */
+  virtual void keyPressEvent(KeyPressEvent *event);
+  /**\brief by default does nothing
+   */
+  virtual void keyReleaseEvent(KeyReleaseEvent *event);
 
-  virtual void event(std::unique_ptr<Event> event);
+  /**\brief by default does nothing
+   */
+  virtual void mouseFocusEvent(MouseFocusEvent *event);
+
+  /**\brief by default does nothing
+   */
+  virtual void event(Event *event);
 
 private:
   std::unique_ptr<GraphicsSceneImp> imp_;

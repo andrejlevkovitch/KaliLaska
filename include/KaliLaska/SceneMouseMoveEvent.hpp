@@ -2,8 +2,9 @@
 
 #pragma once
 
-#include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
+#include "KaliLaska/SceneEvent.hpp"
+#include "KaliLaska/TransformMatrix.hpp"
 #include "kalilaska_export.h"
 #include <memory>
 
@@ -12,9 +13,10 @@ class MouseMoveEvent;
 
 /**\brief translate MouseMoveEvent from View to Scene
  */
-class KALILASKA_EXPORT SceneMouseMoveEvent : public Event {
+class KALILASKA_EXPORT SceneMouseMoveEvent : public SceneEvent {
 public:
-  explicit SceneMouseMoveEvent(std::unique_ptr<MouseMoveEvent> event);
+  SceneMouseMoveEvent(std::unique_ptr<MouseMoveEvent> event,
+                      const TransformMatrix &         matrix);
 
   ~SceneMouseMoveEvent() override;
 
@@ -22,10 +24,10 @@ public:
 
   /**\return current cursor position in scene koordinates
    */
-  Point currentPos() const;
+  PointF currentPos() const;
   /**\return previous cursor position in scene koordinates
    */
-  Point previousPos() const;
+  PointF previousPos() const;
 
   /**\return current position in view koordinates
    */
@@ -36,6 +38,7 @@ public:
 
 private:
   std::unique_ptr<MouseMoveEvent> event_;
+  TransformMatrix                 matrix_;
 };
 } // namespace KaliLaska
 

@@ -2,17 +2,19 @@
 
 #pragma once
 
-#include "KaliLaska/Event.hpp"
 #include "KaliLaska/Point.hpp"
+#include "KaliLaska/SceneEvent.hpp"
+#include "KaliLaska/TransformMatrix.hpp"
 #include "kalilaska_export.h"
 #include <memory>
 
 namespace KaliLaska {
 class MousePressEvent;
 
-class SceneMousePressEvent : public Event {
+class SceneMousePressEvent : public SceneEvent {
 public:
-  explicit SceneMousePressEvent(std::unique_ptr<MousePressEvent> event);
+  SceneMousePressEvent(std::unique_ptr<MousePressEvent> event,
+                       const TransformMatrix &          matrix);
 
   ~SceneMousePressEvent() override;
 
@@ -23,7 +25,7 @@ public:
 
   /**\return click position in scene coordinates
    */
-  Point clickPos() const;
+  PointF clickPos() const;
 
   /**\return click position in view coordinates
    */
@@ -31,6 +33,7 @@ public:
 
 private:
   std::unique_ptr<MousePressEvent> event_;
+  TransformMatrix                  matrix_;
 };
 } // namespace KaliLaska
 

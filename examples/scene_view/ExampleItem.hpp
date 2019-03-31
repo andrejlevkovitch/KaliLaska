@@ -13,6 +13,10 @@ public:
   void           render() const override;
   void           update() override;
 
+  void mouseMoveEvent(KaliLaska::SceneMouseMoveEvent *event) override;
+  void mousePressEvent(KaliLaska::SceneMousePressEvent *event) override;
+  void mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) override;
+
 private:
   KaliLaska::Color color_;
 };
