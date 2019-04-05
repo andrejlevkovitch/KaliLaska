@@ -1,11 +1,11 @@
 // ExampleItem.cpp
 
 #include "ExampleItem.hpp"
+#include "KaliLaska/GraphicsScene.hpp"
 #include "KaliLaska/SceneMouseMoveEvent.hpp"
 #include "KaliLaska/SceneMousePressEvent.hpp"
 #include "KaliLaska/SceneMouseReleaseEvent.hpp"
 #include "KaliLaska/opengl.hpp"
-#include <boost/geometry.hpp>
 #include <iostream>
 
 namespace bg = boost::geometry;
@@ -19,11 +19,8 @@ KaliLaska::Box ExampleItem::boundingBox() const {
 }
 
 void ExampleItem::render() const {
-  auto box    = boundingBox();
-  auto curPos = pos();
-  bg::strategy::transform::translate_transformer<float, 2, 2> translate{
-      bg::get<0>(curPos), bg::get<1>(curPos)};
-  bg::transform(box, box, translate);
+  auto box = boundingBox();
+
   KaliLaska::GL::Renderer::render(box, color_);
 }
 
@@ -34,16 +31,17 @@ void ExampleItem::update() {
 }
 
 void ExampleItem::mouseMoveEvent(KaliLaska::SceneMouseMoveEvent *event) {
-  std::cout << "move event\n";
-  event->accept();
+  (void)event;
 }
 
 void ExampleItem::mousePressEvent(KaliLaska::SceneMousePressEvent *event) {
-  std::cout << "press event\n";
+  scene()->grabbItem(this);
   event->accept();
 }
 
 void ExampleItem::mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) {
-  std::cout << "release event\n";
-  event->accept();
+  if (this == scene()->grabbedItem()) {
+    scene()->grabbItem(nullptr);
+    event->accept();
+  }
 }

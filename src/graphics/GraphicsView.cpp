@@ -79,8 +79,8 @@ Box GraphicsView::sceneBox() const {
 
 Box GraphicsView::viewBox() const {
   return {{0, 0},
-          {static_cast<float>(size().width()),
-           static_cast<float>(size().height())}};
+          {static_cast<float>(drawSize().width()),
+           static_cast<float>(drawSize().height())}};
 }
 
 const TransformMatrix &GraphicsView::matrix() const {
@@ -121,22 +121,18 @@ void GraphicsView::changeState(ViewState *state) {
 
 void GraphicsView::scale(float x, float y, const PointF &anchor) {
   // clang-format off
-  TransformMatrix scaleMat{{{x, 0, 0},
-                            {0, y, 0},
-                            {0, 0, 1}}};
+  TransformMatrix scaleMat{{ {x, 0, 0},
+                             {0, y, 0},
+                             {0, 0, 1}}};
 
-  TransformMatrix first{{   {1, 0, bg::get<0>(anchor)},
-                            {0, 1, bg::get<1>(anchor)},
-                            {0, 0, 1}}};
-
-  TransformMatrix second{{  {1, 0, -bg::get<0>(anchor)},
-                            {0, 1, -bg::get<1>(anchor)},
-                            {0, 0, 1}}};
+  TransformMatrix translate{{{1, 0, bg::get<0>(anchor)},
+                             {0, 1, bg::get<1>(anchor)},
+                             {0, 0, 1}}};
   // clang-format on
 
-  scaleMat *= second;
-  first *= scaleMat;
+  scaleMat *= bq::inverse(translate);
+  translate *= scaleMat;
 
-  matrix_ *= first;
+  matrix_ *= translate;
 }
 } // namespace KaliLaska

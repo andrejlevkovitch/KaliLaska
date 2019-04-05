@@ -10,6 +10,7 @@ set(TEST_LIST
   src/test_Application.cpp
   src/test_Window.cpp
   src/test_CustomEvents.cpp
+  src/test_triangulation.cpp
   src/test_openGL.cpp
   src/test_GraphicsScene.cpp
   )

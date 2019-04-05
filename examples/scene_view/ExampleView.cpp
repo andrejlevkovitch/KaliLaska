@@ -8,8 +8,10 @@
 #include "KaliLaska/MousePressEvent.hpp"
 #include "KaliLaska/MouseReleaseEvent.hpp"
 #include "KaliLaska/MouseWheelEvent.hpp"
+#include "shaders.hpp"
 #include <GL/gl3w.h>
-#include <boost/geometry.hpp>
+#include <boost/qvm/mat_operations.hpp>
+#include <fstream>
 #include <iostream>
 
 #define SCALE_VAL 1.1
@@ -17,54 +19,33 @@
 namespace bg = boost::geometry;
 namespace bq = boost::qvm;
 
-static std::string vertexShader{R"(
-#version 300 es
-uniform vec2 win_size;
-uniform vec2 win_pos;
-in vec2 pos;
-in vec3 color;
-out vec4 outColor;
-
-void main() {
-  mat4 to_view_pos = mat4(
-    1,          0,          0, 0,
-    0,          1,          0, 0,
-    0,          0,          1, 0,
-    -win_pos.x, -win_pos.y, 0, 1
-  );
-  mat4 to_ndc = mat4(
-    2.0 / win_size.x, 0,                 0, 0,
-    0,                -2.0 / win_size.y, 0, 0,
-    0,                0,                 1, 0,
-    -1,               1,                 0, 1
-  );
-
-  gl_Position = to_ndc * to_view_pos * vec4(pos, 1, 1);
-  outColor = vec4(color, 1);
-}
-)"};
-
-static std::string fragmentShader{R"(
-#version 300 es
-#ifdef GL_ES
-precision highp float;
-#endif
-in vec4 outColor;
-out vec4 fragColor;
-
-void main() {
-  fragColor = outColor;
-}
-)"};
-
 ExampleView::ExampleView(std::string_view        title,
                          const KaliLaska::Point &pos,
                          const KaliLaska::Size & size)
     : GraphicsView{title, pos, size}
-    , prog_{vertexShader, fragmentShader} {
-  prog_.use();
+    , prog_{} {
+  auto shaderCodeLoader = [](std::string_view fileName) {
+    std::string   retval;
+    std::ifstream fin;
+    fin.open(fileName.data(), std::ios::in);
+    if (fin.is_open()) {
+      std::copy(std::istreambuf_iterator<char>(fin),
+                std::istreambuf_iterator<char>(),
+                std::back_inserter(retval));
+      fin.close();
+    } else {
+      throw std::runtime_error{"file with shader can not be opened"};
+    }
+    return retval;
+  };
 
-  setProperty(Property::Movable);
+  std::string vertexShader   = shaderCodeLoader(vertexShaderFile);
+  std::string fragmentShader = shaderCodeLoader(fragmentShaderFile);
+
+  prog_ = std::make_unique<KaliLaska::GL::ShaderProgram>(vertexShader,
+                                                         fragmentShader);
+
+  prog_->use();
 }
 
 void ExampleView::setScene(KaliLaska::GraphicsScene *scene) {
@@ -96,19 +77,17 @@ void ExampleView::update() {
         duration >= std::chrono::milliseconds{30}) {
       Window::makeCurrent();
 
-      auto curSceneBox = sceneBox();
-
-      glViewport(0, 0, drawSize().width(), drawSize().height());
+      auto curDrawSize = drawSize();
+      glViewport(0, 0, curDrawSize.width(), curDrawSize.height());
       glClearColor(0, 0, 0, 1);
       glClear(GL_COLOR_BUFFER_BIT);
 
-      KaliLaska::PointF sceneSize = curSceneBox.max_corner();
-      bg::subtract_point(sceneSize, curSceneBox.min_corner());
-      glUniform2f(0, bg::get<0>(sceneSize), bg::get<1>(sceneSize));
-      glUniform2f(1,
-                  bg::get<0>(curSceneBox.min_corner()),
-                  bg::get<1>(curSceneBox.min_corner()));
-      for (const auto &i : scene()->itemsAt(sceneBox())) {
+      glUniform2f(0, curDrawSize.width(), curDrawSize.height());
+      glUniformMatrix3fv(1, 1, true, bq::inverse(matrix()).a[0]);
+
+      for (const auto i : scene()->itemsAt(sceneBox())) {
+        auto itemScenePos = i->scenePos();
+        glUniform2f(2, bg::get<0>(itemScenePos), bg::get<1>(itemScenePos));
         i->render();
       }
 

@@ -4,6 +4,7 @@
 
 #include "KaliLaska/Box.hpp"
 #include "KaliLaska/Color.hpp"
+#include "KaliLaska/Ring.hpp"
 #include "kalilaska_export.h"
 #include <string>
 
@@ -78,5 +79,6 @@ private:
 class KALILASKA_EXPORT Renderer final {
 public:
   static void render(const Box &box, const Color &color);
+  static void render(const Ring &ring, const Color &color);
 };
 } // namespace KaliLaska::GL

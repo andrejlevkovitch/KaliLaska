@@ -21,5 +21,5 @@ protected:
 
 private:
   std::chrono::time_point<std::chrono::system_clock> last_;
-  KaliLaska::GL::ShaderProgram                       prog_;
+  std::unique_ptr<KaliLaska::GL::ShaderProgram>      prog_;
 };

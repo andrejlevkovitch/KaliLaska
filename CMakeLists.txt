@@ -11,7 +11,7 @@ find_package(gl3w REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(Boost REQUIRED)
 
-message(STATUS "SDL2 version: ${SDL2_VERSION}")
+message(STATUS "SDL2 version:  ${SDL2_VERSION}")
 message(STATUS "Boost version: ${Boost_VERSION}")
 
 # by default build shared libraries

@@ -6,15 +6,19 @@
 #include "KaliLaska/GraphicsItem.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/KeyReleaseEvent.hpp"
+#include "KaliLaska/MouseFocusEvent.hpp"
 #include "KaliLaska/SceneMouseMoveEvent.hpp"
 #include "KaliLaska/SceneMousePressEvent.hpp"
 #include "KaliLaska/SceneMouseReleaseEvent.hpp"
 #include "debug.hpp"
 #include "imp/GraphicsSceneImp.hpp"
 
+namespace bg = boost::geometry;
+
 namespace KaliLaska {
 GraphicsScene::GraphicsScene()
-    : imp_{GraphicsSceneImpFactory::createImp()} {
+    : imp_{GraphicsSceneImpFactory::createImp()}
+    , grabbed_{} {
   Application::registerObject(this);
 }
 
@@ -77,6 +81,11 @@ Box GraphicsScene::bounds() const {
 
 void GraphicsScene::mouseMoveEvent(SceneMouseMoveEvent *event) {
   if (event && !event->accepted()) {
+    if (grabbed_) {
+      PointF newPos = grabbed_->pos();
+      bg::add_point(newPos, event->distance());
+      grabbed_->setPos(newPos);
+    }
     for (auto item : itemsAt(event->currentPos())) {
       item->mouseMoveEvent(event);
       if (event->accepted()) {
@@ -109,6 +118,7 @@ void GraphicsScene::mouseReleaseEvent(SceneMouseReleaseEvent *event) {
 }
 
 void GraphicsScene::mouseFocusEvent(MouseFocusEvent *event) {
+  // TODO here have to generated mouse release event
   UNUSED(event);
 }
 
@@ -133,5 +143,13 @@ void GraphicsScene::update() {
 void GraphicsScene::itemChanged(const GraphicsItem *item,
                                 const PointF &      prevPos) {
   imp_->itemChanged(item, prevPos);
+}
+
+void GraphicsScene::grabbItem(GraphicsItem *item) {
+  grabbed_ = item;
+}
+
+GraphicsItem *GraphicsScene::grabbedItem() const {
+  return grabbed_;
 }
 } // namespace KaliLaska

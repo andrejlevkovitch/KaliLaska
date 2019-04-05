@@ -110,4 +110,16 @@ const TransformMatrix &GraphicsItem::matrix() const {
 
 void GraphicsItem::update() {
 }
+
+void GraphicsItem::rotade(float angle) {
+  // TODO implement
+  UNUSED(angle);
+  auto prevPos = pos();
+  itemChanged(prevPos);
+}
+
+float GraphicsItem::angle() const {
+  // TODO implement
+  return {};
+}
 } // namespace KaliLaska

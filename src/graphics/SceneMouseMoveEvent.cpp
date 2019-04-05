@@ -5,6 +5,7 @@
 #include <boost/geometry.hpp>
 
 namespace bg = boost::geometry;
+namespace bq = boost::qvm;
 
 namespace KaliLaska {
 SceneMouseMoveEvent::SceneMouseMoveEvent(std::unique_ptr<MouseMoveEvent> event,
@@ -45,6 +46,17 @@ PointF SceneMouseMoveEvent::previousPos() const {
       rezultPos,
       bg::strategy::transform::matrix_transformer<float, 2, 2>(matrix_));
   return rezultPos;
+}
+
+PointF SceneMouseMoveEvent::distance() const {
+  PointF retval{0, 0};
+  bg::transform(
+      event_->distance(),
+      retval,
+      bg::strategy::transform::scale_transformer<float, 2, 2>(
+          bq::mat_traits<TransformMatrix>::read_element<0, 0>(matrix_),
+          bq::mat_traits<TransformMatrix>::read_element<1, 1>(matrix_)));
+  return retval;
 }
 } // namespace KaliLaska
 

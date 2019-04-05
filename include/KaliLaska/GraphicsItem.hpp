@@ -31,8 +31,11 @@ public:
   GraphicsItem &operator=(GraphicsItem &&) = delete;
 
   /**\return box, which contains current item. Have to be in item koordinates.
-   * Rendering have to be in this box, otherwise it can have unexpected rezult
-   * \warning you can not change this value after inserting in scene
+   * Rendering have to be in this box, otherwise it can have unexpected rezult.
+   * Also item get mouse events from the box
+   *
+   * \warning if you change the item after inserting in scene - do not forget
+   * call itemChanged method!
    */
   virtual Box boundingBox() const = 0;
 
@@ -76,6 +79,14 @@ public:
    */
   void setScenePos(const PointF &pos);
 
+  /**\param angle in degrees
+   */
+  void rotade(float angle);
+
+  /**\return current rotade angle
+   */
+  float angle() const;
+
   std::list<GraphicsItem *> children() const;
 
   /**\return current transformation matrix
@@ -102,6 +113,7 @@ protected:
 protected:
   /**\brief use this method if you need update item after unexpected change item
    * (for example if you change boundingBox or matrix)
+   * \warning also set item af first plane
    */
   void itemChanged(const PointF &prevPos) const;
 

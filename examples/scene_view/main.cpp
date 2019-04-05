@@ -4,6 +4,7 @@
 #include "ExampleScene.hpp"
 #include "ExampleView.hpp"
 #include "KaliLaska/Application.hpp"
+#include "RingItem.hpp"
 #include <iostream>
 
 #ifdef __SANITIZE_ADDRESS__
@@ -13,8 +14,13 @@
 int main(int argc, char *argv[]) {
   KaliLaska::Application app{argc, argv};
 
-  ExampleView view2{"my two view", {850, 0}, {300, 300}};
+  ExampleView view2{"my two view", {900, 0}, {300, 300}};
   ExampleView view{"my graphics view", {0, 0}, {800, 800}};
+
+  view.setProperty(KaliLaska::GraphicsView::Property::Movable);
+  view2.setProperty(KaliLaska::GraphicsView::Property::NotModificable |
+                    KaliLaska::GraphicsView::Property::Movable);
+  view2.setSceneBox(KaliLaska::Box{{-20, -20}, {800, 800}});
 
   ExampleScene scene{};
   view.setScene(&scene);
@@ -23,16 +29,20 @@ int main(int argc, char *argv[]) {
   auto item1 = std::make_shared<ExampleItem>(KaliLaska::Color::Colors::Blue);
   item1->setPos({0, 0});
   auto item2 = std::make_shared<ExampleItem>(KaliLaska::Color::Colors::Cyan);
-  item2->setPos({100, 50});
+  item2->setPos({700, 700});
   auto item3 = std::make_shared<ExampleItem>(KaliLaska::Color::Colors::Yellow);
-  item3->setPos({400, 800});
+  item3->setPos({0, 700});
   auto item4 = std::make_shared<ExampleItem>(KaliLaska::Color::Colors::Magenta);
-  item4->setPos({-300, -20});
+  item4->setPos({700, 0});
+
+  auto ringItem = std::make_shared<RingItem>();
+  ringItem->setPos({400, 400});
 
   scene.addItem(item1);
   scene.addItem(item2);
   scene.addItem(item3);
   scene.addItem(item4);
+  scene.addItem(ringItem);
 
   int retval = app.exec();
 

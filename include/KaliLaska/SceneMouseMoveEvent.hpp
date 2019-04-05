@@ -36,6 +36,10 @@ public:
    */
   Point previousViewPos() const;
 
+  /**\return distance in scene koordinates
+   */
+  PointF distance() const;
+
 private:
   std::unique_ptr<MouseMoveEvent> event_;
   TransformMatrix                 matrix_;

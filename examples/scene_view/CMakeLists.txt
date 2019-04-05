@@ -6,6 +6,7 @@ set(WINDOW_SRC
   ExampleItem.cpp
   ExampleScene.cpp
   ExampleView.cpp
+  RingItem.cpp
   main.cpp
   )
 
@@ -16,3 +17,6 @@ target_link_libraries(${PROJECT_NAME}
     KaliLaska::KaliLaska
     gl3w
   )
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
+configure_file("shaders.hpp.cmake" "${CMAKE_CURRENT_BINARY_DIR}/shaders.hpp")

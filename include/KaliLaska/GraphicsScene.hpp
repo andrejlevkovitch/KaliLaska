@@ -85,8 +85,16 @@ public:
    */
   void itemChanged(const GraphicsItem *item, const PointF &prevPos);
 
+  /**\breif grabb item, for ungrab set nullptr (or other item) in the method
+   */
+  void grabbItem(GraphicsItem *item);
+  /**\return currently grabbed item or nullptr
+   */
+  GraphicsItem *grabbedItem() const;
+
 protected:
-  /**\brief notify all items at position of event
+  /**\brief notify all items at position of event. If some item is grabbed, then
+   * change postion of this to current mouse point
    */
   virtual void mouseMoveEvent(SceneMouseMoveEvent *event);
   /**\brief notify all items at position of event
@@ -113,6 +121,8 @@ protected:
 
 private:
   std::unique_ptr<GraphicsSceneImp> imp_;
+
+  GraphicsItem *grabbed_;
 
 public:
   class ConstIterator final {
