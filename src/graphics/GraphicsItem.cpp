@@ -4,6 +4,7 @@
 #include "KaliLaska/GraphicsScene.hpp"
 #include "debug.hpp"
 #include <algorithm>
+#include <boost/geometry.hpp>
 #include <boost/qvm/mat.hpp>
 #include <boost/qvm/mat_operations.hpp>
 #include <boost/qvm/mat_traits.hpp>
@@ -65,7 +66,9 @@ void GraphicsItem::setPos(const PointF &pos) {
 }
 
 void GraphicsItem::setScenePos(const PointF &pos) {
-  auto prevPos = scenePos();
+  PointF                                                   prevPos;
+  bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
+  bg::transform(bg::return_centroid<PointF>(boundingBox()), prevPos, translate);
 
   bq::mat_traits<TransformMatrix>::write_element<0, 2>(matrix_) =
       bg::get<0>(pos);
@@ -121,11 +124,19 @@ void GraphicsItem::update() {
 }
 
 void GraphicsItem::rotate(float angle) {
+  PointF                                                   prevPos;
+  bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
+  bg::transform(bg::return_centroid<PointF>(boundingBox()), prevPos, translate);
+
   bq::rotate_z(matrix_, toRad(angle));
-  itemChanged(pos());
+  itemChanged(prevPos);
 }
 
 void GraphicsItem::setRotation(float angle) {
+  PointF                                                   prevPos;
+  bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
+  bg::transform(bg::return_centroid<PointF>(boundingBox()), prevPos, translate);
+
   // TODO maybe is better way?
   float a        = bq::mat_traits<TransformMatrix>::read_element<0, 1>(matrix_);
   float b        = bq::mat_traits<TransformMatrix>::read_element<0, 0>(matrix_);
@@ -134,12 +145,16 @@ void GraphicsItem::setRotation(float angle) {
   bq::rotate_z(matrix_, -curAngle);
   // rotate to new value
   bq::rotate_z(matrix_, toRad(angle));
-  itemChanged(pos());
+  itemChanged(prevPos);
 }
 
 float GraphicsItem::angle() const {
   float a = bq::mat_traits<TransformMatrix>::read_element<0, 1>(matrix_);
   float b = bq::mat_traits<TransformMatrix>::read_element<0, 0>(matrix_);
   return toDegrees(std::atan2(-a, b));
+}
+
+Box GraphicsItem::boundingBox() const {
+  return bg::return_envelope<Box>(shape());
 }
 } // namespace KaliLaska

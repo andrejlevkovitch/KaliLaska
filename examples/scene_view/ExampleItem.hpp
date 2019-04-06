@@ -9,9 +9,9 @@ class ExampleItem final : public KaliLaska::GraphicsItem {
 public:
   explicit ExampleItem(const KaliLaska::Color &color);
 
-  KaliLaska::Box boundingBox() const override;
-  void           render() const override;
-  void           update() override;
+  KaliLaska::Ring shape() const override;
+  void            render() const override;
+  void            update() override;
 
   void mouseMoveEvent(KaliLaska::SceneMouseMoveEvent *event) override;
   void mousePressEvent(KaliLaska::SceneMousePressEvent *event) override;

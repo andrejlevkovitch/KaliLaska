@@ -48,8 +48,9 @@ void MoveSceneState::mouseMoveEvent(
     bg::strategy::transform::matrix_transformer<float, 2, 2> transform{
         view->matrix_};
 
-    PointF newPos(-event->distance().x(), -event->distance().y());
-    bg::transform(newPos, newPos, transform);
+    PointF oldPos(-event->distance().x(), -event->distance().y());
+    PointF newPos;
+    bg::transform(oldPos, newPos, transform);
 
     bq::mat_traits<TransformMatrix>::write_element<0, 2>(view->matrix_) =
         bg::get<0>(newPos);

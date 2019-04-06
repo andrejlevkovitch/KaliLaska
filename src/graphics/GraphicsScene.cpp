@@ -40,11 +40,14 @@ std::list<GraphicsItem *> GraphicsScene::itemsAt(const Box &box,
   return imp_->itemsAt(box, spat);
 }
 
-void GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
+bool GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
   if (item) {
     item->scene_ = this;
-    imp_->addItem(std::move(item));
+    if (imp_->addItem(std::move(item))) {
+      return true;
+    }
   }
+  return false;
 }
 
 void GraphicsScene::removeItem(GraphicsItem *item) {
@@ -85,6 +88,8 @@ void GraphicsScene::mouseMoveEvent(SceneMouseMoveEvent *event) {
       PointF newPos = grabbed_->pos();
       bg::add_point(newPos, event->distance());
       grabbed_->setPos(newPos);
+      event->accept();
+      return;
     }
     for (auto item : itemsAt(event->currentPos())) {
       item->mouseMoveEvent(event);

@@ -27,19 +27,19 @@ void RingItem::update() {
 }
 
 void RingItem::render() const {
-  KaliLaska::GL::Renderer::render(shape_, KaliLaska::Color::Colors::Blue);
+  KaliLaska::GL::Renderer::render(shape(), KaliLaska::Color::Colors::Blue);
 }
 
-KaliLaska::Box RingItem::boundingBox() const {
-  return {{0, 0}, {50, 50}};
+KaliLaska::Ring RingItem::shape() const {
+  return shape_;
 }
 
 void RingItem::mousePressEvent(KaliLaska::SceneMousePressEvent *event) {
-  auto clickPos = event->clickPos();
-  auto inverted = bq::inverse(matrix());
+  KaliLaska::PointF clickPos;
+  auto              inverted = bq::inverse(matrix());
   bg::strategy::transform::matrix_transformer<float, 2, 2> transformer{
       inverted};
-  bg::transform(clickPos, clickPos, transformer);
+  bg::transform(event->clickPos(), clickPos, transformer);
   if (bg::intersects(clickPos, shape_)) {
     scene()->grabbItem(this);
     event->accept();

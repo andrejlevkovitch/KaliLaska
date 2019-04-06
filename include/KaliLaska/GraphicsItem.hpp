@@ -4,6 +4,7 @@
 
 #include "KaliLaska/Box.hpp"
 #include "KaliLaska/Point.hpp"
+#include "KaliLaska/Ring.hpp"
 #include "KaliLaska/TransformMatrix.hpp"
 #include <list>
 #include <memory>
@@ -30,14 +31,19 @@ public:
   GraphicsItem(GraphicsItem &&) = delete;
   GraphicsItem &operator=(GraphicsItem &&) = delete;
 
-  /**\return box, which contains current item. Have to be in item koordinates.
-   * Rendering have to be in this box, otherwise it can have unexpected rezult.
-   * Also item get mouse events from the box
-   *
-   * \warning if you change the item after inserting in scene - do not forget
-   * call itemChanged method!
+  /**\return box, which contains current item in item koordinates. Building from
+   * shape. Rendering have to be in this box, otherwise it can have unexpected
+   * rezult. Also item get mouse events from the box
    */
-  virtual Box boundingBox() const = 0;
+  Box boundingBox() const;
+
+  /**\return bounding ring of current item in item koordinates. Uses for build
+   * boundingBox. Ring have to be valid, otherwise it can have unexpected rezult
+   *
+   * \warning if you change the return value after inserting in scene - do not
+   * forget call itemChanged method!
+   */
+  virtual Ring shape() const = 0;
 
   /**\brief have to be used for rendering by opengl
    */
@@ -117,7 +123,12 @@ protected:
 protected:
   /**\brief use this method if you need update item after unexpected change item
    * (for example if you change boundingBox or matrix)
-   * \warning also set item af first plane
+   *
+   * \param prevPos position, which contains bounding box (prefer centroid of
+   * bounding box)
+   *
+   * \warning If you set uncorrect position, then
+   * search of the item will be more long
    */
   void itemChanged(const PointF &prevPos) const;
 

@@ -59,8 +59,9 @@ public:
                                     Spatials = Spatials::Intersects) const;
 
   /**\warning after inserting all iterators invalidated
+   * \return true if item added, oterwise - false
    */
-  void addItem(std::shared_ptr<GraphicsItem> item);
+  bool addItem(std::shared_ptr<GraphicsItem> item);
   /**\warning after removing all iterators invalidated
    */
   void removeItem(GraphicsItem *item);
@@ -81,7 +82,12 @@ public:
   Box bounds() const;
 
   /**\brief GraphicsItem call this in itemChanged method. It needed for change
-   * item in rtree \warning no reason use this manually
+   * item in rtree
+   *
+   * \param prevPos have to position which in bounding box of item (prefer
+   * centroid of boundingBox)
+   *
+   * \warning no reason use this manually
    */
   void itemChanged(const GraphicsItem *item, const PointF &prevPos);
 

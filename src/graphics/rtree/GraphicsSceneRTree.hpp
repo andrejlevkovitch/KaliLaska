@@ -29,7 +29,7 @@ public:
   std::list<GraphicsItem *> itemsAt(const Box &box,
                                     Spatials   spat) const override;
 
-  void addItem(std::shared_ptr<GraphicsItem> item) override;
+  bool addItem(std::shared_ptr<GraphicsItem> item) override;
   void removeItem(GraphicsItem *item) override;
   void removeItem(const SceneIterator &iter) override;
 

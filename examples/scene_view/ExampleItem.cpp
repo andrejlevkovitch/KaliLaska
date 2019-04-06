@@ -14,8 +14,8 @@ ExampleItem::ExampleItem(const KaliLaska::Color &color)
     : color_{color} {
 }
 
-KaliLaska::Box ExampleItem::boundingBox() const {
-  return {{0, 0}, {30, 30}};
+KaliLaska::Ring ExampleItem::shape() const {
+  return {{0, 0}, {0, 30}, {30, 30}, {30, 0}, {0, 0}};
 }
 
 void ExampleItem::render() const {
