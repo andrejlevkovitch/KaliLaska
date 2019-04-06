@@ -19,8 +19,8 @@ GraphicsSceneRTree::~GraphicsSceneRTree() {
 
 void GraphicsSceneRTree::addItem(std::shared_ptr<GraphicsItem> item) {
   auto box = item->boundingBox();
-  bg::strategy::transform::translate_transformer<float, 2, 2> traslator{
-      bg::get<0>(item->pos()), bg::get<1>(item->pos())};
+  bg::strategy::transform::matrix_transformer<float, 2, 2> traslator{
+      item->matrix()};
   bg::transform(box, box, traslator);
   tree_.insert(ValueType{std::move(box), std::move(item)});
 }

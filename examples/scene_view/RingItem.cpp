@@ -6,6 +6,7 @@
 #include "KaliLaska/SceneMouseReleaseEvent.hpp"
 #include "KaliLaska/opengl.hpp"
 #include <boost/geometry.hpp>
+#include <iostream>
 
 namespace bg = boost::geometry;
 namespace bq = boost::qvm;
@@ -18,11 +19,11 @@ RingItem::RingItem() {
 }
 
 void RingItem::update() {
-  if (scene() && scene()->grabbedItem() != this) {
-    auto curpos = pos();
-    bg::add_point(curpos, KaliLaska::PointF{1, 0.5});
-    setPos(curpos);
-  }
+  // if (scene() && scene()->grabbedItem() != this) {
+  //  auto curpos = pos();
+  //  bg::add_point(curpos, KaliLaska::PointF{1, 0.5});
+  //  setPos(curpos);
+  //}
 }
 
 void RingItem::render() const {

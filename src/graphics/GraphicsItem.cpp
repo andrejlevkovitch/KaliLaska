@@ -5,12 +5,21 @@
 #include "debug.hpp"
 #include <algorithm>
 #include <boost/qvm/mat.hpp>
+#include <boost/qvm/mat_operations.hpp>
 #include <boost/qvm/mat_traits.hpp>
 
 namespace bq = boost::qvm;
 namespace bg = boost::geometry;
 
 namespace KaliLaska {
+float toRad(float angle) {
+  return angle * 3.14 / 180;
+}
+
+float toDegrees(float angle) {
+  return angle * 180 / 3.14;
+}
+
 GraphicsItem::GraphicsItem()
     : scene_{}
     , parent_{}
@@ -111,15 +120,26 @@ const TransformMatrix &GraphicsItem::matrix() const {
 void GraphicsItem::update() {
 }
 
-void GraphicsItem::rotade(float angle) {
-  // TODO implement
-  UNUSED(angle);
-  auto prevPos = pos();
-  itemChanged(prevPos);
+void GraphicsItem::rotate(float angle) {
+  bq::rotate_z(matrix_, toRad(angle));
+  itemChanged(pos());
+}
+
+void GraphicsItem::setRotation(float angle) {
+  // TODO maybe is better way?
+  float a        = bq::mat_traits<TransformMatrix>::read_element<0, 1>(matrix_);
+  float b        = bq::mat_traits<TransformMatrix>::read_element<0, 0>(matrix_);
+  float curAngle = std::atan2(-a, b);
+  // rotate back
+  bq::rotate_z(matrix_, -curAngle);
+  // rotate to new value
+  bq::rotate_z(matrix_, toRad(angle));
+  itemChanged(pos());
 }
 
 float GraphicsItem::angle() const {
-  // TODO implement
-  return {};
+  float a = bq::mat_traits<TransformMatrix>::read_element<0, 1>(matrix_);
+  float b = bq::mat_traits<TransformMatrix>::read_element<0, 0>(matrix_);
+  return toDegrees(std::atan2(-a, b));
 }
 } // namespace KaliLaska

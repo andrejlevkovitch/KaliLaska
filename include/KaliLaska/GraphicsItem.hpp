@@ -79,11 +79,15 @@ public:
    */
   void setScenePos(const PointF &pos);
 
-  /**\param angle in degrees
+  /**\param angle in degrees, this value will be added for previous
    */
-  void rotade(float angle);
+  void rotate(float angle);
 
-  /**\return current rotade angle
+  /**\param angle in degrees, item will be rotated on the angle
+   */
+  void setRotation(float angle);
+
+  /**\return current rotate angle in degrees
    */
   float angle() const;
 

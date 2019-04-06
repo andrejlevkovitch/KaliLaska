@@ -39,10 +39,9 @@ bool SceneIteratorRTree::operator==(const SceneIteratorImp &rhs) const {
     if (it_ == rIter.it_) {
       return true;
     }
-    return false;
   } catch (std::bad_cast &) {
-    return false;
   }
+  return false;
 }
 
 bool SceneIteratorRTree::operator!=(const SceneIteratorImp &rhs) const {

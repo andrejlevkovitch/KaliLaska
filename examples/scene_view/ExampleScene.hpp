@@ -6,7 +6,14 @@
 
 class ExampleScene : public KaliLaska::GraphicsScene {
 public:
-  using KaliLaska::GraphicsScene::GraphicsScene;
+  enum class Turn { None, Left, Right };
+  ExampleScene();
+
+  void keyPressEvent(KaliLaska::KeyPressEvent *event) override;
+  void keyReleaseEvent(KaliLaska::KeyReleaseEvent *event) override;
+
+  void update() override;
 
 private:
+  Turn turn_;
 };

@@ -86,8 +86,7 @@ void ExampleView::update() {
       glUniformMatrix3fv(1, 1, true, bq::inverse(matrix()).a[0]);
 
       for (const auto i : scene()->itemsAt(sceneBox())) {
-        auto itemScenePos = i->scenePos();
-        glUniform2f(2, bg::get<0>(itemScenePos), bg::get<1>(itemScenePos));
+        glUniformMatrix3fv(2, 1, true, i->matrix().a[0]);
         i->render();
       }
 

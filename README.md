@@ -1,9 +1,9 @@
 # KaliLaska
 
-Simple 2D Game Engine based on Sdl and OpenGL ES 3
+Simple 2D Game Engine based on SDL2 and OpenGL ES 3 (with blackjack and hookers)
 
 Use:
-  - Sdl
+  - SDL
   - OpenGL ES 3
   - imgui
   - tinyxml
@@ -25,8 +25,3 @@ Tiled. Для описания объектов, состояний и т.д. и
 Перед компиляцией нужно установить:
   - sdl не ниже версии 2.0.5
   - gl3w
-
-BUGS:
-  сейчас возникает проблема с закрытием программы, так как по какой-то причине не
-  приходит quit евент от sdl. Проблема раз от раза возникает, но что служит 
-  тригером - непонятно. Думаю это как-то связано с многопоточностью.
