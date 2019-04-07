@@ -1,6 +1,7 @@
 // ExampleItem.cpp
 
 #include "ExampleItem.hpp"
+#include "ExampleScene.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
 #include "KaliLaska/SceneMouseMoveEvent.hpp"
 #include "KaliLaska/SceneMousePressEvent.hpp"
@@ -45,4 +46,9 @@ void ExampleItem::mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) {
     scene()->grabbItem(nullptr);
     event->accept();
   }
+}
+
+KaliLaska::GraphicsItem::ItemType ExampleItem::type() const {
+  return static_cast<KaliLaska::GraphicsItem::ItemType>(
+      ExampleScene::ExampleItem);
 }

@@ -64,14 +64,28 @@ public:
 
   const TransformMatrix &matrix() const;
 
-  /**\param anchor position of view, relative to it will be scaled. Old anchor
-   * not be changed
+  /**\param anchor position of view, relative to it will be scaled.
+   * \brief scale sceneBox relatively to previous scale
    */
-  void scale(float x, float y, const PointF &anchor);
+  void scale(float xFactor, float yFactor, const PointF &anchor);
 
-  /**\brief scale current sceneBox relative to current anchor
+  /**\brief set current scale
    */
-  void scale(float x, float y);
+  void setScale(float xFactor, float yFactor, const PointF &anchor);
+
+  /**\return current scale
+   */
+  std::pair<float, float> scale() const;
+
+  /**\brief rotate sceneBox relative to previous rotation
+   */
+  void rotate(float angle, const PointF &anchor);
+
+  /**\brief set rotation for sceneBox
+   */
+  void setRotation(float angle, const PointF &anchor);
+
+  float angle() const;
 
 protected:
   TransformMatrix &matrix();
@@ -107,7 +121,6 @@ private:
   /**\brief tranform view koords in scene koords
    */
   TransformMatrix matrix_;
-  PointF          anchor_;
 
   ViewState *state_;
 

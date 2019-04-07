@@ -3,6 +3,7 @@
 #include "ExampleView.hpp"
 #include "KaliLaska/GraphicsItem.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
+#include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/MouseFocusEvent.hpp"
 #include "KaliLaska/MouseMoveEvent.hpp"
 #include "KaliLaska/MousePressEvent.hpp"
@@ -95,4 +96,20 @@ void ExampleView::update() {
       last_ = std::chrono::system_clock::now();
     }
   }
+}
+
+void ExampleView::keyPressEvent(
+    std::unique_ptr<KaliLaska::KeyPressEvent> event) {
+  auto curSize = drawSize();
+  switch (event->key()) {
+  case KaliLaska::Keyboard::Key::Key_A:
+    rotate(5, {curSize.width() / 2.f, curSize.height() / 2.f});
+    break;
+  case KaliLaska::Keyboard::Key::Key_D:
+    rotate(-5, {curSize.width() / 2.f, curSize.height() / 2.f});
+    break;
+  default:
+    break;
+  }
+  KaliLaska::GraphicsView::keyPressEvent(std::move(event));
 }

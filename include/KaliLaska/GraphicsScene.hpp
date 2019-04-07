@@ -69,6 +69,11 @@ public:
    */
   void removeItem(const ConstIterator &iter);
 
+  /**\warning any changes with scene or items can invalidate iterator. Be
+   * carefull in use. For example: if you need change position of every item,
+   * then create list of pointers to items (by copy algorithm) and change
+   * position of items form the list
+   */
   ConstIterator begin() const;
   ConstIterator end() const;
 

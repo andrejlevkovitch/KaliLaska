@@ -2,12 +2,14 @@
 
 #pragma once
 
+#include "BaseItem.hpp"
 #include "KaliLaska/Color.hpp"
-#include "KaliLaska/GraphicsItem.hpp"
 
-class ExampleItem final : public KaliLaska::GraphicsItem {
+class ExampleItem final : public BaseItem {
 public:
   explicit ExampleItem(const KaliLaska::Color &color);
+
+  ItemType type() const override;
 
   KaliLaska::Ring shape() const override;
   void            render() const override;

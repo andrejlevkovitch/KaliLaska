@@ -34,3 +34,15 @@ KALILASKA_EXPORT std::ostream &operator<<(std::ostream &          stream,
                                           const KaliLaska::Point &point);
 KALILASKA_EXPORT std::ostream &operator<<(std::ostream &           stream,
                                           const KaliLaska::PointF &point);
+
+KaliLaska::Point operator+(const KaliLaska::Point &lhs,
+                           const KaliLaska::Point &rhs);
+
+KaliLaska::Point operator-(const KaliLaska::Point &lhs,
+                           const KaliLaska::Point &rhs);
+
+KaliLaska::PointF operator+(const KaliLaska::PointF &lhs,
+                            const KaliLaska::PointF &rhs);
+
+KaliLaska::PointF operator-(const KaliLaska::PointF &lhs,
+                            const KaliLaska::PointF &rhs);

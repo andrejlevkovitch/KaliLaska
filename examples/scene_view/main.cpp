@@ -27,16 +27,16 @@ int main(int argc, char *argv[]) {
   view2.setScene(&scene);
 
   auto item1 = std::make_shared<ExampleItem>(KaliLaska::Color::Colors::Blue);
-  item1->setPos({0, 0});
+  item1->setScenePos({0, 0}, {0, 0});
   auto item2 = std::make_shared<ExampleItem>(KaliLaska::Color::Colors::Cyan);
-  item2->setPos({700, 700});
+  item2->setScenePos({700, 700}, {0, 0});
   auto item3 = std::make_shared<ExampleItem>(KaliLaska::Color::Colors::Yellow);
-  item3->setPos({0, 700});
+  item3->setScenePos({0, 700}, {0, 0});
   auto item4 = std::make_shared<ExampleItem>(KaliLaska::Color::Colors::Magenta);
-  item4->setPos({700, 0});
+  item4->setScenePos({700, 0}, {0, 0});
 
   auto ringItem = std::make_shared<RingItem>();
-  ringItem->setPos({400, 400});
+  ringItem->setScenePos({400, 400}, {0, 0});
 
   scene.addItem(item1);
   scene.addItem(item2);

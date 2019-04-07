@@ -3,6 +3,36 @@
 #include "KaliLaska/Point.hpp"
 #include <boost/geometry.hpp>
 
+namespace bg = boost::geometry;
+
+KaliLaska::PointF operator+(const KaliLaska::PointF &lhs,
+                            const KaliLaska::PointF &rhs) {
+  KaliLaska::PointF retval = lhs;
+  bg::add_point(retval, rhs);
+  return retval;
+}
+
+KaliLaska::PointF operator-(const KaliLaska::PointF &lhs,
+                            const KaliLaska::PointF &rhs) {
+  KaliLaska::PointF retval = lhs;
+  bg::subtract_point(retval, rhs);
+  return retval;
+}
+
+KaliLaska::Point operator+(const KaliLaska::Point &lhs,
+                           const KaliLaska::Point &rhs) {
+  KaliLaska::Point retval = lhs;
+  bg::add_point(retval, rhs);
+  return retval;
+}
+
+KaliLaska::Point operator-(const KaliLaska::Point &lhs,
+                           const KaliLaska::Point &rhs) {
+  KaliLaska::Point retval = lhs;
+  bg::subtract_point(retval, rhs);
+  return retval;
+}
+
 bool operator==(const KaliLaska::Point &lhs, const KaliLaska::Point &rhs) {
   return boost::geometry::equals(lhs, rhs);
 }

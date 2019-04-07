@@ -85,9 +85,9 @@ Box GraphicsScene::bounds() const {
 void GraphicsScene::mouseMoveEvent(SceneMouseMoveEvent *event) {
   if (event && !event->accepted()) {
     if (grabbed_) {
-      PointF newPos = grabbed_->pos();
-      bg::add_point(newPos, event->distance());
-      grabbed_->setPos(newPos);
+      PointF anchor = event->previousPos();
+      bg::subtract_point(anchor, grabbed_->scenePos());
+      grabbed_->setScenePos(event->currentPos(), anchor);
       event->accept();
       return;
     }
@@ -123,8 +123,12 @@ void GraphicsScene::mouseReleaseEvent(SceneMouseReleaseEvent *event) {
 }
 
 void GraphicsScene::mouseFocusEvent(MouseFocusEvent *event) {
-  // TODO here have to generated mouse release event
-  UNUSED(event);
+  // TODO maybe here is a better way?
+  // here if we lost focus I ungrab item, because when not ungrab it can have
+  // unexpected rezult
+  if (event && event->focus() == Mouse::Focus::Leave) {
+    grabbItem(nullptr);
+  }
 }
 
 void GraphicsScene::keyPressEvent(KeyPressEvent *event) {

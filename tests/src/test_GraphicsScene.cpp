@@ -37,11 +37,11 @@ SCENARIO("Test GraphicsScene", "[GraphicsScene]") {
     WHEN("Get items for test and set positions for this") {
       auto item0 = std::make_shared<TestItem>();
       auto item1 = std::make_shared<TestItem>();
-      item1->setPos({250, 0});
+      item1->setScenePos({250, 0}, {0, 0});
       auto item2 = std::make_shared<TestItem>();
-      item2->setPos({0, 150});
+      item2->setScenePos({0, 150}, {0, 0});
       auto item3 = std::make_shared<TestItem>();
-      item3->setPos({600, 600});
+      item3->setScenePos({600, 600}, {0, 0});
 
       scene.addItem(item0);
       scene.addItem(item1);
@@ -75,7 +75,7 @@ SCENARIO("Test GraphicsScene", "[GraphicsScene]") {
         REQUIRE(found != scene.end());
       }
       AND_THEN("Check size of scene by iterators") {
-        auto count =
+        size_t count =
             std::count_if(scene.begin(), scene.end(), [](const auto &val) {
               (void)val;
               return true;
@@ -111,8 +111,8 @@ SCENARIO("Test GraphicsScene", "[GraphicsScene]") {
       THEN("Check move item") {
         auto              prevPos = item0->scenePos();
         KaliLaska::PointF newPos{9000, 9000};
-        item0->setScenePos(newPos);
-        auto item = scene.itemAt(newPos);
+        item0->setScenePos(newPos, {0, 0});
+        auto item = scene.itemAt(newPos + KaliLaska::PointF{1, 1});
         REQUIRE(item);
         REQUIRE(item == item0.get());
 

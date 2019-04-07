@@ -1,6 +1,7 @@
 // RingItem.cpp
 
 #include "RingItem.hpp"
+#include "ExampleScene.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
 #include "KaliLaska/SceneMousePressEvent.hpp"
 #include "KaliLaska/SceneMouseReleaseEvent.hpp"
@@ -16,6 +17,7 @@ RingItem::RingItem() {
       "POLYGON((10 0, 10 10, 20 10, 20 30, 10 30, 10 40, 20 40, 20 50, 30 50, "
       "30 40, 40 40, 40 30, 30 30, 30 10, 40 10, 40 0, 10 0))",
       shape_);
+  setAnchor(bg::return_centroid<KaliLaska::PointF>(boundingBox()));
 }
 
 void RingItem::update() {
@@ -51,4 +53,8 @@ void RingItem::mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) {
     scene()->grabbItem(nullptr);
     event->accept();
   }
+}
+
+KaliLaska::GraphicsItem::ItemType RingItem::type() const {
+  return static_cast<KaliLaska::GraphicsItem::ItemType>(ExampleScene::RingItem);
 }

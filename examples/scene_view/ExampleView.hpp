@@ -19,6 +19,8 @@ protected:
   void
   mouseWheelEvent(std::unique_ptr<KaliLaska::MouseWheelEvent> event) override;
 
+  void keyPressEvent(std::unique_ptr<KaliLaska::KeyPressEvent> event) override;
+
 private:
   std::chrono::time_point<std::chrono::system_clock> last_;
   std::unique_ptr<KaliLaska::GL::ShaderProgram>      prog_;

@@ -2,12 +2,14 @@
 
 #pragma once
 
-#include "KaliLaska/GraphicsItem.hpp"
+#include "BaseItem.hpp"
 #include "KaliLaska/Ring.hpp"
 
-class RingItem final : public KaliLaska::GraphicsItem {
+class RingItem final : public BaseItem {
 public:
   RingItem();
+
+  ItemType type() const override;
 
   void update() override;
   void render() const override;

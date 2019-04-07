@@ -25,11 +25,18 @@ class GraphicsItem {
   friend GraphicsScene;
 
 public:
+  enum ItemType { None = 0, UserType = 100 };
+
   GraphicsItem();
   virtual ~GraphicsItem() = default;
 
   GraphicsItem(GraphicsItem &&) = delete;
   GraphicsItem &operator=(GraphicsItem &&) = delete;
+
+  /**\return type of item. By default None. If you want to set you own type -
+   * use UserType
+   */
+  virtual ItemType type() const;
 
   /**\return box, which contains current item in item koordinates. Building from
    * shape. Rendering have to be in this box, otherwise it can have unexpected
@@ -67,63 +74,50 @@ public:
 
   void setParent(GraphicsItem *parent);
 
-  /**\param anchor position in item koordinates, relative to which will be get
-   * all changes (change position, scale, rotation)
-   */
-  void setAnchor(const PointF &anchor);
-
-  /**\return position (in item koordinates), relative to which all changes
-   * happens (change position, scale, rotation). By default {0, 0}
-   */
-  PointF anchor() const;
-
-  /**\return postion of item in parent koordinates relative to item anchor. If
-   * parent is not set - in scene koordinates
+  /**\return postion (top-left corner) of item in parent koordinates. If parent
+   * is not set - in scene koordinates
    */
   PointF pos() const;
 
-  /**\return position of item in scene koordinates relative to anchor
+  /**\return position (top-left corner) of item in scene koordinates.
    */
   PointF scenePos() const;
 
   /**\brief set current postion of item in parent koordinates. If parent is
-   * nullptr - in scene koordinates. Relative to item anchor
+   * nullptr - in scene koordinates.
    */
   void setPos(const PointF &pos);
 
-  /**\brief set current position of item in scene koordinates. Relative to item
-   * anchor
-   */
-  void setScenePos(const PointF &pos);
-
   /**\param anchor relative to the position will be set new position of item.
-   * Old anchor will not change. In item koordinates
+   * In item koordinates
    */
   void setScenePos(const PointF &pos, const PointF &anchor);
 
-  /**\param angle in degrees, this value will be added for previous. Relative to
-   * current anchor and z-axis
-   */
-  void rotate(float angle);
-
-  /**\param anchor relative to the position will be rotate item. Old anchor will
-   * not change. In item koordinates
+  /**\param anchor relative to the position will be rotate item. In item
+   * koordinates
    */
   void rotate(float angle, const PointF &anchor);
 
-  /**\param angle in degrees, item will be rotated on the angle. Relative to
-   * current anchor and z-axis
-   */
-  void setRotation(float angle);
-
-  /**\param anchor relative to the position will be set rotation item. Old
-   * anchor will not change. In item koordinates
+  /**\param anchor relative to the position will be set rotation item. In item
+   * koordinates
    */
   void setRotation(float angle, const PointF &anchor);
 
   /**\return current rotate angle in degrees. Relative to z-axis
    */
   float angle() const;
+
+  /**\brief scale current item relative to anchor. Relative to current scale.
+   */
+  void scale(float xFactor, float yFactor, const PointF &anchor);
+
+  /**\brief set current scale
+   */
+  void setScale(float xFactor, float yFactor, const PointF &anchor);
+
+  /**\return current scale of item.
+   */
+  std::pair<float, float> scale() const;
 
   std::list<GraphicsItem *> children() const;
 
@@ -171,6 +165,5 @@ private:
   std::set<GraphicsItem *> children_;
 
   TransformMatrix matrix_;
-  PointF          anchor_;
 };
 } // namespace KaliLaska

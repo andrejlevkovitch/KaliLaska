@@ -28,7 +28,6 @@ GraphicsView::GraphicsView(std::string_view title,
     : Window{title, pos, size}
     , scene_{}
     , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}}
-    , anchor_{0, 0}
     , state_{NotifySceneState::instance()}
     , properties_{} {
 }
@@ -72,10 +71,12 @@ void GraphicsView::setSceneBox(const Box &sceneBox) {
 }
 
 Box GraphicsView::sceneBox() const {
-  Box                                                      retval;
+  Ring view;
+  bg::convert(viewBox(), view);
+  Ring                                                     sceneRing;
   bg::strategy::transform::matrix_transformer<float, 2, 2> transform{matrix_};
-  bg::transform(viewBox(), retval, transform);
-  return retval;
+  bg::transform(view, sceneRing, transform);
+  return bg::return_envelope<Box>(sceneRing);
 }
 
 Box GraphicsView::viewBox() const {
@@ -120,24 +121,85 @@ void GraphicsView::changeState(ViewState *state) {
   state_ = state;
 }
 
-void GraphicsView::scale(float x, float y) {
-  scale(x, y, anchor_);
-}
-
 void GraphicsView::scale(float x, float y, const PointF &anchor) {
   // clang-format off
   TransformMatrix scaleMat{{ {x, 0, 0},
                              {0, y, 0},
                              {0, 0, 1}}};
 
-  TransformMatrix translate{{{1, 0, bg::get<0>(anchor)},
+  TransformMatrix anchorMat{{{1, 0, bg::get<0>(anchor)},
                              {0, 1, bg::get<1>(anchor)},
                              {0, 0, 1}}};
   // clang-format on
 
-  scaleMat *= bq::inverse(translate);
-  translate *= scaleMat;
+  matrix_ *= anchorMat;
+  matrix_ *= scaleMat;
+  matrix_ *= bq::inverse(anchorMat);
+}
 
-  matrix_ *= translate;
+void GraphicsView::setScale(float         xFactor,
+                            float         yFactor,
+                            const PointF &anchor) {
+  // clang-format off
+  TransformMatrix scaleMat{{ {xFactor, 0, 0},
+                             {0, yFactor, 0},
+                             {0, 0, 1}}};
+
+  TransformMatrix anchorMat{{{1, 0, bg::get<0>(anchor)},
+                             {0, 1, bg::get<1>(anchor)},
+                             {0, 0, 1}}};
+  // clang-format on
+
+  auto backScaleMat = bq::inverse(getScaleMat(matrix_));
+
+  matrix_ *= backScaleMat;
+  matrix_ *= anchorMat;
+  matrix_ *= scaleMat;
+  matrix_ *= bq::inverse(anchorMat);
+}
+
+std::pair<float, float> GraphicsView::scale() const {
+  return getScale(matrix_);
+}
+
+void GraphicsView::rotate(float angle, const PointF &anchor) {
+  // clang-format off
+  TransformMatrix anchorMat{{
+      {1, 0, bg::get<0>(anchor)},
+      {0, 1, bg::get<1>(anchor)},
+      {0, 0, 1}}};
+  // clang-format on
+
+  TransformMatrix rotationMat{};
+  bq::set_rotz(rotationMat, toRad(angle));
+
+  matrix_ *= anchorMat;
+  matrix_ *= rotationMat;
+  matrix_ *= bq::inverse(anchorMat);
+}
+
+void GraphicsView::setRotation(float angle, const PointF &anchor) {
+  // clang-format off
+  TransformMatrix anchorMat{{
+        {1, 0, bg::get<0>(anchor)},
+        {0, 1, bg::get<1>(anchor)},
+        {0, 0, 1}}};
+  // clang-format on
+
+  // rotate back
+  auto backRotationMat = bq::inverse(getRotaionMat(matrix_));
+
+  // rotate to new value
+  TransformMatrix rotationMat{};
+  bq::set_rotz(rotationMat, toRad(angle));
+
+  matrix_ *= backRotationMat;
+  matrix_ *= anchorMat;
+  matrix_ *= rotationMat;
+  matrix_ *= bq::inverse(anchorMat);
+}
+
+float GraphicsView::angle() const {
+  return getAngle(matrix_);
 }
 } // namespace KaliLaska

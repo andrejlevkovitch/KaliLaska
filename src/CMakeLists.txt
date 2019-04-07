@@ -8,6 +8,7 @@ set(KaliLaska_SRC
   geometry/Color.cpp
   geometry/Box.cpp
   geometry/Ring.cpp
+  geometry/TransformMatrix.cpp
 
 
   application/EventNotifyer.cpp

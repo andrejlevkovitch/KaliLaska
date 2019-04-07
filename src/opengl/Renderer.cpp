@@ -13,7 +13,7 @@ void Renderer::render(const Box &box, const Color &color) {
 
   bg::model::ring<PointF> ring;
   bg::convert(box, ring);
-  static const ushort elementBuffer[4]{1, 0, 2, 3};
+  static const std::array<ushort, 4> elementBuffer{1, 0, 2, 3};
 
   GLuint vbo{};
   GLuint ebo{};
@@ -25,16 +25,20 @@ void Renderer::render(const Box &box, const Color &color) {
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
 
-  glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), ring.data(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER,
+               (ring.size() - 1) * 2 * sizeof(float),
+               ring.data(),
+               GL_STATIC_DRAW);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-               4 * sizeof(ushort),
-               elementBuffer,
+               elementBuffer.size() *
+                   sizeof(decltype(elementBuffer)::value_type),
+               elementBuffer.data(),
                GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 
   glDrawElements(
-      GL_TRIANGLE_STRIP, sizeof(elementBuffer), GL_UNSIGNED_SHORT, nullptr);
+      GL_TRIANGLE_STRIP, elementBuffer.size(), GL_UNSIGNED_SHORT, nullptr);
 
   glDisableVertexAttribArray(1);
   glDisableVertexAttribArray(0);
@@ -61,7 +65,7 @@ void Renderer::render(const Ring &ring, const Color &color) {
                  ring.data(),
                  GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 triangles.size() * sizeof(ushort),
+                 triangles.size() * sizeof(decltype(triangles)::value_type),
                  triangles.data(),
                  GL_STATIC_DRAW);
 
