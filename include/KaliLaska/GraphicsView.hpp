@@ -50,6 +50,12 @@ public:
   void setSceneBox(const Box &sceneBox);
   Box  sceneBox() const;
 
+  /**\brief set postion relative to which will be all changes, like rotation and
+   * scale. In view koordinates. By default {0, 0}
+   */
+  void   anchor(const PointF &pos);
+  PointF anchor() const;
+
   /**\return box in view koordinates {0, 0, width, height}
    */
   Box viewBox() const;
@@ -58,9 +64,14 @@ public:
 
   const TransformMatrix &matrix() const;
 
-  /**\param anchor position of view, relative to it will be scaled
+  /**\param anchor position of view, relative to it will be scaled. Old anchor
+   * not be changed
    */
-  void scale(float x, float y, const PointF &anchor = {0, 0});
+  void scale(float x, float y, const PointF &anchor);
+
+  /**\brief scale current sceneBox relative to current anchor
+   */
+  void scale(float x, float y);
 
 protected:
   TransformMatrix &matrix();
@@ -96,6 +107,7 @@ private:
   /**\brief tranform view koords in scene koords
    */
   TransformMatrix matrix_;
+  PointF          anchor_;
 
   ViewState *state_;
 

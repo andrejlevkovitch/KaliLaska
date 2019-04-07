@@ -24,7 +24,8 @@ float toDegrees(float angle) {
 GraphicsItem::GraphicsItem()
     : scene_{}
     , parent_{}
-    , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}} {
+    , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}}
+    , anchor_{0, 0} {
 }
 
 GraphicsScene *GraphicsItem::scene() const {
@@ -66,14 +67,19 @@ void GraphicsItem::setPos(const PointF &pos) {
 }
 
 void GraphicsItem::setScenePos(const PointF &pos) {
+  setScenePos(pos, anchor_);
+}
+
+void GraphicsItem::setScenePos(const PointF &pos, const PointF &anchor) {
+  // for get previous pos
   PointF                                                   prevPos;
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
   bg::transform(bg::return_centroid<PointF>(boundingBox()), prevPos, translate);
 
   bq::mat_traits<TransformMatrix>::write_element<0, 2>(matrix_) =
-      bg::get<0>(pos);
+      bg::get<0>(pos) - bg::get<0>(anchor);
   bq::mat_traits<TransformMatrix>::write_element<1, 2>(matrix_) =
-      bg::get<1>(pos);
+      bg::get<1>(pos) - bg::get<1>(anchor);
 
   itemChanged(prevPos);
 }
@@ -124,15 +130,30 @@ void GraphicsItem::update() {
 }
 
 void GraphicsItem::rotate(float angle) {
+  rotate(angle, anchor_);
+}
+
+void GraphicsItem::rotate(float angle, const PointF &anchor) {
+  // for get previous pos
   PointF                                                   prevPos;
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
   bg::transform(bg::return_centroid<PointF>(boundingBox()), prevPos, translate);
 
+  TransformMatrix anchorMat{
+      {{1, 0, bg::get<0>(anchor)}, {0, 1, bg::get<1>(anchor)}, {0, 0, 1}}};
+  matrix_ *= anchorMat;
   bq::rotate_z(matrix_, toRad(angle));
+  matrix_ *= bq::inverse(anchorMat);
+
   itemChanged(prevPos);
 }
 
 void GraphicsItem::setRotation(float angle) {
+  setRotation(angle, anchor_);
+}
+
+void GraphicsItem::setRotation(float angle, const PointF &anchor) {
+  // for get previous pos
   PointF                                                   prevPos;
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
   bg::transform(bg::return_centroid<PointF>(boundingBox()), prevPos, translate);
@@ -141,10 +162,16 @@ void GraphicsItem::setRotation(float angle) {
   float a        = bq::mat_traits<TransformMatrix>::read_element<0, 1>(matrix_);
   float b        = bq::mat_traits<TransformMatrix>::read_element<0, 0>(matrix_);
   float curAngle = std::atan2(-a, b);
+
+  TransformMatrix anchorMat{
+      {{1, 0, bg::get<0>(anchor)}, {0, 1, bg::get<1>(anchor)}, {0, 0, 1}}};
+  matrix_ *= anchorMat;
   // rotate back
   bq::rotate_z(matrix_, -curAngle);
   // rotate to new value
   bq::rotate_z(matrix_, toRad(angle));
+  matrix_ *= bq::inverse(anchorMat);
+
   itemChanged(prevPos);
 }
 
@@ -156,5 +183,13 @@ float GraphicsItem::angle() const {
 
 Box GraphicsItem::boundingBox() const {
   return bg::return_envelope<Box>(shape());
+}
+
+PointF GraphicsItem::anchor() const {
+  return anchor_;
+}
+
+void GraphicsItem::setAnchor(const PointF &anchor) {
+  anchor_ = anchor;
 }
 } // namespace KaliLaska

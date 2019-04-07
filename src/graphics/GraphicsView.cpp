@@ -28,6 +28,7 @@ GraphicsView::GraphicsView(std::string_view title,
     : Window{title, pos, size}
     , scene_{}
     , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}}
+    , anchor_{0, 0}
     , state_{NotifySceneState::instance()}
     , properties_{} {
 }
@@ -117,6 +118,10 @@ void GraphicsView::mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event) {
 
 void GraphicsView::changeState(ViewState *state) {
   state_ = state;
+}
+
+void GraphicsView::scale(float x, float y) {
+  scale(x, y, anchor_);
 }
 
 void GraphicsView::scale(float x, float y, const PointF &anchor) {

@@ -67,33 +67,61 @@ public:
 
   void setParent(GraphicsItem *parent);
 
-  /**\return postion of item in parent koordinates. If parent is not set - in
-   * scene koordinates
+  /**\param anchor position in item koordinates, relative to which will be get
+   * all changes (change position, scale, rotation)
+   */
+  void setAnchor(const PointF &anchor);
+
+  /**\return position (in item koordinates), relative to which all changes
+   * happens (change position, scale, rotation). By default {0, 0}
+   */
+  PointF anchor() const;
+
+  /**\return postion of item in parent koordinates relative to item anchor. If
+   * parent is not set - in scene koordinates
    */
   PointF pos() const;
 
-  /**\return position of item in scene koordinates
+  /**\return position of item in scene koordinates relative to anchor
    */
   PointF scenePos() const;
 
   /**\brief set current postion of item in parent koordinates. If parent is
-   * nullptr - in scene koordinates
+   * nullptr - in scene koordinates. Relative to item anchor
    */
   void setPos(const PointF &pos);
 
-  /**\brief set current position of item in scene koordinates
+  /**\brief set current position of item in scene koordinates. Relative to item
+   * anchor
    */
   void setScenePos(const PointF &pos);
 
-  /**\param angle in degrees, this value will be added for previous
+  /**\param anchor relative to the position will be set new position of item.
+   * Old anchor will not change. In item koordinates
+   */
+  void setScenePos(const PointF &pos, const PointF &anchor);
+
+  /**\param angle in degrees, this value will be added for previous. Relative to
+   * current anchor and z-axis
    */
   void rotate(float angle);
 
-  /**\param angle in degrees, item will be rotated on the angle
+  /**\param anchor relative to the position will be rotate item. Old anchor will
+   * not change. In item koordinates
+   */
+  void rotate(float angle, const PointF &anchor);
+
+  /**\param angle in degrees, item will be rotated on the angle. Relative to
+   * current anchor and z-axis
    */
   void setRotation(float angle);
 
-  /**\return current rotate angle in degrees
+  /**\param anchor relative to the position will be set rotation item. Old
+   * anchor will not change. In item koordinates
+   */
+  void setRotation(float angle, const PointF &anchor);
+
+  /**\return current rotate angle in degrees. Relative to z-axis
    */
   float angle() const;
 
@@ -143,5 +171,6 @@ private:
   std::set<GraphicsItem *> children_;
 
   TransformMatrix matrix_;
+  PointF          anchor_;
 };
 } // namespace KaliLaska
