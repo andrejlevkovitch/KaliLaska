@@ -42,7 +42,7 @@ bool operator!=(const KaliLaska::Point &lhs, const KaliLaska::Point &rhs) {
 }
 
 std::ostream &operator<<(std::ostream &stream, const KaliLaska::Point &point) {
-  stream << "Point: x " << point.x() << ", y " << point.y();
+  stream << bg::wkt(point);
   return stream;
 }
 
@@ -55,7 +55,6 @@ bool operator!=(const KaliLaska::PointF &lhs, const KaliLaska::PointF &rhs) {
 }
 
 std::ostream &operator<<(std::ostream &stream, const KaliLaska::PointF &point) {
-  stream << "Point: x " << boost::geometry::get<0>(point) << ", y "
-         << boost::geometry::get<1>(point);
+  stream << bg::wkt(point);
   return stream;
 }

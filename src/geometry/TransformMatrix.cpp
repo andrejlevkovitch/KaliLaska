@@ -71,3 +71,17 @@ float toDegrees(float angle) {
   return angle * 180 / 3.14;
 }
 } // namespace KaliLaska
+
+std::ostream &operator<<(std::ostream &stream, const KaliLaska::TransformMatrix &mat) {
+  stream <<
+    bq::mat_traits<KaliLaska::TransformMatrix>::read_element<0, 0>(mat) << ' ' <<
+    bq::mat_traits<KaliLaska::TransformMatrix>::read_element<0, 1>(mat) << ' ' <<
+    bq::mat_traits<KaliLaska::TransformMatrix>::read_element<0, 2>(mat) << std::endl <<
+    bq::mat_traits<KaliLaska::TransformMatrix>::read_element<1, 0>(mat) << ' ' <<
+    bq::mat_traits<KaliLaska::TransformMatrix>::read_element<1, 1>(mat) << ' ' <<
+    bq::mat_traits<KaliLaska::TransformMatrix>::read_element<1, 2>(mat) << std::endl <<
+    bq::mat_traits<KaliLaska::TransformMatrix>::read_element<2, 0>(mat) << ' ' <<
+    bq::mat_traits<KaliLaska::TransformMatrix>::read_element<2, 1>(mat) << ' ' <<
+    bq::mat_traits<KaliLaska::TransformMatrix>::read_element<2, 2>(mat);
+  return stream;
+}

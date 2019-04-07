@@ -22,3 +22,6 @@ float toRad(float angle);
 
 float toDegrees(float angle);
 } // namespace KaliLaska
+
+std::ostream &operator<<(std::ostream &                    stream,
+                         const KaliLaska::TransformMatrix &mat);

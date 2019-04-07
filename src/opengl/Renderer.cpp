@@ -4,6 +4,7 @@
 #include "debug.hpp"
 #include <GL/gl3w.h>
 #include <boost/geometry.hpp>
+#include <cstdint>
 
 namespace bg = boost::geometry;
 
@@ -13,7 +14,7 @@ void Renderer::render(const Box &box, const Color &color) {
 
   bg::model::ring<PointF> ring;
   bg::convert(box, ring);
-  static const std::array<ushort, 4> elementBuffer{1, 0, 2, 3};
+  static const std::array<uint16_t, 4> elementBuffer{1, 0, 2, 3};
 
   GLuint vbo{};
   GLuint ebo{};

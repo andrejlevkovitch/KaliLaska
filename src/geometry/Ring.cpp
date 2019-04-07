@@ -2,6 +2,7 @@
 
 #include "KaliLaska/Ring.hpp"
 #include <boost/geometry.hpp>
+#include <cstdint>
 #include <list>
 
 namespace bg = boost::geometry;
@@ -23,9 +24,9 @@ std::vector<unsigned short> triangulation(const Ring &ring) {
 
   // ear - have to be valid iterator of points
   auto getTriangleWithEar = [&ring, &points](const auto &ear) {
-    ushort earVertex = *ear;
-    ushort lhsVertex{};
-    ushort rhsVertex{};
+    uint16_t earVertex = *ear;
+    uint16_t lhsVertex{};
+    uint16_t rhsVertex{};
 
     if (ear == points.begin()) {
       lhsVertex = *points.rbegin();
@@ -42,7 +43,7 @@ std::vector<unsigned short> triangulation(const Ring &ring) {
     return std::pair{
         Ring{
             ring[lhsVertex], ring[earVertex], ring[rhsVertex], ring[lhsVertex]},
-        std::array<ushort, 3>{lhsVertex, earVertex, rhsVertex}};
+        std::array<uint16_t, 3>{lhsVertex, earVertex, rhsVertex}};
   };
 
   static const bg::de9im::mask withinMask{"T*F**F***"}; // within
@@ -86,10 +87,7 @@ std::vector<unsigned short> triangulation(const Ring &ring) {
 } // namespace KaliLaska
 
 std::ostream &operator<<(std::ostream &stream, const KaliLaska::Ring &ring) {
-  stream << "Ring: ";
-  for (const auto i : ring) {
-    stream << i;
-  }
+  stream << bg::wkt(ring);
   return stream;
 }
 
