@@ -25,7 +25,7 @@ SCENARIO("test window without parameters", "[Window]") {
     WHEN("We get window") {
       REQUIRE(window != nullptr);
 
-      THEN("Check caption") { CHECK(window->title() == std::string{""}); }
+      THEN("Check caption") { CHECK(window->title() == std::string_view{""}); }
       AND_THEN("Check size") {
         // window size can not be null, but drawable size - can
         CHECK(window->size() != KaliLaska::Size{});
@@ -40,7 +40,7 @@ SCENARIO("test window without parameters", "[Window]") {
         WHEN("We set caption of window") {
           window->setTitle(MY_TITLE);
           THEN("Check title") {
-            CHECK(window->title() == std::string{MY_TITLE});
+            CHECK(window->title() == std::string_view{MY_TITLE});
           }
         }
         AND_WHEN("We set size") {
@@ -85,7 +85,9 @@ SCENARIO("Test window with set size", "[Window]") {
 
     WHEN("We get window") {
       REQUIRE(window);
-      THEN("Check caption") { CHECK(window->title() == std::string{MY_TITLE}); }
+      THEN("Check caption") {
+        CHECK(window->title() == std::string_view{MY_TITLE});
+      }
       AND_THEN("Check size") { CHECK(window->size() == windowSize); }
     }
   }
@@ -101,7 +103,9 @@ SCENARIO("Test window with position and size", "[Window]") {
 
     WHEN("We get window") {
       REQUIRE(window);
-      THEN("check caption") { CHECK(window->title() == std::string{MY_TITLE}); }
+      THEN("check caption") {
+        CHECK(window->title() == std::string_view{MY_TITLE});
+      }
       AND_THEN("Check size") { CHECK(window->size() == windowSize); }
       AND_THEN("Check pos") { CHECK(window->pos() == windowPos); }
     }

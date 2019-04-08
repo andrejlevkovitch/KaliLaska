@@ -16,9 +16,8 @@ std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &window) {
   }
 }
 
-std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &    window,
-                                                             const char *title,
-                                                             Size        size) {
+std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(
+    Window &window, std::string_view title, Size size) {
   try {
     auto retval = std::make_unique<WindowSdl>(title, size);
     auto id     = retval->id();
@@ -29,10 +28,8 @@ std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &    window,
   }
 }
 
-std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(Window &    window,
-                                                             const char *title,
-                                                             Point       pos,
-                                                             Size        size) {
+std::unique_ptr<WindowImp> WindowSdlFactory::createWindowImp(
+    Window &window, std::string_view title, Point pos, Size size) {
   try {
     auto retval = std::make_unique<WindowSdl>(title, pos, size);
     auto id     = retval->id();

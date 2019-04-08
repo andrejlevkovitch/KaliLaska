@@ -12,15 +12,16 @@ namespace KaliLaska {
 WindowSdl::WindowSdl()
     : WindowSdl{nullptr, {}, {}} {
 }
-WindowSdl::WindowSdl(const char *title, Size size)
+WindowSdl::WindowSdl(std::string_view title, Size size)
     : WindowSdl{
           title, Point{SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}, size} {
 }
 
-WindowSdl::WindowSdl(const char *title, Point pos, Size size)
+WindowSdl::WindowSdl(std::string_view title, Point pos, Size size)
     : window_{}
     , glContext_{} {
-  if (!createWindow(title, pos, size) || !createGLContext()) {
+  if (!createWindow(std::string{title}.c_str(), pos, size) ||
+      !createGLContext()) {
     throw std::runtime_error{SDL_GetError()};
   }
 }
@@ -63,12 +64,12 @@ Size WindowSdl::drawSize() const {
   return Size{width, height};
 }
 
-const char *WindowSdl::title() const {
+std::string_view WindowSdl::title() const {
   return SDL_GetWindowTitle(window_);
 }
 
-void WindowSdl::setTitle(const char *title) {
-  SDL_SetWindowTitle(window_, title);
+void WindowSdl::setTitle(std::string_view title) {
+  SDL_SetWindowTitle(window_, std::string{title}.c_str());
 }
 
 bool WindowSdl::isHide() const {

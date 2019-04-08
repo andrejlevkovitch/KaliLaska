@@ -31,9 +31,9 @@ public:
    */
   virtual Size drawSize() const = 0;
 
-  virtual const char *title() const = 0;
+  virtual std::string_view title() const = 0;
 
-  virtual void setTitle(const char *title) = 0;
+  virtual void setTitle(std::string_view title) = 0;
 
   /**\return true if window is currently hidden, false - other wise
    */

@@ -33,8 +33,9 @@ uint32_t createShader(ShaderOpenGLType_ type, std::string_view code) {
     throw std::runtime_error{"opengl shader can not be created"};
   }
 
-  auto codePtr = code.data();
-  glShaderSource(openglShader, 1, &codePtr, nullptr);
+  auto  codePtr = code.data();
+  GLint size    = code.size();
+  glShaderSource(openglShader, 1, &codePtr, &size);
 
   glCompileShader(openglShader);
 

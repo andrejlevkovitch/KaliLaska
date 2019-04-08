@@ -28,7 +28,7 @@ ExampleView::ExampleView(std::string_view        title,
   auto shaderCodeLoader = [](std::string_view fileName) {
     std::string   retval;
     std::ifstream fin;
-    fin.open(fileName.data(), std::ios::in);
+    fin.open(std::string{fileName}.c_str(), std::ios::in);
     if (fin.is_open()) {
       std::copy(std::istreambuf_iterator<char>(fin),
                 std::istreambuf_iterator<char>(),

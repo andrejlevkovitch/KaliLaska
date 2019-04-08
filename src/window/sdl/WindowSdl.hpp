@@ -15,8 +15,8 @@ public:
   /**\throws when can not create window or OpenGL context
    */
   WindowSdl();
-  WindowSdl(const char *title, Size size);
-  WindowSdl(const char *title, Point pos, Size size);
+  WindowSdl(std::string_view title, Size size);
+  WindowSdl(std::string_view title, Point pos, Size size);
   ~WindowSdl() override;
 
   WindowSdl(const WindowSdl &) = delete;
@@ -33,9 +33,9 @@ public:
   Size drawSize() const override;
   void setSize(Size size) override;
 
-  const char *title() const override;
+  std::string_view title() const override;
 
-  void setTitle(const char *title) override;
+  void setTitle(std::string_view title) override;
 
   bool isHide() const override;
 

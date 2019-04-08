@@ -7,6 +7,8 @@ namespace bq = boost::qvm;
 namespace bg = boost::geometry;
 
 namespace KaliLaska {
+// here we not check on 0 because the values in valid matrix can not be 0,
+// otherwise it is not valid matrix
 float getAngle(const TransformMatrix &mat) {
   auto [xFactor, yFactor] = getScale(mat);
   auto sinAngl =
@@ -17,13 +19,15 @@ float getAngle(const TransformMatrix &mat) {
 }
 
 std::pair<float, float> getScale(const TransformMatrix &mat) {
-  PointF xVec{bq::mat_traits<TransformMatrix>::read_element<0, 0>(mat),
-              bq::mat_traits<TransformMatrix>::read_element<1, 0>(mat)};
-  PointF yVec{bq::mat_traits<TransformMatrix>::read_element<0, 1>(mat),
-              bq::mat_traits<TransformMatrix>::read_element<1, 1>(mat)};
+  std::pair<float, float> xVec{
+      bq::mat_traits<TransformMatrix>::read_element<0, 0>(mat),
+      bq::mat_traits<TransformMatrix>::read_element<1, 0>(mat)};
+  std::pair<float, float> yVec{
+      bq::mat_traits<TransformMatrix>::read_element<0, 1>(mat),
+      bq::mat_traits<TransformMatrix>::read_element<1, 1>(mat)};
 
-  return {bg::length(bg::model::linestring<PointF>{{0, 0}, xVec}),
-          bg::length(bg::model::linestring<PointF>{{0, 0}, yVec})};
+  return {std::sqrt(std::pow(xVec.first, 2) + std::pow(xVec.second, 2)),
+          std::sqrt(std::pow(yVec.first, 2) + std::pow(yVec.second, 2))};
 }
 
 PointF getTranslation(const TransformMatrix &mat) {
@@ -31,6 +35,8 @@ PointF getTranslation(const TransformMatrix &mat) {
           bq::mat_traits<TransformMatrix>::read_element<1, 2>(mat)};
 }
 
+// here we not check on 0 because the values in valid matrix can not be 0,
+// otherwise it is not valid matrix
 TransformMatrix getRotaionMat(const TransformMatrix &mat) {
   auto [xFactor, yFactor] = getScale(mat);
 
@@ -49,8 +55,8 @@ TransformMatrix getScaleMat(const TransformMatrix &mat) {
   auto [xFactor, yFactor] = getScale(mat);
 
   // clang-format off
-  return {{{xFactor, 0, 0},
-           {0, yFactor, 0},
+  return {{{xFactor, 0,       0},
+           {0,       yFactor, 0},
            {0, 0, 1}}};
   // clang-format on
 }

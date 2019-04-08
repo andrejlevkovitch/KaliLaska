@@ -21,13 +21,13 @@ public:
   /**\throw exceptions from WindowImp at creation time
    */
   virtual std::unique_ptr<WindowImp>
-  createWindowImp(Window &window, const char *title, Size size) = 0;
+  createWindowImp(Window &window, std::string_view title, Size size) = 0;
   /**\throw exceptions from WindowImp at creation time
    */
-  virtual std::unique_ptr<WindowImp> createWindowImp(Window &    window,
-                                                     const char *title,
-                                                     Point       point,
-                                                     Size        size) = 0;
+  virtual std::unique_ptr<WindowImp> createWindowImp(Window &         window,
+                                                     std::string_view title,
+                                                     Point            point,
+                                                     Size             size) = 0;
 
   /**\brief unregister created window. You can set void implementation, if you
    * not store the window-s in you inheritor factory

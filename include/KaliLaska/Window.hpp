@@ -74,9 +74,9 @@ public:
 
   /**\return title of window. If title not set return void string
    */
-  const char *title() const;
+  std::string_view title() const;
 
-  void setTitle(const char *title);
+  void setTitle(std::string_view title);
 
   /**\return true if window is hidden of if window is invalid
    */
