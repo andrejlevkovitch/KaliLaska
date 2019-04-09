@@ -16,6 +16,9 @@ void main() {
     -1,               1,                 0, 1
   );
 
-  gl_Position = to_ndc * vec4(view_mat * item_mat * vec3(pos, 1), 1);
+  to_ndc *= mat4(view_mat);
+  to_ndc *= mat4(item_mat);
+
+  gl_Position = to_ndc * vec4(pos, 1, 1);
   outColor = vec4(color, 1);
 }

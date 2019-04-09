@@ -7,16 +7,13 @@
 #include "RingItem.hpp"
 #include <iostream>
 
-#ifdef __SANITIZE_ADDRESS__
-#  include <sanitizer/lsan_interface.h>
-#endif
-
 int main(int argc, char *argv[]) {
   KaliLaska::Application app{argc, argv};
 
   ExampleView view2{"my two view", {900, 0}, {300, 300}};
   ExampleView view{"my graphics view", {0, 0}, {800, 800}};
 
+  view.setResizable(true);
   view.setProperty(KaliLaska::GraphicsView::Property::Movable);
   view2.setProperty(KaliLaska::GraphicsView::Property::NotModificable |
                     KaliLaska::GraphicsView::Property::Movable);
@@ -45,11 +42,6 @@ int main(int argc, char *argv[]) {
   scene.addItem(ringItem);
 
   int retval = app.exec();
-
-#ifdef __SANITIZE_ADDRESS__
-  __lsan_do_leak_check();
-  __lsan_disable();
-#endif
 
   return retval;
 }
