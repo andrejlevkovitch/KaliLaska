@@ -36,6 +36,9 @@ public:
   void unregisterObject(Object *obj) override;
 
 private:
+  void testWin() const;
+
+private:
   std::atomic_bool loop_;
   std::atomic_int  return_code_;
 

@@ -6,6 +6,7 @@
 #include "debug.hpp"
 #include "imp/WindowImp.hpp"
 #include "imp/WindowImpFactory.hpp"
+#include "logger/logger.hpp"
 #include <stdexcept>
 
 #define INVALID_FACTORY                                                        \
@@ -14,11 +15,12 @@
 namespace KaliLaska {
 Window::Window()
     : imp_{nullptr} {
+  LOG_TRACE << "Window: konstructor";
   try {
     if (auto factory = Application::windowFactory()) {
       imp_ = factory->createWindowImp(*this);
     } else {
-      throw std::runtime_error{INVALID_FACTORY};
+      LOG_THROW(std::runtime_error, INVALID_FACTORY);
     }
   } catch (std::runtime_error &) {
     throw;
@@ -28,11 +30,12 @@ Window::Window()
 
 Window::Window(std::string_view title, const Size &size)
     : imp_{nullptr} {
+  LOG_TRACE << "Window: konstructor";
   try {
     if (auto factory = Application::windowFactory()) {
       imp_ = factory->createWindowImp(*this, title, size);
     } else {
-      throw std::runtime_error{INVALID_FACTORY};
+      LOG_THROW(std::runtime_error, INVALID_FACTORY);
     }
   } catch (std::runtime_error &) {
     throw;
@@ -42,11 +45,12 @@ Window::Window(std::string_view title, const Size &size)
 
 Window::Window(std::string_view title, const Point &pos, const Size &size)
     : imp_{nullptr} {
+  LOG_TRACE << "Window: konstructor";
   try {
     if (auto factory = Application::windowFactory()) {
       imp_ = factory->createWindowImp(*this, title, pos, size);
     } else {
-      throw std::runtime_error{INVALID_FACTORY};
+      LOG_THROW(std::runtime_error, INVALID_FACTORY);
     }
   } catch (std::runtime_error &) {
     throw;
@@ -55,6 +59,7 @@ Window::Window(std::string_view title, const Point &pos, const Size &size)
 }
 
 Window::~Window() {
+  LOG_TRACE << "Window: destructor";
   // also if we manually remove window it have to unregisterd itself
   Application::unregisterObject(this);
   Application::windowFactory()->resetWindow(this);

@@ -16,6 +16,7 @@
 #include "UnModificableState.hpp"
 #include "ViewState.hpp"
 #include "debug.hpp"
+#include "logger/logger.hpp"
 #include <boost/geometry.hpp>
 
 namespace bg = boost::geometry;
@@ -30,9 +31,11 @@ GraphicsView::GraphicsView(std::string_view title,
     , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}}
     , state_{NotifySceneState::instance()}
     , properties_{} {
+  LOG_TRACE << "GraphicsView: konstructor";
 }
 
 void GraphicsView::setProperty(Properties prop) {
+  LOG_DEBUG << "GraphicsView: set property " << std::to_string(prop);
   properties_ = prop;
 
   if (properties_ & Property::NotModificable) {
@@ -45,6 +48,7 @@ GraphicsScene *GraphicsView::scene() const {
 }
 
 void GraphicsView::setScene(GraphicsScene *scene) {
+  LOG_DEBUG << "GraphicsView: set scene " << scene;
   scene_ = scene;
 }
 
@@ -118,6 +122,7 @@ void GraphicsView::mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event) {
 }
 
 void GraphicsView::changeState(ViewState *state) {
+  LOG_DEBUG << "GraphicsView: state changed to " << state->type();
   state_ = state;
 }
 

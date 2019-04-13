@@ -5,6 +5,7 @@
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
 #include "debug.hpp"
+#include "logger/logger.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
@@ -20,13 +21,15 @@ WindowSdl::WindowSdl(std::string_view title, Size size)
 WindowSdl::WindowSdl(std::string_view title, Point pos, Size size)
     : window_{}
     , glContext_{} {
+  LOG_TRACE << "WindowSdl: konstructor";
   if (!createWindow(std::string{title}.c_str(), pos, size) ||
       !createGLContext()) {
-    throw std::runtime_error{SDL_GetError()};
+    LOG_THROW(std::runtime_error, SDL_GetError());
   }
 }
 
 WindowSdl::~WindowSdl() {
+  LOG_TRACE << "WindowSdl: destructor";
   SDL_GL_DeleteContext(glContext_);
   SDL_DestroyWindow(window_);
 }
@@ -105,12 +108,14 @@ void WindowSdl::swapWindow() {
 }
 
 bool WindowSdl::createWindow(const char *title, Point pos, Size size) {
+  LOG_DEBUG << "WindowSdl: create sdl window";
   window_ = SDL_CreateWindow(
       title, pos.x(), pos.y(), size.width(), size.height(), SDL_WINDOW_OPENGL);
   return window_;
 }
 
 bool WindowSdl::createGLContext() {
+  LOG_DEBUG << "WindowSdl: create opengl context ";
   glContext_ = SDL_GL_CreateContext(window_);
   glClearColor(0, 0, 0, 1);
   glClear(GL_COLOR_BUFFER_BIT);

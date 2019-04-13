@@ -21,6 +21,10 @@ ViewState *NotifySceneState::instance() {
   return &instanceI;
 }
 
+ViewState::Type NotifySceneState::type() const {
+  return Type::NotifySceneState;
+}
+
 void NotifySceneState::mousePressEvent(
     GraphicsView *view, std::unique_ptr<MousePressEvent> event) const {
   if (view->scene() && event) {

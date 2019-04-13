@@ -21,6 +21,10 @@ ViewState *UnModificableState::instance() {
   return &instanceI;
 }
 
+ViewState::Type UnModificableState::type() const {
+  return Type::UnModificableState;
+}
+
 void UnModificableState::mousePressEvent(
     GraphicsView *view, std::unique_ptr<MousePressEvent> event) const {
   if (event->buttons() & Mouse::Button::Left &&

@@ -26,6 +26,10 @@ ViewState *MoveSceneState::instance() {
   return &instanceI;
 }
 
+ViewState::Type MoveSceneState::type() const {
+  return Type::MoveSceneState;
+}
+
 void MoveSceneState::mousePressEvent(
     GraphicsView *view, std::unique_ptr<MousePressEvent> event) const {
   UNUSED(view);

@@ -5,7 +5,7 @@
 #include "EventNotifyer.hpp"
 #include "KaliLaska/Event.hpp"
 #include "imp/ApplicationImp.hpp"
-#include <GL/gl3w.h>
+#include "logger/logger.hpp"
 #include <chrono>
 #include <stdexcept>
 #include <string.h>
@@ -18,10 +18,15 @@ inline static Application *instancePtr = nullptr;
 
 Application::Application(int argc, char *argv[])
     : imp_{} {
+  // initialize logger
+  initLogger();
+
+  LOG_TRACE << "Application konstructor";
+
   if (!instancePtr) {
     instancePtr = this;
   } else {
-    throw std::runtime_error{"Application can not be initialized twice"};
+    LOG_THROW(std::runtime_error, "Application can not be initialized twice");
   }
   try {
     imp_ = AppFactory::createAppImp();
@@ -29,12 +34,10 @@ Application::Application(int argc, char *argv[])
   } catch (std::runtime_error &) {
     throw;
   }
-
-  // TODO here I also initialize gl3w - I do not like it
-  gl3wInit();
 }
 
 Application::~Application() {
+  LOG_TRACE << "Application: destructor";
 }
 
 Application *Application::instance() {
@@ -42,10 +45,11 @@ Application *Application::instance() {
 }
 
 int Application::exec() {
+  LOG_TRACE << "Application: start main cickle";
   if (instancePtr) {
     return instancePtr->imp_->exec();
   } else {
-    throw std::runtime_error{"Application not initialized"};
+    LOG_THROW(std::runtime_error, "Application not initialized");
   }
 }
 
@@ -65,6 +69,7 @@ void Application::parseArguments(int argc, char *argv[]) {
 }
 
 void Application::exit(int code) {
+  LOG_TRACE << "Application: call exit";
   if (instancePtr) {
     instancePtr->imp_->exit(code);
   }
@@ -89,6 +94,8 @@ void Application::notify(Window *window, std::unique_ptr<Event> event) {
 }
 
 void Application::setIterationTimeInterval(std::chrono::milliseconds time) {
+  LOG_DEBUG << "Application: set interval to " << time.count()
+            << " milliseconds";
   imp_->setIterationTimeInterval(time);
 }
 
@@ -98,12 +105,14 @@ std::chrono::milliseconds Application::iterationTimeInterval() const {
 
 void Application::registerObject(Object *obj) {
   if (instancePtr && instancePtr->imp_) {
+    LOG_DEBUG << "Application: object registered " << obj;
     instancePtr->imp_->registerObject(obj);
   }
 }
 
 void Application::unregisterObject(Object *obj) {
   if (instancePtr && instancePtr->imp_) {
+    LOG_DEBUG << "Application:: object unregistered " << obj;
     instancePtr->imp_->unregisterObject(obj);
   }
 }

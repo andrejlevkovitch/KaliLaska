@@ -1,23 +1,27 @@
 # cmake for src
 
+find_package(Boost COMPONENTS log REQUIRED)
+
 include(GenerateExportHeader)
 
-set(KaliLaska_SRC
+set(geometry_SRC
   geometry/Point.cpp
   geometry/Size.cpp
   geometry/Color.cpp
   geometry/Box.cpp
   geometry/Ring.cpp
   geometry/TransformMatrix.cpp
+  )
 
-
+set(application_SRC
   application/EventNotifyer.cpp
   application/Application.cpp
   application/AppFactory.cpp
 
   application/sdl/ApplicationSdl.cpp
+  )
 
-
+set(events_SRC
   events/EventFactory.cpp
 
   events/Event.cpp
@@ -52,16 +56,16 @@ set(KaliLaska_SRC
   events/sdl/KeyboardFocusEventSdl.cpp
   events/sdl/KeyPressEventSdl.cpp
   events/sdl/KeyReleaseEventSdl.cpp
+  )
 
-
+set(window_SRC
   window/Window.cpp
 
   window/sdl/WindowSdl.cpp
   window/sdl/WindowSdlFactory.cpp
+  )
 
-  opengl/ShaderProgram.cpp
-  opengl/Renderer.cpp
-
+set(graphics_SRC
   graphics/GraphicsItem.cpp
   graphics/GraphicsScene.cpp
   graphics/ConstIterator.cpp
@@ -81,7 +85,22 @@ set(KaliLaska_SRC
   graphics/rtree/SceneIteratorRTree.cpp
   )
 
-add_library(${PROJECT_NAME} ${KaliLaska_SRC})
+
+set(KaliLaska_SRC
+  logger/logger.cpp
+
+  opengl/ShaderProgram.cpp
+  opengl/Renderer.cpp
+  )
+
+add_library(${PROJECT_NAME}
+  ${geometry_SRC}
+  ${application_SRC}
+  ${window_SRC}
+  ${events_SRC}
+  ${graphics_SRC}
+  ${KaliLaska_SRC}
+  )
 target_compile_features(${PROJECT_NAME}
   PRIVATE
     cxx_std_17
@@ -103,6 +122,8 @@ if(WIN32)
     )
 else()
   target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+      Boost::log
     INTERFACE
       SDL2::SDL2
       gl3w
@@ -116,6 +137,11 @@ else()
     PUBLIC
       ${CMAKE_CURRENT_BINARY_DIR}
       ${CMAKE_CURRENT_SOURCE_DIR}/../include
+    )
+  # for using boost log
+  target_compile_definitions(${PROJECT_NAME}
+    PRIVATE
+      -DBOOST_LOG_DYN_LINK
     )
 endif()
 

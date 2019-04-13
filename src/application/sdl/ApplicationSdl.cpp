@@ -6,7 +6,9 @@
 #include "debug.hpp"
 #include "events/sdl/EventConverterSdl.hpp"
 #include "events/sdl/EventSdlFactory.hpp"
+#include "logger/logger.hpp"
 #include "window/sdl/WindowSdlFactory.hpp"
+#include <GL/gl3w.h>
 #include <SDL2/SDL.h>
 #include <chrono>
 #include <cstdlib>
@@ -30,8 +32,10 @@ ApplicationSdl::ApplicationSdl()
     , iterationTime_{DEFAULT_WAIT_TIMEOUT}
     , windowFactory_{std::make_unique<WindowSdlFactory>()}
     , eventFactory_{std::make_unique<EventSdlFactory>()} {
+  LOG_TRACE << "ApplicationSdl: konstructor";
+
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS)) {
-    throw std::runtime_error{SDL_GetError()};
+    LOG_THROW(std::runtime_error, SDL_GetError());
   }
 
   int majorVersion{3};
@@ -41,7 +45,7 @@ ApplicationSdl::ApplicationSdl()
   if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, majorVersion) < 0 ||
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, minorVersion) < 0 ||
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, profileMask)) {
-    throw std::runtime_error{SDL_GetError()};
+    LOG_THROW(std::runtime_error, SDL_GetError());
   }
 
   int majorVersionCheck{};
@@ -53,15 +57,41 @@ ApplicationSdl::ApplicationSdl()
 
   if (majorVersionCheck != majorVersion || minorVersionCheck != minorVersion ||
       profileMaskCheck != profileMask) {
-    throw std::runtime_error{"OpenGL can not be correctly loaded"};
+    LOG_THROW(std::runtime_error, "OpenGL can not be correctly loaded");
   }
+
+  // TODO here I also initialize gl3w - I do not like it
+  gl3wInit();
+
+  LOG_INFO << "initialize opengl version " << majorVersion << '.'
+           << minorVersion;
+
+  // test creation
+  testWin();
 }
 
 ApplicationSdl::~ApplicationSdl() {
+  LOG_TRACE << "ApplicationSdl: destructor";
   SDL_Quit();
 }
 
+void ApplicationSdl::testWin() const {
+  auto testWin = SDL_CreateWindow("", 0, 0, 0, 0, SDL_WINDOW_OPENGL);
+  auto testCon = SDL_GL_CreateContext(testWin);
+  if (testWin && testCon) {
+    LOG_INFO << reinterpret_cast<const char *>(
+        glGetString(GL_SHADING_LANGUAGE_VERSION));
+    SDL_GL_DeleteContext(testCon);
+    SDL_DestroyWindow(testWin);
+  } else {
+    SDL_GL_DeleteContext(testCon);
+    SDL_DestroyWindow(testWin);
+    LOG_THROW(std::runtime_error, "Window and Context can not be created");
+  }
+}
+
 int ApplicationSdl::exec() {
+  LOG_TRACE << "start main cikle";
   SDL_AddEventWatch(quitCallback, this);
 
   loop_ = true;
@@ -97,10 +127,12 @@ int ApplicationSdl::exec() {
                      .count();
     }
   }
+  LOG_TRACE << "ApplicationSdl: break main cikle";
   return return_code_;
 }
 
 void ApplicationSdl::exit(int code) {
+  LOG_TRACE << "ApplicationSdl: exit";
   loop_        = false;
   return_code_ = code;
 }

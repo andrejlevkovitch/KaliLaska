@@ -9,6 +9,8 @@ class MoveSceneState final : public ViewState {
 public:
   static ViewState *instance();
 
+  Type type() const override;
+
   void mousePressEvent(GraphicsView *                   view,
                        std::unique_ptr<MousePressEvent> event) const override;
   void

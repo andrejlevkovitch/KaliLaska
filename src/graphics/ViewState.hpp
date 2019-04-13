@@ -17,7 +17,11 @@ class KeyReleaseEvent;
 
 class ViewState {
 public:
+  enum Type { UnModificableState, NotifySceneState, MoveSceneState };
+
   virtual ~ViewState() = default;
+
+  virtual Type type() const = 0;
 
   virtual void
   mousePressEvent(GraphicsView *                   view,

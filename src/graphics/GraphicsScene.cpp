@@ -12,6 +12,7 @@
 #include "KaliLaska/SceneMouseReleaseEvent.hpp"
 #include "debug.hpp"
 #include "imp/GraphicsSceneImp.hpp"
+#include "logger/logger.hpp"
 
 namespace bg = boost::geometry;
 
@@ -19,10 +20,12 @@ namespace KaliLaska {
 GraphicsScene::GraphicsScene()
     : imp_{GraphicsSceneImpFactory::createImp()}
     , grabbed_{} {
+  LOG_TRACE << "GraphicsScene: konstructor";
   Application::registerObject(this);
 }
 
 GraphicsScene::~GraphicsScene() {
+  LOG_TRACE << "GraphicsScene: destructor";
   Application::unregisterObject(this);
 }
 
@@ -41,6 +44,7 @@ std::list<GraphicsItem *> GraphicsScene::itemsAt(const Box &box,
 }
 
 bool GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
+  LOG_DEBUG << "GraphicsScene: add item " << item;
   if (item) {
     item->scene_ = this;
     if (imp_->addItem(std::move(item))) {
@@ -51,10 +55,12 @@ bool GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
 }
 
 void GraphicsScene::removeItem(GraphicsItem *item) {
+  LOG_DEBUG << "GraphicsScene: remove item " << item;
   imp_->removeItem(item);
 }
 
 void GraphicsScene::removeItem(const ConstIterator &iter) {
+  LOG_DEBUG << "GraphicsScene: remove item " << *iter;
   imp_->removeItem(*(iter.imp_));
 }
 
@@ -75,6 +81,7 @@ bool GraphicsScene::empty() const {
 }
 
 void GraphicsScene::clear() {
+  LOG_TRACE;
   return imp_->clear();
 }
 
@@ -155,6 +162,7 @@ void GraphicsScene::itemChanged(const GraphicsItem *item,
 }
 
 void GraphicsScene::grabbItem(GraphicsItem *item) {
+  LOG_DEBUG << "GraphicsScene: item grabbed " << item;
   grabbed_ = item;
 }
 
