@@ -28,8 +28,8 @@ void RingItem::update() {
   //}
 }
 
-void RingItem::render() const {
-  KaliLaska::GL::Renderer::render(shape(), KaliLaska::Color::Colors::Blue);
+void RingItem::render(KaliLaska::GL::Renderer *renderer) const {
+  renderer->render(shape(), KaliLaska::Color::Colors::Blue, matrix());
 }
 
 KaliLaska::Ring RingItem::shape() const {

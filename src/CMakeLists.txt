@@ -89,7 +89,7 @@ set(graphics_SRC
 set(KaliLaska_SRC
   logger/logger.cpp
 
-  opengl/ShaderProgram.cpp
+  opengl/Program.cpp
   opengl/Renderer.cpp
   )
 

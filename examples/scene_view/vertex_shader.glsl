@@ -6,6 +6,7 @@ uniform mat3 item_mat;
 uniform vec3 color;
 
 in vec2 pos;
+
 out vec4 outColor;
 
 void main() {

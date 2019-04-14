@@ -31,6 +31,10 @@ class KeyboardFocusEvent;
 class KeyPressEvent;
 class KeyReleaseEvent;
 
+namespace GL {
+class Renderer;
+}
+
 /**\warning if you close last window Application break the cikle and program
  * finish
  * \brief uses OpenGL for rendering
@@ -103,6 +107,11 @@ public:
    */
   void update() override;
 
+  /**\brief get current renderer. By default every vindow have default renderer
+   * without any GL::Program
+   */
+  GL::Renderer *renderer() const;
+
 protected:
   /**\brief prepare window for rendering. Because uses openGL for rendering
    * we first have to change OpenGL context, and only after draw somthing.
@@ -116,6 +125,8 @@ protected:
    * display some changes you need swap openGL buffers by the method
    */
   void swapWindow();
+
+  void setRenderer(std::unique_ptr<GL::Renderer> renderer);
 
 protected:
   /**\warning after call this method you can not call the object
@@ -170,6 +181,7 @@ protected:
   virtual void userEvent(std::unique_ptr<Event> event);
 
 private:
-  std::unique_ptr<WindowImp> imp_;
+  std::unique_ptr<WindowImp>    imp_;
+  std::unique_ptr<GL::Renderer> renderer_;
 };
 } // namespace KaliLaska

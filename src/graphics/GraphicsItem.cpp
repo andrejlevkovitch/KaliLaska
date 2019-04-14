@@ -112,6 +112,10 @@ const TransformMatrix &GraphicsItem::matrix() const {
   return matrix_;
 }
 
+TransformMatrix &GraphicsItem::matrixC() {
+  return matrix_;
+}
+
 void GraphicsItem::update() {
 }
 

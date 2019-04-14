@@ -88,7 +88,7 @@ public:
   float angle() const;
 
 protected:
-  TransformMatrix &matrix();
+  TransformMatrix &matrixC();
 
 protected:
   /**\brief notify scene about event

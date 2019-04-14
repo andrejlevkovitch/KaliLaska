@@ -3,7 +3,6 @@
 #pragma once
 
 #include "KaliLaska/Window.hpp"
-#include "KaliLaska/opengl.hpp"
 
 class WindowGL : public KaliLaska::Window {
 public:
@@ -15,6 +14,4 @@ public:
 
 private:
   std::chrono::time_point<std::chrono::system_clock> last_;
-
-  KaliLaska::GL::ShaderProgram shaderProgram_;
 };

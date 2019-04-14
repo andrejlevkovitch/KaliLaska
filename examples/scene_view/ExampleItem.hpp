@@ -12,7 +12,7 @@ public:
   ItemType type() const override;
 
   KaliLaska::Ring shape() const override;
-  void            render() const override;
+  void            render(KaliLaska::GL::Renderer *renderer) const override;
   void            update() override;
 
   void mouseMoveEvent(KaliLaska::SceneMouseMoveEvent *event) override;

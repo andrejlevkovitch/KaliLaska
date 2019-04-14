@@ -12,7 +12,7 @@ public:
   ItemType type() const override;
 
   void update() override;
-  void render() const override;
+  void render(KaliLaska::GL::Renderer *renderer) const override;
 
   KaliLaska::Ring shape() const override;
 

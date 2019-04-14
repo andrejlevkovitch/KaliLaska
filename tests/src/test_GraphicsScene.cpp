@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 
 class TestItem final : public KaliLaska::GraphicsItem {
 public:
-  void render() const override{};
+  void render(KaliLaska::GL::Renderer *) const override{};
 
   /**\brief all items have size{10, 10}
    */

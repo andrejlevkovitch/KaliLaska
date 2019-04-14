@@ -1,18 +1,29 @@
-// ShaderProgram.cpp
+// Program.cpp
 
 #include "KaliLaska/opengl.hpp"
+#include "debug.hpp"
+#include "logger/logger.hpp"
 #include <GL/gl3w.h>
 #include <stdexcept>
 
 namespace KaliLaska::GL {
 // just throw exception
-void getLog(uint32_t prog) {
-  GLint lenght;
+std::string getProgramLog(uint32_t prog) {
+  std::string log{};
+  GLint       lenght{};
   glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &lenght);
-  std::string log;
   log.resize(lenght);
   glGetProgramInfoLog(prog, lenght, nullptr, &log[0]);
-  throw std::runtime_error{log};
+  return log;
+}
+
+std::string getShaderLog(uint32_t shader) {
+  std::string log{};
+  GLint       lenght{};
+  glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &lenght);
+  log.resize(lenght);
+  glGetShaderInfoLog(shader, lenght, nullptr, &log[0]);
+  return log;
 }
 
 enum class ShaderOpenGLType_ { Vertex, Fragment };
@@ -26,11 +37,11 @@ uint32_t createShader(ShaderOpenGLType_ type, std::string_view code) {
     openglShader = glCreateShader(GL_FRAGMENT_SHADER);
     break;
   default:
-    throw std::runtime_error{"unexpected shader type"};
+    LOG_THROW(std::invalid_argument, "unexpected shader type");
   }
 
   if (!openglShader) {
-    throw std::runtime_error{"opengl shader can not be created"};
+    LOG_THROW(std::logic_error, "opengl shader can not be created");
   }
 
   auto  codePtr = code.data();
@@ -45,14 +56,9 @@ uint32_t createShader(ShaderOpenGLType_ type, std::string_view code) {
 
   // if somthing wrong
   if (!status) {
-    GLint lenght{};
-    glGetShaderiv(openglShader, GL_INFO_LOG_LENGTH, &lenght);
-    std::string log{};
-    log.resize(lenght);
-    glGetShaderInfoLog(openglShader, lenght, nullptr, &log[0]);
-
+    auto log = getShaderLog(openglShader);
     glDeleteShader(openglShader);
-    throw std::runtime_error{log};
+    LOG_THROW(std::logic_error, log);
   }
   return openglShader;
 }
@@ -60,23 +66,24 @@ uint32_t createShader(ShaderOpenGLType_ type, std::string_view code) {
 uint32_t createProgram() {
   uint32_t retval = glCreateProgram();
   if (!retval) {
-    throw std::runtime_error{"opengl program can not be created"};
+    LOG_THROW(std::logic_error, "opengl program can not be created");
   }
   return retval;
 }
 
-ShaderProgram::ShaderProgram(std::string_view vertexShaderCode,
-                             std::string_view fragmentShaderCode)
+Program::Program(std::string_view vertexShaderCode,
+                 std::string_view fragmentShaderCode)
     : program_{}
     , vertexShader_{}
     , fragmentShader_{} {
+  LOG_TRACE << "GL::Program: konstructor";
   try {
     vertexShader_ = createShader(ShaderOpenGLType_::Vertex, vertexShaderCode);
     fragmentShader_ =
         createShader(ShaderOpenGLType_::Fragment, fragmentShaderCode);
 
     program_ = createProgram();
-  } catch (const std::runtime_error &) {
+  } catch (const std::exception &) {
     throw;
   }
 
@@ -86,11 +93,11 @@ ShaderProgram::ShaderProgram(std::string_view vertexShaderCode,
     case GL_NO_ERROR:
       break;
     case GL_INVALID_VALUE:
-      throw std::runtime_error{"invalid value"};
+      LOG_THROW(std::invalid_argument, "invalid value");
     case GL_INVALID_OPERATION:
-      throw std::runtime_error{"shader can not be attached"};
+      LOG_THROW(std::logic_error, "shader can not be attached");
     default:
-      throw std::runtime_error{"unexpected error"};
+      LOG_THROW(std::runtime_error, "unexpected error");
     }
   }
 
@@ -100,36 +107,48 @@ ShaderProgram::ShaderProgram(std::string_view vertexShaderCode,
   GLint status{};
   glGetProgramiv(program_, GL_LINK_STATUS, &status);
   if (status == GL_FALSE) {
-    getLog(program_);
+    auto log = getProgramLog(program_);
+    glDeleteProgram(program_);
+    LOG_THROW(std::logic_error, log);
   }
 }
 
-ShaderProgram::~ShaderProgram() {
-  glDetachShader(program_, fragmentShader_);
-  glDetachShader(program_, vertexShader_);
+Program::~Program() {
+  LOG_TRACE << "GL::Program: destructor";
 
-  glDeleteShader(fragmentShader_);
-  glDeleteShader(vertexShader_);
-  glDeleteProgram(program_);
+  if (program_) {
+    glDetachShader(program_, fragmentShader_);
+    glDetachShader(program_, vertexShader_);
+
+    glDeleteShader(fragmentShader_);
+    glDeleteShader(vertexShader_);
+    glDeleteProgram(program_);
+  }
 }
 
-void ShaderProgram::use() {
+bool Program::use() {
   glUseProgram(program_);
   if (glGetError() != GL_NO_ERROR) {
-    throw std::runtime_error{"program can not be used"};
+    LOG_WARNING << "gl error";
+    return false;
   }
+  return true;
 }
 
-ShaderProgram::ShaderProgram(ShaderProgram &&rhs)
+Program::Program(Program &&rhs)
     : program_{rhs.program_}
     , vertexShader_{rhs.vertexShader_}
     , fragmentShader_{rhs.fragmentShader_} {
+  LOG_DEBUG << "GL::Program moved";
+
+  rhs.program_        = 0;
   rhs.vertexShader_   = 0;
   rhs.fragmentShader_ = 0;
-  rhs.program_        = 0;
 }
 
-ShaderProgram &ShaderProgram::operator=(ShaderProgram &&rhs) {
+Program &Program::operator=(Program &&rhs) {
+  LOG_DEBUG << "GL::Program moved";
+
   glDetachShader(program_, fragmentShader_);
   glDetachShader(program_, vertexShader_);
 
@@ -141,9 +160,9 @@ ShaderProgram &ShaderProgram::operator=(ShaderProgram &&rhs) {
   vertexShader_   = rhs.vertexShader_;
   fragmentShader_ = rhs.fragmentShader_;
 
+  rhs.program_        = 0;
   rhs.vertexShader_   = 0;
   rhs.fragmentShader_ = 0;
-  rhs.program_        = 0;
 
   return *this;
 }

@@ -20,10 +20,10 @@ KaliLaska::Ring ExampleItem::shape() const {
   return {{0, 0}, {0, 30}, {30, 30}, {30, 0}, {0, 0}};
 }
 
-void ExampleItem::render() const {
+void ExampleItem::render(KaliLaska::GL::Renderer *renderer) const {
   auto box = boundingBox();
 
-  KaliLaska::GL::Renderer::render(box, color_);
+  renderer->render(box, color_, matrix());
 }
 
 void ExampleItem::update() {

@@ -93,7 +93,7 @@ const TransformMatrix &GraphicsView::matrix() const {
   return matrix_;
 }
 
-TransformMatrix &GraphicsView::matrix() {
+TransformMatrix &GraphicsView::matrixC() {
   return matrix_;
 }
 

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <random>
 
-static std::string vertexShader{R"(
+static std::string_view vertexShader{R"(
 #version 300 es
 in vec2 pos;
 in vec3 color;
@@ -18,7 +18,7 @@ void main() {
 }
 )"};
 
-static std::string fragmentShader{R"(
+static std::string_view fragmentShader{R"(
 #version 300 es
 #ifdef GL_ES
 precision highp float;
@@ -34,11 +34,17 @@ void main() {
 using KaliLaska::GL::GLFactory;
 
 WindowGL::WindowGL(std::string_view title, const KaliLaska::Size &size)
-    : Window{title, size}
-    , shaderProgram_{vertexShader, fragmentShader} {
-  shaderProgram_.use();
-
-  std::cerr << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+    : Window{title, size} {
+  GL_CHECK();
+  renderer()->registerProgram(
+      "default", KaliLaska::GL::Program{vertexShader, fragmentShader});
+  GL_CHECK();
+  if (!renderer()->use("default")) {
+    throw std::runtime_error{"not valid GL::Program"};
+  }
+  GL_CHECK();
+  glViewport(0, 0, drawSize().width(), drawSize().height());
+  GL_CHECK();
 }
 
 WindowGL::~WindowGL() {
@@ -54,9 +60,9 @@ void WindowGL::update() {
     std::uniform_real_distribution<float> colorDistrib{0, 1};
     std::uniform_real_distribution<float> vertexDistrib{-1, 1};
 
-    glViewport(0, 0, drawSize().width(), drawSize().height());
-    glClearColor(0, 0, 0, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
+    GL_CHECK();
+    renderer()->clear(KaliLaska::Color::Colors::Black);
+    GL_CHECK();
 
     float verticies[15]{
         vertexDistrib(engine),

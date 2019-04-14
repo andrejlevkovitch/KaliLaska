@@ -9,8 +9,46 @@
 namespace bg = boost::geometry;
 
 namespace KaliLaska::GL {
-void Renderer::render(const Box &box, const Color &color) {
-  glUniform3f(3, color.r(), color.g(), color.b());
+void Renderer::registerProgram(std::string_view programName,
+                               GL::Program      program) {
+  programs_.push_back(std::pair{std::string(programName), std::move(program)});
+}
+
+void Renderer::unRegisterProgram(std::string_view programName) {
+  if (auto found = std::find_if(programs_.begin(),
+                                programs_.end(),
+                                [&programName](const auto &val) {
+                                  if (val.first == programName) {
+                                    return true;
+                                  }
+                                  return false;
+                                });
+      found != programs_.end()) {
+    programs_.erase(found);
+  }
+}
+
+bool Renderer::use(std::string_view programName) {
+  if (auto found = std::find_if(programs_.begin(),
+                                programs_.end(),
+                                [&programName](const auto &val) {
+                                  if (val.first == programName) {
+                                    return true;
+                                  }
+                                  return false;
+                                });
+      found != programs_.end()) {
+    return found->second.use();
+  }
+  return false;
+}
+
+void Renderer::render(const Box &            box,
+                      const Color &          color,
+                      const TransformMatrix &mat) {
+  glUniformMatrix3fv(static_cast<int>(Uniforms::ItemMat), 1, true, mat.a[0]);
+  glUniform3f(
+      static_cast<int>(Uniforms::FillColor), color.r(), color.g(), color.b());
 
   bg::model::ring<PointF> ring;
   bg::convert(box, ring);
@@ -47,8 +85,12 @@ void Renderer::render(const Box &box, const Color &color) {
   glDeleteBuffers(1, &vbo);
 }
 
-void Renderer::render(const Ring &ring, const Color &color) {
-  glUniform3f(3, color.r(), color.g(), color.b());
+void Renderer::render(const Ring &           ring,
+                      const Color &          color,
+                      const TransformMatrix &mat) {
+  glUniformMatrix3fv(static_cast<int>(Uniforms::ItemMat), 1, true, mat.a[0]);
+  glUniform3f(
+      static_cast<int>(Uniforms::FillColor), color.r(), color.g(), color.b());
 
   if (auto triangles = triangulation(ring); !triangles.empty()) {
     GLuint vbo{};
@@ -70,7 +112,12 @@ void Renderer::render(const Ring &ring, const Color &color) {
                  triangles.data(),
                  GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+    glVertexAttribPointer(static_cast<int>(Attributes::Vertex),
+                          2,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          2 * sizeof(float),
+                          nullptr);
 
     glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, nullptr);
 
@@ -79,5 +126,19 @@ void Renderer::render(const Ring &ring, const Color &color) {
     glDeleteBuffers(1, &ebo);
     glDeleteBuffers(1, &vbo);
   }
+}
+
+void Renderer::setViewMat(const TransformMatrix &mat) {
+  glUniformMatrix3fv(static_cast<int>(Uniforms::ViewMat), 1, true, mat.a[0]);
+}
+
+void Renderer::setWinSize(const Size &size) {
+  glViewport(0, 0, size.width(), size.height());
+  glUniform2f(static_cast<int>(Uniforms::WinSize), size.width(), size.height());
+}
+
+void Renderer::clear(const Color &clearColor) {
+  glClearColor(clearColor.r(), clearColor.g(), clearColor.b(), clearColor.a());
+  glClear(GL_COLOR_BUFFER_BIT);
 }
 } // namespace KaliLaska::GL

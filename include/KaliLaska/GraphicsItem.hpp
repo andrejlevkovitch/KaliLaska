@@ -19,6 +19,10 @@ class SceneMouseReleaseEvent;
 
 class GraphicsScene;
 
+namespace GL {
+class Renderer;
+}
+
 /**\brief represent graphical objects on scene
  */
 class GraphicsItem {
@@ -52,9 +56,10 @@ public:
    */
   virtual Ring shape() const = 0;
 
-  /**\brief have to be used for rendering by opengl
+  /**\brief have to be used for rendering by GL::Renderer (you also can use
+   * opengl directly)
    */
-  virtual void render() const = 0;
+  virtual void render(GL::Renderer *renderer) const = 0;
 
   /**\brief this method calls by scene for evety object on scene. Usually it
    * calls every iteration of main loop. By default does nothing.
@@ -153,6 +158,11 @@ protected:
    * search of the item will be more long
    */
   void itemChanged(const PointF &prevPos) const;
+
+  /**\warning be careful in change matrix! If you change some value in matrix
+   * you have to call itemChanged method!
+   */
+  TransformMatrix &matrixC();
 
 private:
   void addToChildren(GraphicsItem *item);

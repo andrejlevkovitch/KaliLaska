@@ -3,7 +3,6 @@
 #pragma once
 
 #include "KaliLaska/GraphicsView.hpp"
-#include "KaliLaska/opengl.hpp"
 
 class ExampleView : public KaliLaska::GraphicsView {
 public:
@@ -21,7 +20,8 @@ protected:
 
   void keyPressEvent(std::unique_ptr<KaliLaska::KeyPressEvent> event) override;
 
+  void resizeEvent(std::unique_ptr<KaliLaska::ResizeEvent> event) override;
+
 private:
   std::chrono::time_point<std::chrono::system_clock> last_;
-  std::unique_ptr<KaliLaska::GL::ShaderProgram>      prog_;
 };

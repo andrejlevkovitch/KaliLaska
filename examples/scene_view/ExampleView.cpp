@@ -9,11 +9,10 @@
 #include "KaliLaska/MousePressEvent.hpp"
 #include "KaliLaska/MouseReleaseEvent.hpp"
 #include "KaliLaska/MouseWheelEvent.hpp"
+#include "KaliLaska/opengl.hpp"
 #include "shaders.hpp"
-#include <GL/gl3w.h>
 #include <boost/qvm/mat_operations.hpp>
 #include <fstream>
-#include <iostream>
 
 #define SCALE_VAL 1.1
 
@@ -23,8 +22,7 @@ namespace bq = boost::qvm;
 ExampleView::ExampleView(std::string_view        title,
                          const KaliLaska::Point &pos,
                          const KaliLaska::Size & size)
-    : GraphicsView{title, pos, size}
-    , prog_{} {
+    : GraphicsView{title, pos, size} {
   auto shaderCodeLoader = [](std::string_view fileName) {
     std::string   retval;
     std::ifstream fin;
@@ -43,10 +41,12 @@ ExampleView::ExampleView(std::string_view        title,
   std::string vertexShader   = shaderCodeLoader(vertexShaderFile);
   std::string fragmentShader = shaderCodeLoader(fragmentShaderFile);
 
-  prog_ = std::make_unique<KaliLaska::GL::ShaderProgram>(vertexShader,
-                                                         fragmentShader);
+  renderer()->registerProgram("default", {vertexShader, fragmentShader});
 
-  prog_->use();
+  if (!renderer()->use("default")) {
+    std::runtime_error{"opengl program not valid"};
+  }
+  renderer()->setWinSize(drawSize());
 }
 
 void ExampleView::setScene(KaliLaska::GraphicsScene *scene) {
@@ -78,17 +78,10 @@ void ExampleView::update() {
         duration >= std::chrono::milliseconds{30}) {
       Window::makeCurrent();
 
-      auto curDrawSize = drawSize();
-      glViewport(0, 0, curDrawSize.width(), curDrawSize.height());
-      glClearColor(0, 0, 0, 1);
-      glClear(GL_COLOR_BUFFER_BIT);
-
-      glUniform2f(0, curDrawSize.width(), curDrawSize.height());
-      glUniformMatrix3fv(1, 1, true, bq::inverse(matrix()).a[0]);
-
+      renderer()->clear(KaliLaska::Color::Colors::Black);
+      renderer()->setViewMat(bq::inverse(matrix()));
       for (const auto i : scene()->itemsAt(sceneBox())) {
-        glUniformMatrix3fv(2, 1, true, i->matrix().a[0]);
-        i->render();
+        i->render(renderer());
       }
 
       swapWindow();
@@ -112,4 +105,9 @@ void ExampleView::keyPressEvent(
     break;
   }
   KaliLaska::GraphicsView::keyPressEvent(std::move(event));
+}
+
+void ExampleView::resizeEvent(std::unique_ptr<KaliLaska::ResizeEvent> event) {
+  (void)event;
+  renderer()->setWinSize(drawSize());
 }

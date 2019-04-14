@@ -7,8 +7,6 @@
 #include <iostream>
 
 int main(int argc, char *argv[]) {
-  assert(KaliLaska::Application::instance() == nullptr);
-
   KaliLaska::Application app{argc, argv};
 
   WindowGL w{"big screen with triangles", KaliLaska::Size{600, 600}};

@@ -3,6 +3,7 @@
 #include "KaliLaska/Window.hpp"
 #include "KaliLaska/Application.hpp"
 #include "KaliLaska/CloseEvent.hpp"
+#include "KaliLaska/opengl.hpp"
 #include "debug.hpp"
 #include "imp/WindowImp.hpp"
 #include "imp/WindowImpFactory.hpp"
@@ -14,7 +15,8 @@
 
 namespace KaliLaska {
 Window::Window()
-    : imp_{nullptr} {
+    : imp_{nullptr}
+    , renderer_{std::make_unique<GL::Renderer>()} {
   LOG_TRACE << "Window: konstructor";
   try {
     if (auto factory = Application::windowFactory()) {
@@ -29,7 +31,8 @@ Window::Window()
 }
 
 Window::Window(std::string_view title, const Size &size)
-    : imp_{nullptr} {
+    : imp_{nullptr}
+    , renderer_{std::make_unique<GL::Renderer>()} {
   LOG_TRACE << "Window: konstructor";
   try {
     if (auto factory = Application::windowFactory()) {
@@ -44,7 +47,8 @@ Window::Window(std::string_view title, const Size &size)
 }
 
 Window::Window(std::string_view title, const Point &pos, const Size &size)
-    : imp_{nullptr} {
+    : imp_{nullptr}
+    , renderer_{std::make_unique<GL::Renderer>()} {
   LOG_TRACE << "Window: konstructor";
   try {
     if (auto factory = Application::windowFactory()) {
@@ -187,5 +191,13 @@ void Window::moveEvent(std::unique_ptr<MoveEvent> event) {
 }
 
 void Window::update() {
+}
+
+GL::Renderer *Window::renderer() const {
+  return renderer_.get();
+}
+
+void Window::setRenderer(std::unique_ptr<GL::Renderer> renderer) {
+  renderer_ = std::move(renderer);
 }
 } // namespace KaliLaska
