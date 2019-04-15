@@ -14,6 +14,7 @@ namespace bg = boost::geometry;
 ExampleItem::ExampleItem(const KaliLaska::Color &color)
     : color_{color} {
   setAnchor({15, 15});
+  setZvalue(1.0);
 }
 
 KaliLaska::Ring ExampleItem::shape() const {
@@ -23,7 +24,7 @@ KaliLaska::Ring ExampleItem::shape() const {
 void ExampleItem::render(KaliLaska::GL::Renderer *renderer) const {
   auto box = boundingBox();
 
-  renderer->render(box, color_, matrix());
+  renderer->render(box, matrix(), color_);
 }
 
 void ExampleItem::update() {
@@ -39,6 +40,7 @@ void ExampleItem::mouseMoveEvent(KaliLaska::SceneMouseMoveEvent *event) {
 void ExampleItem::mousePressEvent(KaliLaska::SceneMousePressEvent *event) {
   scene()->grabbItem(this);
   event->accept();
+  stackAbove();
 }
 
 void ExampleItem::mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) {

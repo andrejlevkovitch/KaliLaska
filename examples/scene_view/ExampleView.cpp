@@ -75,12 +75,12 @@ void ExampleView::update() {
   if (scene()) {
     auto now = std::chrono::system_clock::now();
     if (auto duration = now - last_;
-        duration >= std::chrono::milliseconds{30}) {
+        duration >= std::chrono::milliseconds{50}) {
       Window::makeCurrent();
 
       renderer()->clear(KaliLaska::Color::Colors::Black);
       renderer()->setViewMat(bq::inverse(matrix()));
-      for (const auto i : scene()->itemsAt(sceneBox())) {
+      for (const auto i : scene()->itemsAt(sceneBox(), std::greater<float>())) {
         i->render(renderer());
       }
 

@@ -132,6 +132,20 @@ public:
    */
   const TransformMatrix &matrix() const;
 
+  /**\return by default - 0
+   */
+  float zvalue() const;
+
+  /**\brief greather value mens the object is further from the observer.
+   * \warning Use values in the range -1, +1. Useing of other values can have
+   * unexpected rezult
+   */
+  void setZvalue(float val);
+
+  /**\brief set the item above other items whith same zvalue
+   */
+  void stackAbove();
+
 protected:
   /**\brief by default does nothing
    */
@@ -175,5 +189,8 @@ private:
   std::set<GraphicsItem *> children_;
 
   TransformMatrix matrix_;
+  float           zvalue_;
+
+  size_t index_;
 };
 } // namespace KaliLaska

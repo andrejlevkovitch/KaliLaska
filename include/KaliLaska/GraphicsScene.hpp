@@ -51,17 +51,31 @@ public:
    */
   void update() override;
 
-  GraphicsItem *            itemAt(const PointF &pos,
-                                   Spatials = Spatials::Intersects) const;
-  std::list<GraphicsItem *> itemsAt(const PointF &pos,
-                                    Spatials = Spatials::Intersects) const;
-  std::list<GraphicsItem *> itemsAt(const Box &pos,
-                                    Spatials = Spatials::Intersects) const;
+  /**\return value on first plane
+   */
+  GraphicsItem *
+  itemAt(const PointF &                    pos,
+         std::function<bool(float, float)> zcompare = std::less<float>(),
+         Spatials = Spatials::Intersects) const;
+  /**\return values sorted by zvalue from first to back plane
+   * \param zompare funcion for compare zvalue
+   */
+  std::list<GraphicsItem *>
+  itemsAt(const PointF &                    pos,
+          std::function<bool(float, float)> zcompare = std::less<float>(),
+          Spatials = Spatials::Intersects) const;
+  /**\return values sorted by zvalue from first to back plane
+   * \param zompare funcion for compare zvalue
+   */
+  std::list<GraphicsItem *>
+  itemsAt(const Box &                       pos,
+          std::function<bool(float, float)> zcompare = std::less<float>(),
+          Spatials = Spatials::Intersects) const;
 
   /**\warning after inserting all iterators invalidated
    * \return true if item added, oterwise - false
    */
-  bool addItem(std::shared_ptr<GraphicsItem> item);
+  GraphicsItem *addItem(std::shared_ptr<GraphicsItem> item);
   /**\warning after removing all iterators invalidated
    */
   void removeItem(GraphicsItem *item);
@@ -73,6 +87,8 @@ public:
    * carefull in use. For example: if you need change position of every item,
    * then create list of pointers to items (by copy algorithm) and change
    * position of items form the list
+   *
+   * \warning values not sorted by zvalue
    */
   ConstIterator begin() const;
   ConstIterator end() const;
@@ -102,6 +118,8 @@ public:
   /**\return currently grabbed item or nullptr
    */
   GraphicsItem *grabbedItem() const;
+
+  void stackAbove(GraphicsItem *item);
 
 protected:
   /**\brief notify all items at position of event. If some item is grabbed, then
@@ -134,6 +152,8 @@ private:
   std::unique_ptr<GraphicsSceneImp> imp_;
 
   GraphicsItem *grabbed_;
+
+  size_t lastIndex_;
 
 public:
   class ConstIterator final {

@@ -1,13 +1,13 @@
 #version 300 es
+precision lowp float;
 uniform vec2 win_size;
 uniform mat3 view_mat;
 uniform mat3 item_mat;
 
-uniform vec3 color;
+out vec4 o_color;
 
-in vec2 pos;
-
-out vec4 outColor;
+layout(location = 0) in vec2 pos;
+layout(location = 1) in vec3 color;
 
 void main() {
   mat4 to_ndc = mat4(
@@ -21,5 +21,5 @@ void main() {
   to_ndc *= mat4(item_mat);
 
   gl_Position = to_ndc * vec4(pos, 1, 1);
-  outColor = vec4(color, 1);
+  o_color = vec4(color, 1);
 }

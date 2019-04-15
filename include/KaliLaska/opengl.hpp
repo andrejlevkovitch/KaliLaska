@@ -8,7 +8,7 @@
 #include "KaliLaska/Size.hpp"
 #include "KaliLaska/TransformMatrix.hpp"
 #include "kalilaska_export.h"
-#include <list>
+#include <map>
 #include <string>
 
 /**\brief the macros check openGL errors, and throw runtime_error, when some
@@ -81,6 +81,10 @@ private:
   uint32_t fragmentShader_;
 };
 
+class Texture {
+public:
+};
+
 /**\brief 2D OpenGL renderer
  */
 class KALILASKA_EXPORT Renderer final {
@@ -100,10 +104,6 @@ public:
      */
     ItemMat,
 
-    /**\brief vec3 for color, which will be used for fill all geometry
-     */
-    FillColor,
-
     /**\brief after the value (ant the value also) user can use for add you
      * own uniform
      */
@@ -120,20 +120,45 @@ public:
     /**\brief after the value (ant the value also) user can use for add you
      * own attribute
      */
-    UserAttr = 50
+    UserAttr = 8
   };
 
   /**\param box geometry for rendering
    * \param color that color will be used for filling of geometry (box)
    * \param mat transformation matrix (translate, scale, rotation)
    */
-  void render(const Box &box, const Color &color, const TransformMatrix &mat);
+  void render(const Box &box, const TransformMatrix &mat, const Color &color);
 
   /**\param ring geometry for rendering
    * \param color that color will be used for filling of geometry (fing)
    * \param mat transformation matrix (translate, scale, rotation)
    */
-  void render(const Ring &ring, const Color &color, const TransformMatrix &mat);
+  void render(const Ring &ring, const TransformMatrix &mat, const Color &color);
+
+  /**\brief draw texture. itemRing and textureRing have to have equal size -
+   * every vertex of item will be correlated with vertex in texture
+   *
+   * \param itemRing ring in which will be draw (in item koordinates)
+   * \param textureRing ring of texture (in texture koordinates)
+   * \param itemMat transformation matrix (translate, scale, rotation)
+   */
+  void render(const Ring &           itemRing,
+              const TransformMatrix &itemMat,
+              const Texture &        texture,
+              const Ring &           textureRing);
+
+  /**\brief draw Texture
+   * \param itemRing drawable item ring in item koordinates
+   * \param itemMat transformation matrix of GraphicItem
+   * \param textureMat matrix, which translate item koordinates to texture
+   * koordinates. If item koordinates and texture koordinates are equal or
+   * evulation not needed, then you can not set the parameter
+   */
+  void render(const Ring &           itemRing,
+              const TransformMatrix &itemMat,
+              const Texture &        texture,
+              const TransformMatrix &textureMat = TransformMatrix{
+                  {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}});
 
   /**\brief register program in Renderer, after the program can be used for use
    * by the name
@@ -165,6 +190,6 @@ public:
   void clear(const Color &clearColor);
 
 private:
-  std::list<std::pair<std::string, GL::Program>> programs_;
+  std::map<std::string, GL::Program> programs_;
 };
 } // namespace KaliLaska::GL

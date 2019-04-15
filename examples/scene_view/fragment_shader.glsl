@@ -1,10 +1,10 @@
 #version 300 es
-#ifdef GL_ES
-precision highp float;
-#endif
-in vec4 outColor;
+precision lowp float;
+
+in vec4 o_color;
+
 out vec4 fragColor;
 
 void main() {
-  fragColor = outColor;
+  fragColor = o_color;
 }

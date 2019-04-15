@@ -50,14 +50,20 @@ class GraphicsSceneImp {
 public:
   virtual ~GraphicsSceneImp() = default;
 
+  /**\warning not consider zvalue
+   */
   virtual GraphicsItem *itemAt(const PointF &pos, Spatials spat) const = 0;
+  /**\warning not consider zvalue
+   */
   virtual std::list<GraphicsItem *> itemsAt(const PointF &pos,
-                                            Spatials      spat) const       = 0;
+                                            Spatials      spat) const = 0;
+  /**\warning not consider zvalue
+   */
   virtual std::list<GraphicsItem *> itemsAt(const Box &box,
-                                            Spatials   spat) const       = 0;
+                                            Spatials   spat) const = 0;
 
-  virtual bool addItem(std::shared_ptr<GraphicsItem> item) = 0;
-  virtual void removeItem(GraphicsItem *item)              = 0;
+  virtual GraphicsItem *addItem(std::shared_ptr<GraphicsItem> item) = 0;
+  virtual void          removeItem(GraphicsItem *item)              = 0;
 
   virtual size_t size() const  = 0;
   virtual bool   empty() const = 0;

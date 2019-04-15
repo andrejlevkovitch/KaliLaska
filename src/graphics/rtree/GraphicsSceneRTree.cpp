@@ -19,19 +19,20 @@ GraphicsSceneRTree::GraphicsSceneRTree() {
 GraphicsSceneRTree::~GraphicsSceneRTree() {
 }
 
-bool GraphicsSceneRTree::addItem(std::shared_ptr<GraphicsItem> item) {
+GraphicsItem *GraphicsSceneRTree::addItem(std::shared_ptr<GraphicsItem> item) {
   if (item) {
     if (auto curShape = item->shape(); bg::is_valid(curShape)) {
       bg::strategy::transform::matrix_transformer<float, 2, 2> traslator{
           item->matrix()};
       Ring rezRing;
       bg::transform(curShape, rezRing, traslator);
+      auto retval = item.get();
       tree_.insert(
           ValueType{bg::return_envelope<Box>(rezRing), std::move(item)});
-      return true;
+      return retval;
     }
   }
-  return false;
+  return nullptr;
 }
 
 void GraphicsSceneRTree::removeItem(GraphicsItem *item) {

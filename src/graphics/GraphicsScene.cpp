@@ -29,29 +29,69 @@ GraphicsScene::~GraphicsScene() {
   Application::unregisterObject(this);
 }
 
-GraphicsItem *GraphicsScene::itemAt(const PointF &pos, Spatials spat) const {
-  return imp_->itemAt(pos, spat);
+GraphicsItem *GraphicsScene::itemAt(const PointF &                    pos,
+                                    std::function<bool(float, float)> zcompare,
+                                    Spatials spat) const {
+  auto list = imp_->itemsAt(pos, spat);
+  return *std::min_element(
+      list.begin(),
+      list.end(),
+      [&zcompare](const GraphicsItem *lhs, const GraphicsItem *rhs) {
+        if (zcompare(lhs->zvalue(), rhs->zvalue())) {
+          return true;
+          // TODO I am not sure that is it right?
+        } else if (lhs->zvalue() == rhs->zvalue() &&
+                   !zcompare(lhs->index_, rhs->index_)) {
+          return true;
+        }
+        return false;
+      });
 }
 
-std::list<GraphicsItem *> GraphicsScene::itemsAt(const PointF &pos,
-                                                 Spatials      spat) const {
-  return imp_->itemsAt(pos, spat);
+std::list<GraphicsItem *>
+GraphicsScene::itemsAt(const PointF &                    pos,
+                       std::function<bool(float, float)> zcompare,
+                       Spatials                          spat) const {
+  auto retval = imp_->itemsAt(pos, spat);
+  retval.sort([&zcompare](const GraphicsItem *lhs, const GraphicsItem *rhs) {
+    if (zcompare(lhs->zvalue(), rhs->zvalue())) {
+      return true;
+    } else if (lhs->zvalue() == rhs->zvalue() &&
+               !zcompare(lhs->index_, rhs->index_)) {
+      return true;
+    }
+    return false;
+  });
+  return retval;
 }
 
-std::list<GraphicsItem *> GraphicsScene::itemsAt(const Box &box,
-                                                 Spatials   spat) const {
-  return imp_->itemsAt(box, spat);
+std::list<GraphicsItem *>
+GraphicsScene::itemsAt(const Box &                       box,
+                       std::function<bool(float, float)> zcompare,
+                       Spatials                          spat) const {
+  auto retval = imp_->itemsAt(box, spat);
+  retval.sort([&zcompare](const GraphicsItem *lhs, const GraphicsItem *rhs) {
+    if (zcompare(lhs->zvalue(), rhs->zvalue())) {
+      return true;
+    } else if (lhs->zvalue() == rhs->zvalue() &&
+               !zcompare(lhs->index_, rhs->index_)) {
+      return true;
+    }
+    return false;
+  });
+  return retval;
 }
 
-bool GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
+GraphicsItem *GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
   LOG_DEBUG << "GraphicsScene: add item " << item;
   if (item) {
     item->scene_ = this;
-    if (imp_->addItem(std::move(item))) {
-      return true;
+    if (auto retval = imp_->addItem(std::move(item))) {
+      retval->index_ = lastIndex_++;
+      return retval;
     }
   }
-  return false;
+  return nullptr;
 }
 
 void GraphicsScene::removeItem(GraphicsItem *item) {
@@ -151,7 +191,11 @@ void GraphicsScene::event(Event *event) {
 }
 
 void GraphicsScene::update() {
-  for (auto i : *this) {
+  // here we first copy pointers to all items because in update operation item
+  // can change position
+  std::list<GraphicsItem *> items;
+  std::copy(this->begin(), this->end(), std::back_inserter(items));
+  for (auto i : items) {
     i->update();
   }
 }
@@ -168,5 +212,11 @@ void GraphicsScene::grabbItem(GraphicsItem *item) {
 
 GraphicsItem *GraphicsScene::grabbedItem() const {
   return grabbed_;
+}
+
+void GraphicsScene::stackAbove(GraphicsItem *item) {
+  if (item) {
+    item->index_ = lastIndex_++;
+  }
 }
 } // namespace KaliLaska

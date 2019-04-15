@@ -16,7 +16,8 @@ namespace KaliLaska {
 GraphicsItem::GraphicsItem()
     : scene_{}
     , parent_{}
-    , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}} {
+    , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}}
+    , zvalue_{} {
 }
 
 GraphicsScene *GraphicsItem::scene() const {
@@ -233,5 +234,18 @@ void GraphicsItem::setScale(float x, float y, const PointF &anchor) {
 
 std::pair<float, float> GraphicsItem::scale() const {
   return getScale(matrix_);
+}
+
+float GraphicsItem::zvalue() const {
+  return zvalue_;
+}
+
+void GraphicsItem::setZvalue(float val) {
+  zvalue_ = val;
+  itemChanged(pos());
+}
+
+void GraphicsItem::stackAbove() {
+  scene_->stackAbove(this);
 }
 } // namespace KaliLaska

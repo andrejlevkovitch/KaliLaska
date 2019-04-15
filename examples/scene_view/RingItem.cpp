@@ -18,6 +18,7 @@ RingItem::RingItem() {
       "30 40, 40 40, 40 30, 30 30, 30 10, 40 10, 40 0, 10 0))",
       shape_);
   setAnchor(bg::return_centroid<KaliLaska::PointF>(boundingBox()));
+  setZvalue(0);
 }
 
 void RingItem::update() {
@@ -29,7 +30,7 @@ void RingItem::update() {
 }
 
 void RingItem::render(KaliLaska::GL::Renderer *renderer) const {
-  renderer->render(shape(), KaliLaska::Color::Colors::Blue, matrix());
+  renderer->render(shape(), matrix(), KaliLaska::Color::Colors::Blue);
 }
 
 KaliLaska::Ring RingItem::shape() const {
