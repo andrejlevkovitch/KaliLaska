@@ -11,32 +11,18 @@ namespace bg = boost::geometry;
 namespace KaliLaska::GL {
 void Renderer::registerProgram(std::string_view programName,
                                GL::Program      program) {
-  programs_.push_back(std::pair{std::string(programName), std::move(program)});
+  programs_.emplace(programName, std::move(program));
 }
 
 void Renderer::unRegisterProgram(std::string_view programName) {
-  if (auto found = std::find_if(programs_.begin(),
-                                programs_.end(),
-                                [&programName](const auto &val) {
-                                  if (val.first == programName) {
-                                    return true;
-                                  }
-                                  return false;
-                                });
+  if (auto found = programs_.find(std::string{programName});
       found != programs_.end()) {
     programs_.erase(found);
   }
 }
 
 bool Renderer::use(std::string_view programName) {
-  if (auto found = std::find_if(programs_.begin(),
-                                programs_.end(),
-                                [&programName](const auto &val) {
-                                  if (val.first == programName) {
-                                    return true;
-                                  }
-                                  return false;
-                                });
+  if (auto found = programs_.find(std::string{programName});
       found != programs_.end()) {
     return found->second.use();
   }
@@ -44,25 +30,26 @@ bool Renderer::use(std::string_view programName) {
 }
 
 void Renderer::render(const Box &            box,
-                      const Color &          color,
-                      const TransformMatrix &mat) {
+                      const TransformMatrix &mat,
+                      const Color &          color) {
   glUniformMatrix3fv(static_cast<int>(Uniforms::ItemMat), 1, true, mat.a[0]);
-  glUniform3f(
-      static_cast<int>(Uniforms::FillColor), color.r(), color.g(), color.b());
+  glVertexAttrib3f(
+      static_cast<int>(Attributes::Color), color.r(), color.g(), color.b());
 
-  bg::model::ring<PointF> ring;
+  Ring ring;
   bg::convert(box, ring);
   static const std::array<uint16_t, 4> elementBuffer{1, 0, 2, 3};
 
   GLuint vbo{};
   GLuint ebo{};
+  // TODO here we create and destroy buffers every time, but it is not right -
+  // I have to save this
   glGenBuffers(1, &vbo);
   glGenBuffers(1, &ebo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-  glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(static_cast<int>(Attributes::Vertex));
 
   glBufferData(GL_ARRAY_BUFFER,
                (ring.size() - 1) * 2 * sizeof(float),
@@ -74,34 +61,37 @@ void Renderer::render(const Box &            box,
                elementBuffer.data(),
                GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+  glVertexAttribPointer(
+      static_cast<int>(Attributes::Vertex), 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
   glDrawElements(
       GL_TRIANGLE_STRIP, elementBuffer.size(), GL_UNSIGNED_SHORT, nullptr);
 
-  glDisableVertexAttribArray(1);
-  glDisableVertexAttribArray(0);
+  glDisableVertexAttribArray(static_cast<int>(Attributes::Vertex));
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   glDeleteBuffers(1, &ebo);
   glDeleteBuffers(1, &vbo);
 }
 
 void Renderer::render(const Ring &           ring,
-                      const Color &          color,
-                      const TransformMatrix &mat) {
-  glUniformMatrix3fv(static_cast<int>(Uniforms::ItemMat), 1, true, mat.a[0]);
-  glUniform3f(
-      static_cast<int>(Uniforms::FillColor), color.r(), color.g(), color.b());
-
+                      const TransformMatrix &mat,
+                      const Color &          color) {
   if (auto triangles = triangulation(ring); !triangles.empty()) {
+    glUniformMatrix3fv(static_cast<int>(Uniforms::ItemMat), 1, true, mat.a[0]);
+    glVertexAttrib3f(
+        static_cast<int>(Attributes::Color), color.r(), color.g(), color.b());
+
     GLuint vbo{};
     GLuint ebo{};
+    // TODO here we create and destroy buffers every time, but it is not right -
+    // I have to save this
     glGenBuffers(1, &vbo);
     glGenBuffers(1, &ebo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(static_cast<int>(Attributes::Vertex));
 
     glBufferData(GL_ARRAY_BUFFER,
                  (ring.size() - 1) * 2 * sizeof(float),
@@ -116,16 +106,39 @@ void Renderer::render(const Ring &           ring,
                           2,
                           GL_FLOAT,
                           GL_FALSE,
-                          2 * sizeof(float),
+                          0,
                           nullptr);
 
     glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, nullptr);
 
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(static_cast<int>(Attributes::Vertex));
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &ebo);
     glDeleteBuffers(1, &vbo);
   }
+}
+
+void Renderer::render(const Ring &           itemRing,
+                      const TransformMatrix &itemMat,
+                      const Texture &        texture,
+                      const Ring &           textureRing) {
+  // FIXME not implement
+  UNUSED(itemRing);
+  UNUSED(itemMat);
+  UNUSED(texture);
+  UNUSED(textureRing);
+}
+
+void Renderer::render(const Ring &           itemRing,
+                      const TransformMatrix &itemMat,
+                      const Texture &        texture,
+                      const TransformMatrix &textureMat) {
+  // FIXME not implement
+  UNUSED(itemRing);
+  UNUSED(itemMat);
+  UNUSED(texture);
+  UNUSED(textureMat);
 }
 
 void Renderer::setViewMat(const TransformMatrix &mat) {

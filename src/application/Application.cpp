@@ -18,9 +18,6 @@ inline static Application *instancePtr = nullptr;
 
 Application::Application(int argc, char *argv[])
     : imp_{} {
-  // initialize logger
-  initLogger();
-
   LOG_TRACE << "Application konstructor";
 
   if (!instancePtr) {

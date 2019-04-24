@@ -1,5 +1,7 @@
 // logger.cpp
 
+// FIXME here is problem: auto flush not working
+
 #include "logger.hpp"
 #include <boost/core/null_deleter.hpp>
 #include <boost/log/attributes.hpp>
@@ -8,12 +10,13 @@
 #include <boost/log/expressions.hpp>
 #include <boost/log/sinks.hpp>
 #include <boost/log/sinks/sync_frontend.hpp>
-#include <boost/log/sinks/text_ostream_backend.hpp>
+#include <boost/log/sinks/text_file_backend.hpp>
 #include <boost/log/sources/basic_logger.hpp>
 #include <boost/log/sources/record_ostream.hpp>
 #include <boost/log/sources/severity_channel_logger.hpp>
 #include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/support/date_time.hpp>
+#include <boost/log/utility/record_ordering.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/utility/setup/file.hpp>
 #include <boost/log/utility/value_ref.hpp>
@@ -22,7 +25,7 @@
 
 namespace bl = boost::log;
 
-void initLogger() {
+UniqueLogger::UniqueLogger() {
   // clang-format off
   bl::formatter formatter =
                      bl::expressions::stream
@@ -31,34 +34,50 @@ void initLogger() {
                       << std::setfill(' ')
                       << '[' << bl::expressions::format_date_time<bl::attributes::basic_time_traits::time_type>("TimeStamp", "%Y-%m-%d %H:%M:%S:%f") << ']'
                       << '[' << bl::expressions::attr<bl::attributes::current_thread_id::value_type>("ThreadID") << ']'
-                      << '<' << bl::trivial::severity << '>' << "\t\t"
-                      << std::setw(64) << std::left << bl::expressions::smessage 
-                      << std::right
+                      << '<' << bl::trivial::severity << '>' << "\t\t\t"
+                      << std::setw(128) << std::left << bl::expressions::smessage 
+                      << std::right << "\t\t\t"
                       << '(' << logger_value_file << ':' << logger_value_line << ' ' << logger_value_function << ')';
   // clang-format on
 
-  using TextSink =
-      bl::sinks::asynchronous_sink<bl::sinks::text_ostream_backend>;
+  fullSink_ =
+      boost::make_shared<TextSink>(boost::make_shared<TextFile>(),
+                                   bl::keywords::order = bl::make_attr_ordering(
+                                       "LineID", std::less<unsigned int>()));
+  lockerFull_ = std::make_unique<SinkLocker>(fullSink_->locked_backend());
+  (*lockerFull_)->set_file_name_pattern(LOGFILE_FULL);
+  (*lockerFull_)->set_rotation_size(1024 * 1024);
+  (*lockerFull_)->auto_flush(true);
+  fullSink_->set_formatter(formatter);
 
-  auto backendFull = boost::make_shared<bl::sinks::text_ostream_backend>();
-  backendFull->add_stream(boost::make_shared<std::ofstream>(LOGFILE_FULL));
-  backendFull->auto_flush(true);
+  importantSink_ =
+      boost::make_shared<TextSink>(boost::make_shared<TextFile>(),
+                                   bl::keywords::order = bl::make_attr_ordering(
+                                       "LineID", std::less<unsigned int>()));
+  lockerImportant_ =
+      std::make_unique<SinkLocker>(importantSink_->locked_backend());
+  (*lockerImportant_)->set_file_name_pattern(LOGFILE_IMPORTANT);
+  (*lockerImportant_)->set_rotation_size(1024 * 1024);
+  (*lockerImportant_)->auto_flush(true);
+  importantSink_->set_formatter(formatter);
+  importantSink_->set_filter(boost::log::trivial::severity >
+                             boost::log::trivial::info);
 
-  auto backendImportant = boost::make_shared<bl::sinks::text_ostream_backend>();
-  backendImportant->add_stream(
-      boost::make_shared<std::ofstream>(LOGFILE_IMPORTANT));
-  backendImportant->auto_flush(true);
-
-  auto fullSink = boost::make_shared<TextSink>(backendFull);
-  fullSink->set_formatter(formatter);
-
-  auto importantSink = boost::make_shared<TextSink>(backendImportant);
-  importantSink->set_formatter(formatter);
-  importantSink->set_filter(boost::log::trivial::severity >
-                            boost::log::trivial::info);
-
-  bl::core::get()->add_sink(fullSink);
-  bl::core::get()->add_sink(importantSink);
+  bl::core::get()->add_sink(fullSink_);
+  bl::core::get()->add_sink(importantSink_);
 
   bl::add_common_attributes();
+}
+
+UniqueLogger::~UniqueLogger() {
+  lockerFull_.reset();
+  lockerImportant_.reset();
+
+  fullSink_->stop();
+  fullSink_->flush();
+  fullSink_.reset();
+
+  importantSink_->stop();
+  importantSink_->flush();
+  importantSink_.reset();
 }

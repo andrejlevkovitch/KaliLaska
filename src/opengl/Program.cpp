@@ -129,7 +129,7 @@ Program::~Program() {
 bool Program::use() {
   glUseProgram(program_);
   if (glGetError() != GL_NO_ERROR) {
-    LOG_WARNING << "gl error";
+    LOG_WARNING << "gl_error: program can not be used";
     return false;
   }
   return true;
