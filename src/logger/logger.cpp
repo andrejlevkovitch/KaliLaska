@@ -3,7 +3,6 @@
 // FIXME here is problem: auto flush not working
 
 #include "logger.hpp"
-#include <boost/core/null_deleter.hpp>
 #include <boost/log/attributes.hpp>
 #include <boost/log/attributes/scoped_attribute.hpp>
 #include <boost/log/core.hpp>
@@ -20,8 +19,6 @@
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/utility/setup/file.hpp>
 #include <boost/log/utility/value_ref.hpp>
-#include <fstream>
-#include <ostream>
 
 namespace bl = boost::log;
 
@@ -44,21 +41,20 @@ UniqueLogger::UniqueLogger() {
       boost::make_shared<TextSink>(boost::make_shared<TextFile>(),
                                    bl::keywords::order = bl::make_attr_ordering(
                                        "LineID", std::less<unsigned int>()));
-  lockerFull_ = std::make_unique<SinkLocker>(fullSink_->locked_backend());
-  (*lockerFull_)->set_file_name_pattern(LOGFILE_FULL);
-  (*lockerFull_)->set_rotation_size(1024 * 1024);
-  (*lockerFull_)->auto_flush(true);
-  fullSink_->set_formatter(formatter);
-
   importantSink_ =
       boost::make_shared<TextSink>(boost::make_shared<TextFile>(),
                                    bl::keywords::order = bl::make_attr_ordering(
                                        "LineID", std::less<unsigned int>()));
-  lockerImportant_ =
-      std::make_unique<SinkLocker>(importantSink_->locked_backend());
-  (*lockerImportant_)->set_file_name_pattern(LOGFILE_IMPORTANT);
-  (*lockerImportant_)->set_rotation_size(1024 * 1024);
-  (*lockerImportant_)->auto_flush(true);
+  auto [lockerFull, lockerImportant] = lock();
+
+  lockerFull->set_file_name_pattern(LOGFILE_FULL);
+  lockerFull->set_rotation_size(1024 * 1024);
+  lockerFull->auto_flush(true);
+  fullSink_->set_formatter(formatter);
+
+  lockerImportant->set_file_name_pattern(LOGFILE_IMPORTANT);
+  lockerImportant->set_rotation_size(1024 * 1024);
+  lockerImportant->auto_flush(true);
   importantSink_->set_formatter(formatter);
   importantSink_->set_filter(boost::log::trivial::severity >
                              boost::log::trivial::info);
@@ -70,9 +66,6 @@ UniqueLogger::UniqueLogger() {
 }
 
 UniqueLogger::~UniqueLogger() {
-  lockerFull_.reset();
-  lockerImportant_.reset();
-
   fullSink_->stop();
   fullSink_->flush();
   fullSink_.reset();
@@ -80,4 +73,10 @@ UniqueLogger::~UniqueLogger() {
   importantSink_->stop();
   importantSink_->flush();
   importantSink_.reset();
+}
+
+std::pair<UniqueLogger::SinkLocker, UniqueLogger::SinkLocker>
+UniqueLogger::lock() {
+  return std::pair{fullSink_->locked_backend(),
+                   importantSink_->locked_backend()};
 }

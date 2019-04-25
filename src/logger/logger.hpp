@@ -12,15 +12,6 @@
 #include <boost/log/utility/record_ordering.hpp>
 
 class KALILASKA_EXPORT UniqueLogger final {
-public:
-  UniqueLogger();
-  ~UniqueLogger();
-  UniqueLogger(const UniqueLogger &) = delete;
-  UniqueLogger &operator=(const UniqueLogger &) = delete;
-  UniqueLogger(UniqueLogger &&)                 = delete;
-  UniqueLogger &operator=(UniqueLogger &&) = delete;
-
-private:
   using TextFile = boost::log::sinks::text_file_backend;
   using TextSink = boost::log::sinks::asynchronous_sink<
       TextFile,
@@ -31,11 +22,20 @@ private:
       boost::log::v2_mt_posix::sinks::text_file_backend,
       boost::recursive_mutex>;
 
+public:
+  UniqueLogger();
+  ~UniqueLogger();
+
+  std::pair<SinkLocker, SinkLocker> lock();
+
+  UniqueLogger(const UniqueLogger &) = delete;
+  UniqueLogger &operator=(const UniqueLogger &) = delete;
+  UniqueLogger(UniqueLogger &&)                 = delete;
+  UniqueLogger &operator=(UniqueLogger &&) = delete;
+
+private:
   boost::shared_ptr<TextSink> fullSink_;
   boost::shared_ptr<TextSink> importantSink_;
-
-  std::unique_ptr<SinkLocker> lockerFull_;
-  std::unique_ptr<SinkLocker> lockerImportant_;
 };
 
 // all log info
