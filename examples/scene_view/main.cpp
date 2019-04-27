@@ -35,11 +35,17 @@ int main(int argc, char *argv[]) {
   auto ringItem = std::make_shared<RingItem>();
   ringItem->setScenePos({400, 400}, {0, 0});
 
+  auto childItem =
+      std::make_shared<ExampleItem>(KaliLaska::Color::Colors::White);
+  childItem->setParent(ringItem.get());
+  childItem->setPos({50, 50});
+
   scene.addItem(item1);
   scene.addItem(item2);
   scene.addItem(item3);
   scene.addItem(item4);
   scene.addItem(ringItem);
+  scene.addItem(childItem);
 
   int retval = app.exec();
 

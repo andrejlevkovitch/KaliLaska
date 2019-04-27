@@ -63,7 +63,7 @@ public:
                                             Spatials   spat) const = 0;
 
   virtual GraphicsItem *addItem(std::shared_ptr<GraphicsItem> item) = 0;
-  virtual void          removeItem(GraphicsItem *item)              = 0;
+  virtual bool          removeItem(GraphicsItem *item)              = 0;
 
   virtual size_t size() const  = 0;
   virtual bool   empty() const = 0;
@@ -77,7 +77,7 @@ public:
 public:
   virtual SceneIterator begin() const                         = 0;
   virtual SceneIterator end() const                           = 0;
-  virtual void          removeItem(const SceneIterator &iter) = 0;
+  virtual bool          removeItem(const SceneIterator &iter) = 0;
 };
 } // namespace KaliLaska
 

@@ -148,5 +148,47 @@ SCENARIO("Test GraphicsScene", "[GraphicsScene]") {
         CHECK(scene.size() == 0);
       }
     }
+
+    THEN("CHECK set parent for item") {
+      GIVEN("Parent and child") {
+        auto child  = std::make_shared<TestItem>();
+        auto parent = std::make_shared<TestItem>();
+        parent->setScenePos({10, 10}, {0, 0});
+        scene.addItem(child);
+        scene.addItem(parent);
+        WHEN("We set parent for item") {
+          child->setParent(parent.get());
+          THEN("check parent") { REQUIRE(child->parent() == parent.get()); }
+          THEN("check removing of child") {
+            CHECK(scene.removeItem(child.get()) == 1);
+            CHECK(scene.size() == 1);
+          }
+          AND_THEN("check removing of parent") {
+            CHECK(scene.removeItem(parent.get()) == 2);
+            CHECK(scene.size() == 0);
+          }
+          AND_THEN("check clear of scene") {
+            scene.clear();
+            CHECK(scene.empty());
+          }
+          AND_THEN("Check change pos of child") {
+            auto prevChildPos  = child->pos();
+            auto prevParentPos = parent->pos();
+            child->setPos({10, 10});
+
+            CHECK(prevParentPos == parent->pos());
+            CHECK(prevChildPos != child->pos());
+          }
+          AND_THEN("Check change pos of parent") {
+            auto prevChildPos  = child->pos();
+            auto prevParentPos = parent->pos();
+            parent->setPos({20, 20});
+
+            CHECK(prevParentPos != parent->pos());
+            CHECK(prevChildPos == child->pos());
+          }
+        }
+      }
+    }
   }
 }

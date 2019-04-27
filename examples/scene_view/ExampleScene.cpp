@@ -26,6 +26,12 @@ void ExampleScene::keyPressEvent(KaliLaska::KeyPressEvent *event) {
   case KaliLaska::Keyboard::Key::Key_Down:
     scale_ = Scale::Out;
     break;
+
+  case KaliLaska::Keyboard::Key::Key_R:
+    if (auto grabbed = grabbedItem()) {
+      removeItem(grabbed);
+    }
+    break;
   default:
     break;
   }

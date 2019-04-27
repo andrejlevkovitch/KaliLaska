@@ -51,6 +51,6 @@ SceneIteratorImp *SceneIterator::imp() const {
 }
 
 std::unique_ptr<SceneIterator> SceneIterator::copyItSelf() const {
-  return std::make_unique<SceneIterator>(*this);
+  return std::make_unique<SceneIterator>(imp_->copyItSelf());
 }
 } // namespace KaliLaska

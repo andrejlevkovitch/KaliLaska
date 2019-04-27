@@ -35,11 +35,12 @@ GraphicsItem *GraphicsSceneRTree::addItem(std::shared_ptr<GraphicsItem> item) {
   return nullptr;
 }
 
-void GraphicsSceneRTree::removeItem(GraphicsItem *item) {
+bool GraphicsSceneRTree::removeItem(GraphicsItem *item) {
   if (auto found = std::find(this->begin(), this->end(), item);
       found != this->end()) {
-    removeItem(found);
+    return removeItem(found);
   }
+  return 0;
 }
 
 SceneIterator GraphicsSceneRTree::begin() const {
@@ -50,10 +51,12 @@ SceneIterator GraphicsSceneRTree::end() const {
   return SceneIterator{std::make_unique<SceneIteratorRTree>(tree_.end())};
 }
 
-void GraphicsSceneRTree::removeItem(const SceneIterator &iter) {
-  auto *removeIter = reinterpret_cast<SceneIteratorRTree *>(iter.imp());
-  auto  rtreeIter  = removeIter->imp();
-  tree_.remove(rtreeIter, std::next(rtreeIter));
+bool GraphicsSceneRTree::removeItem(const SceneIterator &iter) {
+  auto removeIter = reinterpret_cast<SceneIteratorRTree *>(iter.imp());
+  auto rtreeIter  = removeIter->imp();
+  // FIXME for some reason I can not use here tree_.remove(first, last) - it
+  // generates error sometimes
+  return tree_.remove(*rtreeIter);
 }
 
 GraphicsItem *GraphicsSceneRTree::itemAt(const PointF &pos,

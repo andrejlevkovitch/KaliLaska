@@ -22,61 +22,78 @@
 
 namespace bl = boost::log;
 
+using TextFile = boost::log::sinks::text_file_backend;
+#ifndef NO_ASYNC_LOGGER
+using TextSink = boost::log::sinks::asynchronous_sink<
+    TextFile,
+    boost::log::sinks::unbounded_ordering_queue<
+        boost::log::attribute_value_ordering<unsigned int,
+                                             std::less<unsigned int>>>>;
+#else
+using TextSink = boost::log::sinks::synchronous_sink<TextFile>;
+#endif
+
+static boost::shared_ptr<TextSink> fullSink_;
+static boost::shared_ptr<TextSink> importantSink_;
+
 UniqueLogger::UniqueLogger() {
-  // clang-format off
-  bl::formatter formatter =
-                     bl::expressions::stream
-                      << std::setw(4) << std::setfill('-')
-                      << bl::expressions::attr<unsigned int>("LineID")
-                      << std::setfill(' ')
-                      << '[' << bl::expressions::format_date_time<bl::attributes::basic_time_traits::time_type>("TimeStamp", "%Y-%m-%d %H:%M:%S:%f") << ']'
-                      << '[' << bl::expressions::attr<bl::attributes::current_thread_id::value_type>("ThreadID") << ']'
-                      << '<' << bl::trivial::severity << '>' << "\t\t\t"
-                      << std::setw(128) << std::left << bl::expressions::smessage 
-                      << std::right << "\t\t\t"
-                      << '(' << logger_value_file << ':' << logger_value_line << ' ' << logger_value_function << ')';
-  // clang-format on
+  if (!fullSink_ && !importantSink_) {
+    // clang-format off
+    bl::formatter formatter =
+                       bl::expressions::stream
+                        << std::setw(4) << std::setfill('-')
+                        << bl::expressions::attr<unsigned int>("LineID")
+                        << std::setfill(' ')
+                        << '[' << bl::expressions::format_date_time<bl::attributes::basic_time_traits::time_type>("TimeStamp", "%Y-%m-%d %H:%M:%S:%f") << ']'
+                        << '[' << bl::expressions::attr<bl::attributes::current_thread_id::value_type>("ThreadID") << ']'
+                        << '<' << bl::trivial::severity << '>' << "\t\t\t"
+                        << std::setw(128) << std::left << bl::expressions::smessage 
+                        << std::right << "\t\t\t"
+                        << '(' << logger_value_file << ':' << logger_value_line << ' ' << logger_value_function << ')';
+    // clang-format on
 
-  fullSink_ =
-      boost::make_shared<TextSink>(boost::make_shared<TextFile>(),
-                                   bl::keywords::order = bl::make_attr_ordering(
-                                       "LineID", std::less<unsigned int>()));
-  importantSink_ =
-      boost::make_shared<TextSink>(boost::make_shared<TextFile>(),
-                                   bl::keywords::order = bl::make_attr_ordering(
-                                       "LineID", std::less<unsigned int>()));
-  auto [lockerFull, lockerImportant] = lock();
+    fullSink_ = boost::make_shared<TextSink>(
+        boost::make_shared<TextFile>(),
+        bl::keywords::order =
+            bl::make_attr_ordering("LineID", std::less<unsigned int>()));
+    importantSink_ = boost::make_shared<TextSink>(
+        boost::make_shared<TextFile>(),
+        bl::keywords::order =
+            bl::make_attr_ordering("LineID", std::less<unsigned int>()));
 
-  lockerFull->set_file_name_pattern(LOGFILE_FULL);
-  lockerFull->set_rotation_size(1024 * 1024);
-  lockerFull->auto_flush(true);
-  fullSink_->set_formatter(formatter);
+    auto [lockerFull, lockerImportant] = std::pair{
+        fullSink_->locked_backend(), importantSink_->locked_backend()};
 
-  lockerImportant->set_file_name_pattern(LOGFILE_IMPORTANT);
-  lockerImportant->set_rotation_size(1024 * 1024);
-  lockerImportant->auto_flush(true);
-  importantSink_->set_formatter(formatter);
-  importantSink_->set_filter(boost::log::trivial::severity >
-                             boost::log::trivial::info);
+    lockerFull->set_file_name_pattern(LOGFILE_FULL);
+    lockerFull->set_rotation_size(1024 * 1024);
+    lockerFull->auto_flush(true);
+    fullSink_->set_formatter(formatter);
 
-  bl::core::get()->add_sink(fullSink_);
-  bl::core::get()->add_sink(importantSink_);
+    lockerImportant->set_file_name_pattern(LOGFILE_IMPORTANT);
+    lockerImportant->set_rotation_size(1024 * 1024);
+    lockerImportant->auto_flush(true);
+    importantSink_->set_formatter(formatter);
+    importantSink_->set_filter(boost::log::trivial::severity >
+                               boost::log::trivial::info);
 
-  bl::add_common_attributes();
+    bl::core::get()->add_sink(fullSink_);
+    bl::core::get()->add_sink(importantSink_);
+
+    bl::add_common_attributes();
+  }
 }
 
 UniqueLogger::~UniqueLogger() {
-  fullSink_->stop();
-  fullSink_->flush();
-  fullSink_.reset();
+  if (fullSink_ && importantSink_) {
+#ifndef NO_ASYNC_LOGGER
+    fullSink_->stop();
+    importantSink_->stop();
+#endif
 
-  importantSink_->stop();
-  importantSink_->flush();
-  importantSink_.reset();
-}
+    fullSink_->flush();
+    fullSink_.reset();
 
-std::pair<UniqueLogger::SinkLocker, UniqueLogger::SinkLocker>
-UniqueLogger::lock() {
-  return std::pair{fullSink_->locked_backend(),
-                   importantSink_->locked_backend()};
+    importantSink_->flush();
+    importantSink_.reset();
+  }
 }

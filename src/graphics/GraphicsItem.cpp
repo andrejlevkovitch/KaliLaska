@@ -20,6 +20,13 @@ GraphicsItem::GraphicsItem()
     , zvalue_{} {
 }
 
+GraphicsItem::~GraphicsItem() {
+  // here I not remove children and not remove the item from children of parent
+  // item because destructor can call only after remove item from scene. It can
+  // happens only if we call GraphicsScene::removeItem. So, the operations makes
+  // there
+}
+
 GraphicsScene *GraphicsItem::scene() const {
   return scene_;
 }
@@ -29,7 +36,6 @@ GraphicsItem *GraphicsItem::parent() const {
 }
 
 void GraphicsItem::setParent(GraphicsItem *parent) {
-  // TODO change this
   // We have to save previous postion in parent koordinates and set it after all
   // operations
   PointF currentPos = pos();
@@ -44,7 +50,11 @@ void GraphicsItem::setParent(GraphicsItem *parent) {
 }
 
 PointF GraphicsItem::pos() const {
-  // FIXME now it return rezult of scene pos, I have to change it later
+  if (parent_) {
+    PointF retval = scenePos();
+    bg::subtract_point(retval, parent_->scenePos());
+    return retval;
+  }
   return scenePos();
 }
 
@@ -53,8 +63,13 @@ PointF GraphicsItem::scenePos() const {
 }
 
 void GraphicsItem::setPos(const PointF &pos) {
-  // FIXME now it call setScenePos, I have ot change it later
-  setScenePos(pos, {0, 0});
+  if (parent_) {
+    PointF parentAnchor{0, 0};
+    bg::subtract_point(parentAnchor, pos);
+    setScenePos(parent_->scenePos(), parentAnchor);
+  } else {
+    setScenePos(pos, {0, 0});
+  }
 }
 
 void GraphicsItem::setScenePos(const PointF &pos, const PointF &anchor) {
@@ -63,10 +78,20 @@ void GraphicsItem::setScenePos(const PointF &pos, const PointF &anchor) {
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
   bg::transform(bg::return_centroid<PointF>(boundingBox()), prevPos, translate);
 
+  PointF newPos = pos;
+  bg::subtract_point(newPos, anchor);
+
+  // update child position
+  for (auto child : children_) {
+    PointF parentAnchor{0, 0};
+    bg::subtract_point(parentAnchor, child->pos());
+    child->setScenePos(newPos, parentAnchor);
+  }
+
   bq::mat_traits<TransformMatrix>::write_element<0, 2>(matrix_) =
-      bg::get<0>(pos) - bg::get<0>(anchor);
+      bg::get<0>(newPos);
   bq::mat_traits<TransformMatrix>::write_element<1, 2>(matrix_) =
-      bg::get<1>(pos) - bg::get<1>(anchor);
+      bg::get<1>(newPos);
 
   itemChanged(prevPos);
 }
@@ -141,6 +166,13 @@ void GraphicsItem::rotate(float angle, const PointF &anchor) {
   matrix_ *= bq::inverse(anchorMat);
 
   itemChanged(prevPos);
+
+  // update children
+  for (auto child : children_) {
+    // TODO I do not know it is right? Rotate have to be around anchor or around
+    // parent item?
+    child->rotate(angle, anchor);
+  }
 }
 
 void GraphicsItem::setRotation(float angle, const PointF &anchor) {
@@ -169,6 +201,13 @@ void GraphicsItem::setRotation(float angle, const PointF &anchor) {
   matrix_ *= bq::inverse(anchorMat);
 
   itemChanged(prevPos);
+
+  // update children
+  for (auto child : children_) {
+    // TODO I do not know it is right? Rotate have to be around anchor or around
+    // parent item?
+    child->setRotation(angle, anchor);
+  }
 }
 
 float GraphicsItem::angle() const {
@@ -203,6 +242,12 @@ void GraphicsItem::scale(float x, float y, const PointF &anchor) {
   matrix_ *= bq::inverse(anchorMat);
 
   itemChanged(prevPos);
+
+  // update children
+  for (auto child : children_) {
+    // TODO I do not know it is right?
+    child->scale(x, y, anchor);
+  }
 }
 
 void GraphicsItem::setScale(float x, float y, const PointF &anchor) {
@@ -230,6 +275,12 @@ void GraphicsItem::setScale(float x, float y, const PointF &anchor) {
   matrix_ *= bq::inverse(anchorMat);
 
   itemChanged(prevPos);
+
+  // update children
+  for (auto child : children_) {
+    // TODO I do not know it is right?
+    child->setScale(x, y, anchor);
+  }
 }
 
 std::pair<float, float> GraphicsItem::scale() const {
@@ -240,12 +291,20 @@ float GraphicsItem::zvalue() const {
   return zvalue_;
 }
 
-void GraphicsItem::setZvalue(float val) {
+void GraphicsItem::setZvalue(ushort val) {
   zvalue_ = val;
-  itemChanged(pos());
+  itemChanged(scenePos());
+  // TODO maybe it also have to be dependency of parent?
 }
 
 void GraphicsItem::stackAbove() {
   scene_->stackAbove(this);
+}
+
+bool GraphicsItem::isAbove(const GraphicsItem *rhs) const {
+  if (rhs && rhs->scene() == scene()) {
+    return index_ > rhs->index_;
+  }
+  return false;
 }
 } // namespace KaliLaska

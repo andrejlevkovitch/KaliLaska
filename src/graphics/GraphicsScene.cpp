@@ -27,58 +27,38 @@ GraphicsScene::GraphicsScene()
 GraphicsScene::~GraphicsScene() {
   LOG_TRACE << "GraphicsScene: destructor";
   Application::unregisterObject(this);
+  // we clear here manually because items can have parrent
+  while (!empty()) {
+    removeItem(*begin());
+  }
 }
 
-GraphicsItem *GraphicsScene::itemAt(const PointF &                    pos,
-                                    std::function<bool(float, float)> zcompare,
-                                    Spatials spat) const {
+GraphicsItem *GraphicsScene::itemAt(
+    const PointF &                                                  pos,
+    std::function<bool(const GraphicsItem *, const GraphicsItem *)> comparator,
+    Spatials spat) const {
   auto list = imp_->itemsAt(pos, spat);
-  return *std::min_element(
-      list.begin(),
-      list.end(),
-      [&zcompare](const GraphicsItem *lhs, const GraphicsItem *rhs) {
-        if (zcompare(lhs->zvalue(), rhs->zvalue())) {
-          return true;
-          // TODO I am not sure that is it right?
-        } else if (lhs->zvalue() == rhs->zvalue() &&
-                   !zcompare(lhs->index_, rhs->index_)) {
-          return true;
-        }
-        return false;
-      });
+  if (list.empty()) {
+    return nullptr;
+  }
+  return *std::min_element(list.begin(), list.end(), comparator);
 }
 
-std::list<GraphicsItem *>
-GraphicsScene::itemsAt(const PointF &                    pos,
-                       std::function<bool(float, float)> zcompare,
-                       Spatials                          spat) const {
+std::list<GraphicsItem *> GraphicsScene::itemsAt(
+    const PointF &                                                  pos,
+    std::function<bool(const GraphicsItem *, const GraphicsItem *)> comparator,
+    Spatials spat) const {
   auto retval = imp_->itemsAt(pos, spat);
-  retval.sort([&zcompare](const GraphicsItem *lhs, const GraphicsItem *rhs) {
-    if (zcompare(lhs->zvalue(), rhs->zvalue())) {
-      return true;
-    } else if (lhs->zvalue() == rhs->zvalue() &&
-               !zcompare(lhs->index_, rhs->index_)) {
-      return true;
-    }
-    return false;
-  });
+  retval.sort(comparator);
   return retval;
 }
 
-std::list<GraphicsItem *>
-GraphicsScene::itemsAt(const Box &                       box,
-                       std::function<bool(float, float)> zcompare,
-                       Spatials                          spat) const {
+std::list<GraphicsItem *> GraphicsScene::itemsAt(
+    const Box &                                                     box,
+    std::function<bool(const GraphicsItem *, const GraphicsItem *)> comparator,
+    Spatials spat) const {
   auto retval = imp_->itemsAt(box, spat);
-  retval.sort([&zcompare](const GraphicsItem *lhs, const GraphicsItem *rhs) {
-    if (zcompare(lhs->zvalue(), rhs->zvalue())) {
-      return true;
-    } else if (lhs->zvalue() == rhs->zvalue() &&
-               !zcompare(lhs->index_, rhs->index_)) {
-      return true;
-    }
-    return false;
-  });
+  retval.sort(comparator);
   return retval;
 }
 
@@ -94,14 +74,54 @@ GraphicsItem *GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
   return nullptr;
 }
 
-void GraphicsScene::removeItem(GraphicsItem *item) {
+int GraphicsScene::removeItem(GraphicsItem *item) {
+  if (!item) {
+    return 0;
+  }
   LOG_DEBUG << "GraphicsScene: remove item " << item;
-  imp_->removeItem(item);
+  if (item == grabbed_) {
+    grabbed_ = nullptr;
+  }
+
+  // because item can exists after removing from scene
+  if (auto parentOfItem = item->parent()) {
+    parentOfItem->removeFromChildren(item);
+  }
+  item->parent_ = nullptr;
+  item->scene_  = nullptr;
+
+  int countOfRemove{};
+  // first remove children
+  auto childrenOfItem = item->children();
+  for (auto child : childrenOfItem) {
+    countOfRemove += removeItem(child);
+  }
+  countOfRemove += imp_->removeItem(item);
+  return countOfRemove;
 }
 
-void GraphicsScene::removeItem(const ConstIterator &iter) {
+int GraphicsScene::removeItem(const ConstIterator &iter) {
   LOG_DEBUG << "GraphicsScene: remove item " << *iter;
-  imp_->removeItem(*(iter.imp_));
+  if (*iter == grabbed_) {
+    grabbed_ = nullptr;
+  }
+
+  auto item = *iter;
+  // because item can exists after removing from scene
+  if (auto parentOfItem = item->parent()) {
+    parentOfItem->removeFromChildren(item);
+  }
+  item->parent_ = nullptr;
+  item->scene_  = nullptr;
+
+  int countOfRemove{};
+  // first remove children
+  auto childrenOfItem = item->children();
+  for (auto child : childrenOfItem) {
+    countOfRemove += removeItem(child);
+  }
+  countOfRemove += imp_->removeItem(*(iter.imp_));
+  return countOfRemove;
 }
 
 GraphicsScene::ConstIterator GraphicsScene::begin() const {

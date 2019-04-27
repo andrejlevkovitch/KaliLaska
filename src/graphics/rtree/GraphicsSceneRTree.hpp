@@ -30,8 +30,8 @@ public:
                                     Spatials   spat) const override;
 
   GraphicsItem *addItem(std::shared_ptr<GraphicsItem> item) override;
-  void          removeItem(GraphicsItem *item) override;
-  void          removeItem(const SceneIterator &iter) override;
+  bool          removeItem(GraphicsItem *item) override;
+  bool          removeItem(const SceneIterator &iter) override;
 
   SceneIterator begin() const override;
   SceneIterator end() const override;

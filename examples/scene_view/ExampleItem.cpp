@@ -14,7 +14,7 @@ namespace bg = boost::geometry;
 ExampleItem::ExampleItem(const KaliLaska::Color &color)
     : color_{color} {
   setAnchor({15, 15});
-  setZvalue(1.0);
+  setZvalue(1);
 }
 
 KaliLaska::Ring ExampleItem::shape() const {

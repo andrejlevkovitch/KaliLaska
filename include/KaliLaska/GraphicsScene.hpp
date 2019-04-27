@@ -3,18 +3,26 @@
 #pragma once
 
 #include "KaliLaska/Box.hpp"
+#include "KaliLaska/GraphicsItem.hpp"
 #include "KaliLaska/Object.hpp"
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/geometry.hpp"
 #include <list>
 #include <memory>
 
+#define DEFAULT_ITEM_COMPARATOR                                                \
+  [](const GraphicsItem *lhs, const GraphicsItem *rhs) {                       \
+    if (lhs->zvalue() < rhs->zvalue() ||                                       \
+        (lhs->zvalue() == rhs->zvalue() && lhs->isAbove(rhs))) {               \
+      return true;                                                             \
+    }                                                                          \
+    return false;                                                              \
+  }
+
 namespace KaliLaska {
 class GraphicsView;
 
 class GraphicsSceneImp;
-
-class GraphicsItem;
 
 class Event;
 
@@ -51,37 +59,34 @@ public:
    */
   void update() override;
 
-  /**\return value on first plane
-   */
   GraphicsItem *
-  itemAt(const PointF &                    pos,
-         std::function<bool(float, float)> zcompare = std::less<float>(),
-         Spatials = Spatials::Intersects) const;
-  /**\return values sorted by zvalue from first to back plane
-   * \param zompare funcion for compare zvalue
-   */
+  itemAt(const PointF &pos,
+         std::function<bool(const GraphicsItem *, const GraphicsItem *)>
+             comparator = DEFAULT_ITEM_COMPARATOR,
+         Spatials       = Spatials::Intersects) const;
   std::list<GraphicsItem *>
-  itemsAt(const PointF &                    pos,
-          std::function<bool(float, float)> zcompare = std::less<float>(),
-          Spatials = Spatials::Intersects) const;
-  /**\return values sorted by zvalue from first to back plane
-   * \param zompare funcion for compare zvalue
-   */
+  itemsAt(const PointF &pos,
+          std::function<bool(const GraphicsItem *, const GraphicsItem *)>
+              comparator = DEFAULT_ITEM_COMPARATOR,
+          Spatials       = Spatials::Intersects) const;
   std::list<GraphicsItem *>
-  itemsAt(const Box &                       pos,
-          std::function<bool(float, float)> zcompare = std::less<float>(),
-          Spatials = Spatials::Intersects) const;
+  itemsAt(const Box &pos,
+          std::function<bool(const GraphicsItem *, const GraphicsItem *)>
+              comparator = DEFAULT_ITEM_COMPARATOR,
+          Spatials       = Spatials::Intersects) const;
 
   /**\warning after inserting all iterators invalidated
    * \return true if item added, oterwise - false
    */
   GraphicsItem *addItem(std::shared_ptr<GraphicsItem> item);
   /**\warning after removing all iterators invalidated
+   * \return capacity of removing items
    */
-  void removeItem(GraphicsItem *item);
+  int removeItem(GraphicsItem *item);
   /**\warning after removing all iterators invalidated
+   * \return capacity of removing items
    */
-  void removeItem(const ConstIterator &iter);
+  int removeItem(const ConstIterator &iter);
 
   /**\warning any changes with scene or items can invalidate iterator. Be
    * carefull in use. For example: if you need change position of every item,

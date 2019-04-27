@@ -80,7 +80,17 @@ void ExampleView::update() {
 
       renderer()->clear(KaliLaska::Color::Colors::Black);
       renderer()->setViewMat(bq::inverse(matrix()));
-      for (const auto i : scene()->itemsAt(sceneBox(), std::greater<float>())) {
+
+      constexpr auto comparator = [](const KaliLaska::GraphicsItem *lhs,
+                                     const KaliLaska::GraphicsItem *rhs) {
+        if (lhs->zvalue() > rhs->zvalue() ||
+            (lhs->zvalue() == rhs->zvalue() && !lhs->isAbove(rhs))) {
+          return true;
+        }
+        return false;
+      };
+
+      for (const auto i : scene()->itemsAt(sceneBox(), comparator)) {
         i->render(renderer());
       }
 

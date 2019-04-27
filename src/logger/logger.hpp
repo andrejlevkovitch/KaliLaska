@@ -4,44 +4,25 @@
 
 #include "kalilaska_export.h"
 #include <boost/log/expressions/keyword.hpp>
-#include <boost/log/sinks.hpp>
-#include <boost/log/sinks/text_file_backend.hpp>
 #include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/log/utility/manipulators/add_value.hpp>
-#include <boost/log/utility/record_ordering.hpp>
 
 class KALILASKA_EXPORT UniqueLogger final {
-  using TextFile = boost::log::sinks::text_file_backend;
-  using TextSink = boost::log::sinks::asynchronous_sink<
-      TextFile,
-      boost::log::sinks::unbounded_ordering_queue<
-          boost::log::attribute_value_ordering<unsigned int,
-                                               std::less<unsigned int>>>>;
-  using SinkLocker = boost::log::v2_mt_posix::aux::locking_ptr<
-      boost::log::v2_mt_posix::sinks::text_file_backend,
-      boost::recursive_mutex>;
-
 public:
   UniqueLogger();
   ~UniqueLogger();
-
-  std::pair<SinkLocker, SinkLocker> lock();
 
   UniqueLogger(const UniqueLogger &) = delete;
   UniqueLogger &operator=(const UniqueLogger &) = delete;
   UniqueLogger(UniqueLogger &&)                 = delete;
   UniqueLogger &operator=(UniqueLogger &&) = delete;
-
-private:
-  boost::shared_ptr<TextSink> fullSink_;
-  boost::shared_ptr<TextSink> importantSink_;
 };
 
 // all log info
-#define LOGFILE_FULL "log/KL_full_%Y-%m-%d_%H-%M-%S.log"
+#define LOGFILE_FULL "logs/KL_full_%Y-%m-%d_%H-%M-%S.log"
 // info about warnings, errors and unexpected behaviour
-#define LOGFILE_IMPORTANT "log/KL_important_%Y-%m-%d_%H-%M-%S.log"
+#define LOGFILE_IMPORTANT "logs/KL_important_%Y-%m-%d_%H-%M-%S.log"
 
 inline static boost::log::sources::severity_logger<
     boost::log::trivial::severity_level>

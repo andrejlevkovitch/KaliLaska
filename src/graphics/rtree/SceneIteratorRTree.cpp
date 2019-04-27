@@ -40,6 +40,7 @@ bool SceneIteratorRTree::operator==(const SceneIteratorImp &rhs) const {
       return true;
     }
   } catch (std::bad_cast &) {
+    throw;
   }
   return false;
 }

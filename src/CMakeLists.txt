@@ -105,6 +105,12 @@ target_compile_features(${PROJECT_NAME}
   PRIVATE
     cxx_std_17
   )
+if(NO_ASYNC_LOGGER)
+  target_compile_definitions(${PROJECT_NAME}
+    PRIVATE
+      -DNO_ASYNC_LOGGER
+    )
+endif()
 
 # because dll can not compile without all dependencies
 if(WIN32)

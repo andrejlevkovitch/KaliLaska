@@ -32,7 +32,7 @@ public:
   enum ItemType { None = 0, UserType = 100 };
 
   GraphicsItem();
-  virtual ~GraphicsItem() = default;
+  virtual ~GraphicsItem();
 
   GraphicsItem(GraphicsItem &&) = delete;
   GraphicsItem &operator=(GraphicsItem &&) = delete;
@@ -137,14 +137,17 @@ public:
   float zvalue() const;
 
   /**\brief greather value mens the object is further from the observer.
-   * \warning Use values in the range -1, +1. Useing of other values can have
-   * unexpected rezult
    */
-  void setZvalue(float val);
+  void setZvalue(unsigned short val);
 
   /**\brief set the item above other items whith same zvalue
    */
   void stackAbove();
+
+  /**\return  true if current item is above rhs-item. If rhs is nullptr or items
+   * not from one scene - return false
+   */
+  bool isAbove(const GraphicsItem *rhs) const;
 
 protected:
   /**\brief by default does nothing
@@ -189,8 +192,8 @@ private:
   std::set<GraphicsItem *> children_;
 
   TransformMatrix matrix_;
-  float           zvalue_;
 
-  size_t index_;
+  size_t         index_;
+  unsigned short zvalue_;
 };
 } // namespace KaliLaska
