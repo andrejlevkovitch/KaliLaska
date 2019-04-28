@@ -85,6 +85,43 @@ class Texture {
 public:
 };
 
+// FIXME not working
+class KALILASKA_EXPORT Cache final {
+  friend Renderer;
+
+public:
+  /**\brief create not valid (void) cache
+   */
+  Cache();
+  ~Cache();
+
+  Cache(Cache &&rhs);
+  Cache &operator=(Cache &&rhs);
+
+  /**\param val if true - bind current vao, vbo and ebo, otherwise bind 0
+   */
+  void bind(bool val = true) const;
+
+  Cache(const Cache &) = delete;
+  Cache &operator=(const Cache &) = delete;
+
+  /**\return true if Cache is valid, otherwise - false
+   */
+  operator bool() const;
+
+private:
+  /**\brief create valid cache. Using by Renderer
+   */
+  explicit Cache(uint32_t vertexCount);
+
+private:
+  uint32_t vao_;
+  uint32_t vbo_;
+  uint32_t ebo_;
+
+  uint32_t vertexCount_;
+};
+
 /**\brief 2D OpenGL renderer
  */
 class KALILASKA_EXPORT Renderer final {

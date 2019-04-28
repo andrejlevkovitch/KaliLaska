@@ -22,9 +22,7 @@ KaliLaska::Ring ExampleItem::shape() const {
 }
 
 void ExampleItem::render(KaliLaska::GL::Renderer *renderer) const {
-  auto box = boundingBox();
-
-  renderer->render(box, matrix(), color_);
+  renderer->render(boundingBox(), matrix(), color_);
 }
 
 void ExampleItem::update() {

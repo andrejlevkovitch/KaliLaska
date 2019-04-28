@@ -91,6 +91,7 @@ set(KaliLaska_SRC
 
   opengl/Program.cpp
   opengl/Renderer.cpp
+  opengl/Cache.cpp
   )
 
 add_library(${PROJECT_NAME}
@@ -117,7 +118,6 @@ if(WIN32)
   target_link_libraries(${PROJECT_NAME}
     PRIVATE
       SDL2::SDL2
-      gl3w
     )
   target_include_directories(${PROJECT_NAME}
     PRIVATE
@@ -132,13 +132,13 @@ else()
       Boost::log
     INTERFACE
       SDL2::SDL2
-      gl3w
+      OpenGL::GL
     )
   target_include_directories(${PROJECT_NAME}
     PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}
       $<TARGET_PROPERTY:SDL2::SDL2,INTERFACE_INCLUDE_DIRECTORIES>
-      $<TARGET_PROPERTY:gl3w,INTERFACE_INCLUDE_DIRECTORIES>
+      $<TARGET_PROPERTY:OpenGL::GL,INTERFACE_INCLUDE_DIRECTORIES>
       ${Boost_INCLUDE_DIRS}
     PUBLIC
       ${CMAKE_CURRENT_BINARY_DIR}

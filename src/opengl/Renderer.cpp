@@ -2,7 +2,7 @@
 
 #include "KaliLaska/opengl.hpp"
 #include "debug.hpp"
-#include <GL/gl3w.h>
+#include <GLES3/gl3.h>
 #include <boost/geometry.hpp>
 #include <cstdint>
 
@@ -49,8 +49,6 @@ void Renderer::render(const Box &            box,
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-  glEnableVertexAttribArray(static_cast<int>(Attributes::Vertex));
-
   glBufferData(GL_ARRAY_BUFFER,
                (ring.size() - 1) * 2 * sizeof(float),
                ring.data(),
@@ -60,6 +58,8 @@ void Renderer::render(const Box &            box,
                    sizeof(decltype(elementBuffer)::value_type),
                elementBuffer.data(),
                GL_STATIC_DRAW);
+
+  glEnableVertexAttribArray(static_cast<int>(Attributes::Vertex));
 
   glVertexAttribPointer(
       static_cast<int>(Attributes::Vertex), 2, GL_FLOAT, GL_FALSE, 0, nullptr);
@@ -91,8 +91,6 @@ void Renderer::render(const Ring &           ring,
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-    glEnableVertexAttribArray(static_cast<int>(Attributes::Vertex));
-
     glBufferData(GL_ARRAY_BUFFER,
                  (ring.size() - 1) * 2 * sizeof(float),
                  ring.data(),
@@ -108,6 +106,8 @@ void Renderer::render(const Ring &           ring,
                           GL_FALSE,
                           0,
                           nullptr);
+
+    glEnableVertexAttribArray(static_cast<int>(Attributes::Vertex));
 
     glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, nullptr);
 

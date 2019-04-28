@@ -117,9 +117,6 @@ bool WindowSdl::createWindow(const char *title, Point pos, Size size) {
 bool WindowSdl::createGLContext() {
   LOG_DEBUG << "WindowSdl: create opengl context ";
   glContext_ = SDL_GL_CreateContext(window_);
-  glClearColor(0, 0, 0, 1);
-  glClear(GL_COLOR_BUFFER_BIT);
-  swapWindow();
   return glContext_;
 }
 

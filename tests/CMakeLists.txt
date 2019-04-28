@@ -41,7 +41,6 @@ if(TEST_CAPACITY)
       PRIVATE
         KaliLaska::KaliLaska
         Catch2::Catch2
-        gl3w
       )
     target_compile_features(${CUR_TEST}
       PRIVATE

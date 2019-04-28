@@ -3,7 +3,7 @@
 #include "KaliLaska/opengl.hpp"
 #include "debug.hpp"
 #include "logger/logger.hpp"
-#include <GL/gl3w.h>
+#include <GLES3/gl3.h>
 #include <stdexcept>
 
 namespace KaliLaska::GL {

@@ -8,7 +8,7 @@
 #include "events/sdl/EventSdlFactory.hpp"
 #include "logger/logger.hpp"
 #include "window/sdl/WindowSdlFactory.hpp"
-#include <GL/gl3w.h>
+#include <GLES3/gl3.h>
 #include <SDL2/SDL.h>
 #include <chrono>
 #include <cstdlib>
@@ -59,9 +59,6 @@ ApplicationSdl::ApplicationSdl()
       profileMaskCheck != profileMask) {
     LOG_THROW(std::runtime_error, "OpenGL can not be correctly loaded");
   }
-
-  // TODO here I also initialize gl3w - I do not like it
-  gl3wInit();
 
   LOG_INFO << "initialize opengl version " << majorVersion << '.'
            << minorVersion;

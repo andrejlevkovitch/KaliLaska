@@ -12,7 +12,6 @@ Use:
   - base64
   - Catch2 (for testing)
   - Box2D (as physical engin)
-  - gl3w
   - picopng
   - std17
 
@@ -24,5 +23,3 @@ Tiled. Для описания объектов, состояний и т.д. и
 
 Перед компиляцией нужно установить:
   - sdl не ниже версии 2.0.5
-  - gl3w
-  - freeglut3-dev

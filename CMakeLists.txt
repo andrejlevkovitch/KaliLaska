@@ -7,7 +7,7 @@ project(KaliLaska)
 include(cmake/build.cmake)
 include(cmake/doxygen.cmake)
 
-find_package(gl3w REQUIRED)
+find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(Boost REQUIRED)
 

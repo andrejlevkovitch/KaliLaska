@@ -37,19 +37,23 @@ if (WIN32)
   target_link_libraries(imgui
     PRIVATE
       SDL2::SDL2
-      gl3w
+      OpenGL::GL
     )
 elseif()
   target_link_libraries(imgui
     INTERFACE
       SDL2::SDL2
-      gl3w
+      OpenGL::GL
     )
 endif()
 target_include_directories(imgui
   PRIVATE
     $<TARGET_PROPERTY:SDL2::SDL2,INTERFACE_INCLUDE_DIRECTORIES>
-    $<TARGET_PROPERTY:gl3w,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:OpenGL::GL,INTERFACE_INCLUDE_DIRECTORIES>
+  )
+target_compile_definitions(imgui
+  PRIVATE
+    -DUSE_GL_ES3
   )
 
 add_subdirectory(Box2D)

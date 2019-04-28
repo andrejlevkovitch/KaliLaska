@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 
 #include "KaliLaska/Window.hpp"
 #include "KaliLaska/opengl.hpp"
-#include <GL/gl3w.h>
+#include <GLES3/gl3.h>
 
 const std::string vertexShader{R"(
 #version 300 es
