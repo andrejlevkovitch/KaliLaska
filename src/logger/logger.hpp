@@ -19,13 +19,15 @@ public:
   UniqueLogger &operator=(UniqueLogger &&) = delete;
 };
 
+// init logger
+inline static UniqueLogger logger{};
+
 // all log info
 #define LOGFILE_FULL "logs/KL_full_%Y-%m-%d_%H-%M-%S.log"
 // info about warnings, errors and unexpected behaviour
 #define LOGFILE_IMPORTANT "logs/KL_important_%Y-%m-%d_%H-%M-%S.log"
 
-inline static boost::log::sources::severity_logger<
-    boost::log::trivial::severity_level>
+inline boost::log::sources::severity_logger<boost::log::trivial::severity_level>
     severityLogger;
 
 BOOST_LOG_ATTRIBUTE_KEYWORD(logger_value_file, "File", std::string_view)
@@ -79,6 +81,3 @@ BOOST_LOG_ATTRIBUTE_KEYWORD(logger_value_function, "Function", std::string_view)
 #define LOG_THROW(exception_type, info)                                        \
   LOG_ERROR << info;                                                           \
   throw exception_type{info};
-
-// init logger
-inline static UniqueLogger logger{};

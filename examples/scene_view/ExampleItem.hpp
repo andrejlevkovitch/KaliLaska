@@ -4,6 +4,7 @@
 
 #include "BaseItem.hpp"
 #include "KaliLaska/Color.hpp"
+#include "KaliLaska/opengl.hpp"
 
 class ExampleItem final : public BaseItem {
 public:
@@ -20,5 +21,6 @@ public:
   void mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) override;
 
 private:
-  KaliLaska::Color color_;
+  KaliLaska::Color             color_;
+  mutable KaliLaska::GL::Cache cache_;
 };

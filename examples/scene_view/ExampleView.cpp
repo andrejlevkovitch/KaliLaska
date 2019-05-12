@@ -13,6 +13,7 @@
 #include "shaders.hpp"
 #include <boost/qvm/mat_operations.hpp>
 #include <fstream>
+#include <iostream>
 
 #define SCALE_VAL 1.1
 
@@ -23,10 +24,14 @@ ExampleView::ExampleView(std::string_view        title,
                          const KaliLaska::Point &pos,
                          const KaliLaska::Size & size)
     : GraphicsView{title, pos, size} {
-  auto shaderCodeLoader = [](std::string_view fileName) {
-    std::string   retval;
+  auto shaderCodeLoader = [](const std::filesystem::path &fileName) {
+    std::string retval;
+    if (!std::filesystem::exists(fileName) &&
+        !std::filesystem::is_regular_file(fileName)) {
+      throw std::runtime_error{"file not exists"};
+    }
     std::ifstream fin;
-    fin.open(std::string{fileName}.c_str(), std::ios::in);
+    fin.open(std::string{fileName}, std::ios::in);
     if (fin.is_open()) {
       std::copy(std::istreambuf_iterator<char>(fin),
                 std::istreambuf_iterator<char>(),
@@ -38,15 +43,21 @@ ExampleView::ExampleView(std::string_view        title,
     return retval;
   };
 
-  std::string vertexShader   = shaderCodeLoader(vertexShaderFile);
-  std::string fragmentShader = shaderCodeLoader(fragmentShaderFile);
+  std::string vertexShader      = shaderCodeLoader(vertexShaderFile);
+  std::string fragmentShader    = shaderCodeLoader(fragmentShaderFile);
+  std::string vertexTexShader   = shaderCodeLoader(vertexTexShaderFile);
+  std::string fragmentTexShader = shaderCodeLoader(fragmentTexShaderFile);
 
   renderer()->registerProgram("default", {vertexShader, fragmentShader});
+  renderer()->registerProgram("texture", {vertexTexShader, fragmentTexShader});
 
   if (!renderer()->use("default")) {
     std::runtime_error{"opengl program not valid"};
   }
   renderer()->setWinSize(drawSize());
+}
+
+ExampleView::~ExampleView() {
 }
 
 void ExampleView::setScene(KaliLaska::GraphicsScene *scene) {
@@ -119,5 +130,6 @@ void ExampleView::keyPressEvent(
 
 void ExampleView::resizeEvent(std::unique_ptr<KaliLaska::ResizeEvent> event) {
   (void)event;
+  makeCurrent();
   renderer()->setWinSize(drawSize());
 }

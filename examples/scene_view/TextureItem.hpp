@@ -1,18 +1,17 @@
-// RingItem.hpp
+// TextureItem.hpp
 
 #pragma once
 
 #include "BaseItem.hpp"
-#include "KaliLaska/Ring.hpp"
 #include "KaliLaska/opengl.hpp"
+#include <filesystem>
 
-class RingItem final : public BaseItem {
+class TextureItem final : public BaseItem {
 public:
-  RingItem();
+  TextureItem(const std::filesystem::path &file);
 
   ItemType type() const override;
 
-  void update() override;
   void render(KaliLaska::GL::Renderer *renderer) const override;
 
   KaliLaska::Ring shape() const override;
@@ -22,5 +21,6 @@ public:
 
 private:
   KaliLaska::Ring              shape_;
+  KaliLaska::GL::Texture       texture_;
   mutable KaliLaska::GL::Cache cache_;
 };

@@ -1,7 +1,5 @@
 // logger.cpp
 
-// FIXME here is problem: auto flush not working
-
 #include "logger.hpp"
 #include <boost/log/attributes.hpp>
 #include <boost/log/attributes/scoped_attribute.hpp>

@@ -7,12 +7,12 @@ if(NOT EXISTS Box2D)
   execute_process(COMMAND ${GIT_EXECUTABLE} submodule update)
 endif()
 
-# for include picopng
-# TODO I not shore it work or not
 include_directories(picopng)
+add_library(picopng INTERFACE)
+target_include_directories(picopng INTERFACE picopng)
 
-add_library(base64 "base64/base64.cpp")
-target_include_directories(base64 PUBLIC "base64")
+add_library(base64 STATIC "base64/base64.cpp")
+target_include_directories(base64 INTERFACE "base64")
 
 set(miniz_SRC
   miniz/miniz.c
@@ -20,8 +20,8 @@ set(miniz_SRC
   miniz/miniz_tinfl.c
   miniz/miniz_zip.c
   )
-add_library(miniz ${miniz_SRC})
-target_include_directories(miniz PUBLIC "miniz")
+add_library(miniz STATIC ${miniz_SRC})
+target_include_directories(miniz INTERFACE "miniz")
 
 set(imgui_SRC
   imgui/imgui.cpp
@@ -31,8 +31,8 @@ set(imgui_SRC
   imgui/imgui_impl_opengl3.cpp
   imgui/imgui_impl_sdl.cpp
   )
-add_library(imgui ${imgui_SRC})
-target_include_directories(imgui PUBLIC "imgui")
+add_library(imgui STATIC ${imgui_SRC})
+target_include_directories(imgui INTERFACE "imgui")
 if (WIN32)
   target_link_libraries(imgui
     PRIVATE

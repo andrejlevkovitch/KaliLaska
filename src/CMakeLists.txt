@@ -92,6 +92,9 @@ set(KaliLaska_SRC
   opengl/Program.cpp
   opengl/Renderer.cpp
   opengl/Cache.cpp
+
+  opengl/Picture.cpp
+  opengl/Texture.cpp
   )
 
 add_library(${PROJECT_NAME}
@@ -130,6 +133,8 @@ else()
   target_link_libraries(${PROJECT_NAME}
     PRIVATE
       Boost::log
+      picopng
+      -lstdc++fs
     INTERFACE
       SDL2::SDL2
       OpenGL::GL

@@ -186,7 +186,7 @@ int decodePNG(std::vector<unsigned char> &out_image, unsigned long &image_width,
           codelengthcodetree; // the code tree for Huffman codes, dist codes,
                               // and code length codes
       unsigned long huffmanDecodeSymbol(
-          const unsigned char *in, size_t &bp, const HuffmanTree &codetree,
+          const unsigned char *in, size_t &bp, const HuffmanTree &codetreeI,
           size_t inlength) { // decode a single symbol from given list of bits
                              // with given code tree. return value is the symbol
         bool decoded;
@@ -197,7 +197,7 @@ int decodePNG(std::vector<unsigned char> &out_image, unsigned long &image_width,
             return 0;
           } // error: end reached without endcode
           error =
-              codetree.decode(decoded, ct, treepos, readBitFromStream(bp, in));
+              codetreeI.decode(decoded, ct, treepos, readBitFromStream(bp, in));
           if (error)
             return 0; // stop, an error happened
           if (decoded)
@@ -451,7 +451,7 @@ int decodePNG(std::vector<unsigned char> &out_image, unsigned long &image_width,
         return;
       size_t pos = 33; // first byte of the first chunk after the header
       std::vector<unsigned char> idat; // the data from idat chunks
-      bool IEND = false, known_type = true;
+      bool IEND = false;
       info.key_defined = false;
       while (!IEND) // loop through the chunks, ignoring unknown chunks and
                     // stopping at IEND chunk. IDAT data is put at the start of
@@ -541,7 +541,6 @@ int decodePNG(std::vector<unsigned char> &out_image, unsigned long &image_width,
             // type is 0)
           pos += (chunkLength + 4); // skip 4 letters and uninterpreted data of
                                     // unimplemented chunk
-          known_type = false;
         }
         pos += 4; // step over CRC (which is ignored)
       }
@@ -808,13 +807,13 @@ int decodePNG(std::vector<unsigned char> &out_image, unsigned long &image_width,
       } else
         return 31; // unexisting color type
     }
-    unsigned long getBpp(const Info &info) {
-      if (info.colorType == 2)
-        return (3 * info.bitDepth);
-      else if (info.colorType >= 4)
-        return (info.colorType - 2) * info.bitDepth;
+    unsigned long getBpp(const Info &infoI) {
+      if (infoI.colorType == 2)
+        return (3 * infoI.bitDepth);
+      else if (infoI.colorType >= 4)
+        return (infoI.colorType - 2) * infoI.bitDepth;
       else
-        return info.bitDepth;
+        return infoI.bitDepth;
     }
     int convert(std::vector<unsigned char> &out, const unsigned char *in,
                 Info &infoIn, unsigned long w,
@@ -935,6 +934,7 @@ int decodePNG(std::vector<unsigned char> &out_image, unsigned long &image_width,
 
 // an example using the PNG loading function:
 
+/*
 #include <fstream>
 #include <iostream>
 
@@ -959,6 +959,7 @@ void loadFile(std::vector<unsigned char> &buffer,
   } else
     buffer.clear();
 }
+*/
 
 /*
 int main(int argc, char *argv[]) {

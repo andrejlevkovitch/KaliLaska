@@ -22,7 +22,11 @@ KaliLaska::Ring ExampleItem::shape() const {
 }
 
 void ExampleItem::render(KaliLaska::GL::Renderer *renderer) const {
-  renderer->render(boundingBox(), matrix(), color_);
+  // if (cache_) {
+  //  renderer->render(cache_, matrix(), color_);
+  //} else {
+  /*cache_ =*/renderer->render(boundingBox(), matrix(), color_);
+  //}
 }
 
 void ExampleItem::update() {

@@ -5,13 +5,15 @@
 #include "ExampleView.hpp"
 #include "KaliLaska/Application.hpp"
 #include "RingItem.hpp"
+#include "TextureItem.hpp"
+#include "shaders.hpp"
 #include <iostream>
 
 int main(int argc, char *argv[]) {
   KaliLaska::Application app{argc, argv};
 
-  ExampleView view2{"my two view", {900, 0}, {300, 300}};
   ExampleView view{"my graphics view", {0, 0}, {800, 800}};
+  ExampleView view2{"my mini view", {900, 0}, {300, 300}};
 
   view.setResizable(true);
   view.setProperty(KaliLaska::GraphicsView::Property::Movable);
@@ -35,6 +37,9 @@ int main(int argc, char *argv[]) {
   auto ringItem = std::make_shared<RingItem>();
   ringItem->setScenePos({400, 400}, {0, 0});
 
+  auto texItem = std::make_shared<TextureItem>(png);
+  texItem->setScenePos({50, 50}, {0, 0});
+
   auto childItem =
       std::make_shared<ExampleItem>(KaliLaska::Color::Colors::White);
   childItem->setParent(ringItem.get());
@@ -46,6 +51,7 @@ int main(int argc, char *argv[]) {
   scene.addItem(item4);
   scene.addItem(ringItem);
   scene.addItem(childItem);
+  scene.addItem(texItem);
 
   int retval = app.exec();
 

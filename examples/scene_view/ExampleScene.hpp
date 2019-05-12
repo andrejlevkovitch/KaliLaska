@@ -9,7 +9,11 @@ class ExampleScene : public KaliLaska::GraphicsScene {
 public:
   enum class Turn { None, Left, Right };
   enum class Scale { None, In, Out };
-  enum { ExampleItem = KaliLaska::GraphicsItem::UserType + 1, RingItem };
+  enum {
+    ExampleItem = KaliLaska::GraphicsItem::UserType + 1,
+    RingItem,
+    TextureItem
+  };
   ExampleScene();
 
   void keyPressEvent(KaliLaska::KeyPressEvent *event) override;

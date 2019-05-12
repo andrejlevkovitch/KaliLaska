@@ -44,7 +44,9 @@ ApplicationSdl::ApplicationSdl()
   // set OpenGL attributes
   if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, majorVersion) < 0 ||
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, minorVersion) < 0 ||
-      SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, profileMask)) {
+      SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, profileMask) < 0 ||
+      // TODO check that - at this moment no one gl context set
+      SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1) < 0) {
     LOG_THROW(std::runtime_error, SDL_GetError());
   }
 

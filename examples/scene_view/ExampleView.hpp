@@ -9,6 +9,7 @@ public:
   ExampleView(std::string_view        title,
               const KaliLaska::Point &pos,
               const KaliLaska::Size & size);
+  ~ExampleView();
 
   void setScene(KaliLaska::GraphicsScene *scene) override;
 

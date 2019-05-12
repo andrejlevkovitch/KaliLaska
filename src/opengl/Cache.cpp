@@ -40,6 +40,12 @@ Cache::Cache(Cache &&rhs)
 }
 
 Cache &Cache::operator=(Cache &&rhs) {
+  if (vao_) {
+    ::glDeleteVertexArrays(1, &vao_);
+    ::glDeleteBuffers(1, &vbo_);
+    ::glDeleteBuffers(1, &ebo_);
+  }
+
   vao_         = rhs.vao_;
   vbo_         = rhs.vbo_;
   ebo_         = rhs.ebo_;
@@ -47,16 +53,17 @@ Cache &Cache::operator=(Cache &&rhs) {
   rhs.vao_     = 0;
   rhs.vbo_     = 0;
   rhs.ebo_     = 0;
+
   return *this;
 }
 
 void Cache::bind(bool val) const {
   if (val) {
-    //::glBindVertexArray(vao_);
+    ::glBindVertexArray(vao_);
     ::glBindBuffer(GL_ARRAY_BUFFER, vbo_);
     ::glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
   } else {
-    //::glBindVertexArray(0);
+    ::glBindVertexArray(0);
     ::glBindBuffer(GL_ARRAY_BUFFER, 0);
     ::glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   }

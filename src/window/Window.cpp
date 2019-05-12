@@ -64,9 +64,14 @@ Window::Window(std::string_view title, const Point &pos, const Size &size)
 
 Window::~Window() {
   LOG_TRACE << "Window: destructor";
-  // also if we manually remove window it have to unregisterd itself
-  Application::unregisterObject(this);
-  Application::windowFactory()->resetWindow(this);
+  // because it can be reset in close event
+  // TODO I have two similar parts (here and in closeEvent)
+  if (imp_) {
+    renderer_.reset();
+    // also if we manually remove window it have to unregisterd itself
+    Application::unregisterObject(this);
+    Application::windowFactory()->resetWindow(this);
+  }
 }
 
 Point Window::pos() const {
@@ -138,8 +143,14 @@ void Window::makeCurrent() {
 }
 
 void Window::closeEvent(std::unique_ptr<CloseEvent> event) {
+  LOG_TRACE << "Window close event " << this;
   UNUSED(event);
-  this->~Window();
+  // TODO I have two similar parts (here and in closeEvent)
+  renderer_.reset();
+  // also if we manually remove window it have to unregisterd itself
+  Application::unregisterObject(this);
+  Application::windowFactory()->resetWindow(this);
+  imp_.reset();
 }
 
 void Window::mouseMoveEvent(std::unique_ptr<MouseMoveEvent> event) {

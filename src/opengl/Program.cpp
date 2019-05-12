@@ -149,12 +149,14 @@ Program::Program(Program &&rhs)
 Program &Program::operator=(Program &&rhs) {
   LOG_DEBUG << "GL::Program moved";
 
-  glDetachShader(program_, fragmentShader_);
-  glDetachShader(program_, vertexShader_);
+  if (program_) {
+    glDetachShader(program_, fragmentShader_);
+    glDetachShader(program_, vertexShader_);
 
-  glDeleteShader(fragmentShader_);
-  glDeleteShader(vertexShader_);
-  glDeleteProgram(program_);
+    glDeleteShader(fragmentShader_);
+    glDeleteShader(vertexShader_);
+    glDeleteProgram(program_);
+  }
 
   program_        = rhs.program_;
   vertexShader_   = rhs.vertexShader_;
@@ -165,5 +167,9 @@ Program &Program::operator=(Program &&rhs) {
   rhs.fragmentShader_ = 0;
 
   return *this;
+}
+
+int Program::getUniformLocation(std::string_view name) const {
+  return ::glGetUniformLocation(program_, std::string{name}.c_str());
 }
 } // namespace KaliLaska::GL

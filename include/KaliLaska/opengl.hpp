@@ -49,6 +49,10 @@
     }                                                                          \
   }
 
+namespace KaliLaska {
+class Picture;
+}
+
 namespace KaliLaska::GL {
 class GLFactory;
 class Shader;
@@ -69,6 +73,8 @@ public:
    */
   bool use();
 
+  int getUniformLocation(std::string_view name) const;
+
   Program(Program &&rhs);
   Program &operator=(Program &&rhs);
 
@@ -81,8 +87,26 @@ private:
   uint32_t fragmentShader_;
 };
 
-class Texture {
+class Texture final {
 public:
+  /**\brief load all picture to texture.
+   * \warning After creation the texture is not binded!
+   */
+  explicit Texture(const Picture &fromRGBA32);
+  ~Texture();
+
+  Texture(Texture &&rhs);
+  Texture &operator=(Texture &&rhs);
+
+  Texture(const Texture &) = delete;
+  Texture &operator=(const Texture &) = delete;
+
+  /**\brief bind current texture. If you set false - bind 0
+   */
+  void bind(bool val = true) const;
+
+private:
+  uint32_t glTexture_;
 };
 
 // FIXME not working
@@ -122,30 +146,16 @@ private:
   uint32_t vertexCount_;
 };
 
+// FIXME here is serious problem: we can not return cache, because it only for
+// one context. So we can not draw it on other window
 /**\brief 2D OpenGL renderer
  */
 class KALILASKA_EXPORT Renderer final {
 public:
-  enum class Uniforms {
-    /**\breif vec2 which describe window size. Uses for translate view
-     * koordinates to ndc_koordinates
-     */
-    WinSize,
-
-    /**\brief mat3 which uses for translate scene koordinates to view
-     * koordinates
-     */
-    ViewMat,
-
-    /**\brief mat3 which uses for transformation of item
-     */
-    ItemMat,
-
-    /**\brief after the value (ant the value also) user can use for add you
-     * own uniform
-     */
-    UserUni = 50
-  };
+  static inline std::string_view winSizeUniform{"win_size"};
+  static inline std::string_view viewMatUniform{"view_mat"};
+  static inline std::string_view itemMatUniform{"item_mat"};
+  static inline std::string_view texture0Uniform{"texture0"};
 
   enum class Attributes {
     /**\brief vec2 input vertex for gl_Position
@@ -154,6 +164,7 @@ public:
     /**\brief vec3 input color for vertex
      */
     Color,
+    TexVertex,
     /**\brief after the value (ant the value also) user can use for add you
      * own attribute
      */
@@ -164,13 +175,17 @@ public:
    * \param color that color will be used for filling of geometry (box)
    * \param mat transformation matrix (translate, scale, rotation)
    */
-  void render(const Box &box, const TransformMatrix &mat, const Color &color);
+  Cache render(const Box &box, const TransformMatrix &mat, const Color &color);
 
   /**\param ring geometry for rendering
    * \param color that color will be used for filling of geometry (fing)
    * \param mat transformation matrix (translate, scale, rotation)
    */
-  void render(const Ring &ring, const TransformMatrix &mat, const Color &color);
+  Cache
+  render(const Ring &ring, const TransformMatrix &mat, const Color &color);
+
+  void
+  render(const Cache &cache, const TransformMatrix &mat, const Color &color);
 
   /**\brief draw texture. itemRing and textureRing have to have equal size -
    * every vertex of item will be correlated with vertex in texture
@@ -179,10 +194,10 @@ public:
    * \param textureRing ring of texture (in texture koordinates)
    * \param itemMat transformation matrix (translate, scale, rotation)
    */
-  void render(const Ring &           itemRing,
-              const TransformMatrix &itemMat,
-              const Texture &        texture,
-              const Ring &           textureRing);
+  Cache render(const Ring &           itemRing,
+               const TransformMatrix &itemMat,
+               const Texture &        texture,
+               const Ring &           textureRing);
 
   /**\brief draw Texture
    * \param itemRing drawable item ring in item koordinates
@@ -196,6 +211,10 @@ public:
               const Texture &        texture,
               const TransformMatrix &textureMat = TransformMatrix{
                   {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}});
+
+  void render(const Cache &          cache,
+              const TransformMatrix &itemMat,
+              const Texture &        texture);
 
   /**\brief register program in Renderer, after the program can be used for use
    * by the name
@@ -211,22 +230,39 @@ public:
   void unRegisterProgram(std::string_view programName);
 
   /**\brief use the method for choise which registered GL::Program you want to
-   * use for rendering
+   * use for rendering. If you set empty string, then will be called 0 program
    *
-   * \return true if program in use, false - otherwise
+   * \return true if program in use, false - otherwise. If you set empty string,
+   * also will be returned true
+   *
    * \param programName registered program name
    */
   bool use(std::string_view programName);
 
-  /**\brief call glViewPort and set uniform WinSize to current program
+  /**\brief call glViewPort and set uniform WinSize to current program. This
+   * uses for all registered programs
+   * \warning if you set program after calling the method, then program can not
+   * have the value, so use the method again in this case
    */
   void setWinSize(const Size &size);
 
+  /**\brief set uniform ViewMat to current program. This uses for all registered
+   * programs
+   * \warning if you set program after calling the method, then program can not
+   * have the value, so use the method again in this case
+   */
   void setViewMat(const TransformMatrix &mat);
 
+  /**\brief call glClearColor and glClear
+   */
   void clear(const Color &clearColor);
+
+  /**\return empty string if current program not set
+   */
+  std::string_view currentProgram() const;
 
 private:
   std::map<std::string, GL::Program> programs_;
+  std::string                        currentProgram_;
 };
 } // namespace KaliLaska::GL

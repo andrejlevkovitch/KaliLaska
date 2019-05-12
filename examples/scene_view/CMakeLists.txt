@@ -7,6 +7,7 @@ set(WINDOW_SRC
   ExampleScene.cpp
   ExampleView.cpp
   RingItem.cpp
+  TextureItem.cpp
   main.cpp
   )
 
