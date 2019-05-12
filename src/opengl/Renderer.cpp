@@ -53,8 +53,8 @@ Cache Renderer::render(const Box &            box,
     ::glUniformMatrix3fv(
         found->second.getUniformLocation(itemMatUniform), 1, true, mat.a[0]);
   }
-  glVertexAttrib3f(
-      static_cast<int>(Attributes::Color), color.r(), color.g(), color.b());
+  glVertexAttrib3fv(static_cast<int>(Attributes::Color),
+                    reinterpret_cast<const float *>(&color));
 
   Ring ring;
   bg::convert(box, ring);
@@ -97,8 +97,8 @@ Cache Renderer::render(const Ring &           ring,
       ::glUniformMatrix3fv(
           found->second.getUniformLocation(itemMatUniform), 1, true, mat.a[0]);
     }
-    glVertexAttrib3f(
-        static_cast<int>(Attributes::Color), color.r(), color.g(), color.b());
+    glVertexAttrib3fv(static_cast<int>(Attributes::Color),
+                      reinterpret_cast<const float *>(&color));
 
     retval.bind(true);
 
@@ -142,8 +142,8 @@ void Renderer::render(const Cache &          cache,
                            true,
                            itemMat.a[0]);
     }
-    glVertexAttrib3f(
-        static_cast<int>(Attributes::Color), color.r(), color.g(), color.b());
+    glVertexAttrib3fv(static_cast<int>(Attributes::Color),
+                      reinterpret_cast<const float *>(&color));
 
     cache.bind(true);
     glEnableVertexAttribArray(static_cast<int>(Attributes::Vertex));

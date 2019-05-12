@@ -7,7 +7,7 @@
 namespace KaliLaska {
 /**\brief represent RGBA color
  */
-class Color {
+class Color final {
 public:
   enum class Colors {
     Black,
