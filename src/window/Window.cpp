@@ -3,6 +3,7 @@
 #include "KaliLaska/Window.hpp"
 #include "KaliLaska/Application.hpp"
 #include "KaliLaska/CloseEvent.hpp"
+#include "KaliLaska/Menu.hpp"
 #include "KaliLaska/opengl.hpp"
 #include "debug.hpp"
 #include "imp/WindowImp.hpp"
@@ -134,11 +135,11 @@ void Window::close() {
   this->closeEvent(std::make_unique<CloseEvent>());
 }
 
-void Window::swapWindow() {
+void Window::swapWindow() const {
   imp_->swapWindow();
 }
 
-void Window::makeCurrent() {
+void Window::makeCurrent() const {
   imp_->makeCurrent();
 }
 
@@ -202,6 +203,14 @@ void Window::moveEvent(std::unique_ptr<MoveEvent> event) {
 }
 
 void Window::update() {
+  // FIXME it call every time, it is not good
+  std::remove_if(
+      menus_.begin(), menus_.end(), [](const std::weak_ptr<Menu> &var) {
+        if (!var.use_count()) {
+          return true;
+        }
+        return false;
+      });
 }
 
 GL::Renderer *Window::renderer() const {
@@ -210,5 +219,23 @@ GL::Renderer *Window::renderer() const {
 
 void Window::setRenderer(std::unique_ptr<GL::Renderer> renderer) {
   renderer_ = std::move(renderer);
+}
+
+WindowImp *Window::implementation() const {
+  return imp_.get();
+}
+
+void Window::render() const {
+  for (auto &i : menus_) {
+    if (auto ptr = i.lock()) {
+      ptr->render();
+    }
+  }
+}
+
+std::shared_ptr<Menu> Window::createMenu() {
+  auto retval = std::make_shared<Menu>(*this);
+  menus_.emplace_back(retval);
+  return retval;
 }
 } // namespace KaliLaska

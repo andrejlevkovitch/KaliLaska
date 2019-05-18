@@ -157,8 +157,8 @@ void GraphicsView::setScale(float         xFactor,
 
   auto backScaleMat = bq::inverse(getScaleMat(matrix_));
 
-  matrix_ *= backScaleMat;
   matrix_ *= anchorMat;
+  matrix_ *= backScaleMat;
   matrix_ *= scaleMat;
   matrix_ *= bq::inverse(anchorMat);
 }
@@ -198,8 +198,8 @@ void GraphicsView::setRotation(float angle, const PointF &anchor) {
   TransformMatrix rotationMat{};
   bq::set_rotz(rotationMat, toRad(angle));
 
-  matrix_ *= backRotationMat;
   matrix_ *= anchorMat;
+  matrix_ *= backRotationMat;
   matrix_ *= rotationMat;
   matrix_ *= bq::inverse(anchorMat);
 }

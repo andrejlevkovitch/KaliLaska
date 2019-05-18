@@ -48,8 +48,8 @@ public:
   virtual void setResizable(bool value) = 0;
   virtual bool isResizable() const      = 0;
 
-  virtual void swapWindow() = 0;
+  virtual void swapWindow() const = 0;
 
-  virtual void makeCurrent() = 0;
+  virtual void makeCurrent() const = 0;
 };
 } // namespace KaliLaska

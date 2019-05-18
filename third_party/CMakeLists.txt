@@ -7,6 +7,8 @@ if(NOT EXISTS Box2D)
   execute_process(COMMAND ${GIT_EXECUTABLE} submodule update)
 endif()
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 include_directories(picopng)
 add_library(picopng INTERFACE)
 target_include_directories(picopng INTERFACE picopng)

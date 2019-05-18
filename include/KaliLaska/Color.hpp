@@ -39,6 +39,9 @@ public:
   float b() const;
   float a() const;
 
+  bool operator==(const Color &rhs);
+  bool operator!=(const Color &rhs);
+
 private:
   float r_;
   float g_;

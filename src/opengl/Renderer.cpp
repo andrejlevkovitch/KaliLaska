@@ -284,8 +284,17 @@ void Renderer::setWinSize(const Size &size) {
   use(saved);
 }
 
-void Renderer::clear(const Color &clearColor) {
-  glClearColor(clearColor.r(), clearColor.g(), clearColor.b(), clearColor.a());
+void Renderer::setClearColor(const Color &clearColor) {
+  auto saved = currentProgram_;
+  for (auto &[name, program] : programs_) {
+    use(name);
+    glClearColor(
+        clearColor.r(), clearColor.g(), clearColor.b(), clearColor.a());
+  }
+  use(saved);
+}
+
+void Renderer::clear() {
   glClear(GL_COLOR_BUFFER_BIT);
 }
 } // namespace KaliLaska::GL

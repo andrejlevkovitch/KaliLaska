@@ -8,6 +8,7 @@
 #include "KaliLaska/Size.hpp"
 #include "kalilaska_export.h"
 #include <chrono>
+#include <list>
 #include <memory>
 
 namespace KaliLaska {
@@ -30,6 +31,8 @@ class MouseWheelEvent;
 class KeyboardFocusEvent;
 class KeyPressEvent;
 class KeyReleaseEvent;
+
+class Menu;
 
 namespace GL {
 class Renderer;
@@ -112,6 +115,12 @@ public:
    */
   GL::Renderer *renderer() const;
 
+  /**\brief render window and all nested elements
+   */
+  virtual void render() const;
+
+  WindowImp *implementation() const;
+
 protected:
   /**\brief prepare window for rendering. Because uses openGL for rendering
    * we first have to change OpenGL context, and only after draw somthing.
@@ -119,14 +128,16 @@ protected:
    * \warning be carefull with use with threads! All rendering have to be
    * between makeCurrent and swapWindow methods
    */
-  void makeCurrent();
+  void makeCurrent() const;
 
   /**\brief Window uses openGL with double bufferization for rendering, so for
    * display some changes you need swap openGL buffers by the method
    */
-  void swapWindow();
+  void swapWindow() const;
 
   void setRenderer(std::unique_ptr<GL::Renderer> renderer);
+
+  std::shared_ptr<Menu> createMenu();
 
 protected:
   /**\warning after call this method you can not call the object
@@ -183,5 +194,7 @@ protected:
 private:
   std::unique_ptr<WindowImp>    imp_;
   std::unique_ptr<GL::Renderer> renderer_;
+
+  std::list<std::weak_ptr<Menu>> menus_;
 };
 } // namespace KaliLaska

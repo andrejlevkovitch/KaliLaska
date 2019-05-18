@@ -243,9 +243,13 @@ public:
    */
   void setViewMat(const TransformMatrix &mat);
 
-  /**\brief call glClearColor and glClear
+  /**\brief call glClearColor
    */
-  void clear(const Color &clearColor);
+  void setClearColor(const Color &clearColor);
+
+  /**\brief call glClear
+   */
+  void clear();
 
   /**\param val if true enable bleanding, if false - disable. By default -
    * disabled. Default function for blending (GL_SRC_ALPHA,

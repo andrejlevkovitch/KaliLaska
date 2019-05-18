@@ -7,10 +7,14 @@
 #include "window/imp/WindowImp.hpp"
 
 class SDL_Window;
+class ImGuiContext;
 
 namespace KaliLaska {
+class WindowSdlFactory;
 
 class WindowSdl final : public WindowImp {
+  friend WindowSdlFactory;
+
 public:
   /**\throws when can not create window or OpenGL context
    */
@@ -48,9 +52,9 @@ public:
   void setResizable(bool value) override;
   bool isResizable() const override;
 
-  void swapWindow() override;
+  void swapWindow() const override;
 
-  void makeCurrent() override;
+  void makeCurrent() const override;
 
 protected:
   /**\return false when can not create window
@@ -63,7 +67,8 @@ protected:
   bool createGLContext();
 
 private:
-  SDL_Window *window_;
-  void *      glContext_;
+  SDL_Window *  window_;
+  void *        glContext_;
+  ImGuiContext *imguiContext_;
 };
 } // namespace KaliLaska

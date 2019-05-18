@@ -9,6 +9,7 @@
 namespace KaliLaska {
 class WindowImp;
 class Window;
+class MenuImp;
 
 class WindowImpFactory {
 public:
@@ -28,6 +29,8 @@ public:
                                                      std::string_view title,
                                                      Point            point,
                                                      Size             size) = 0;
+
+  virtual std::unique_ptr<MenuImp> createMenuImp(Window &window) = 0;
 
   /**\brief unregister created window. You can set void implementation, if you
    * not store the window-s in you inheritor factory

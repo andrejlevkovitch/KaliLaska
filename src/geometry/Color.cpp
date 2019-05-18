@@ -1,6 +1,7 @@
 // Color.cpp
 
 #include "KaliLaska/Color.hpp"
+#include <tuple>
 
 namespace KaliLaska {
 Color::Color(float r, float g, float b, float a)
@@ -84,5 +85,19 @@ float Color::b() const {
 
 float Color::a() const {
   return a_;
+}
+
+bool Color::operator==(const Color &rhs) {
+  if (std::tie(r_, g_, b_, a_) == std::tie(rhs.r_, rhs.g_, rhs.b_, rhs.a_)) {
+    return true;
+  }
+  return false;
+}
+
+bool Color::operator!=(const Color &rhs) {
+  if (*this == rhs) {
+    return false;
+  }
+  return true;
 }
 } // namespace KaliLaska

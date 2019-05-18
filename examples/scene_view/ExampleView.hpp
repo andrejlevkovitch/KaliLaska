@@ -14,8 +14,12 @@ public:
   void setScene(KaliLaska::GraphicsScene *scene) override;
 
   void update() override;
+  void render() const override;
 
 protected:
+  void
+  mousePressEvent(std::unique_ptr<KaliLaska::MousePressEvent> event) override;
+
   void
   mouseWheelEvent(std::unique_ptr<KaliLaska::MouseWheelEvent> event) override;
 
@@ -25,4 +29,7 @@ protected:
 
 private:
   std::chrono::time_point<std::chrono::system_clock> last_;
+  std::shared_ptr<KaliLaska::Menu>                   menu_;
+
+  KaliLaska::Color clearColor_;
 };

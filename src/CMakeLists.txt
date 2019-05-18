@@ -60,9 +60,11 @@ set(events_SRC
 
 set(window_SRC
   window/Window.cpp
+  window/Menu.cpp
 
   window/sdl/WindowSdl.cpp
   window/sdl/WindowSdlFactory.cpp
+  window/sdl/MenuImgui.cpp
   )
 
 set(graphics_SRC
@@ -135,6 +137,8 @@ else()
       Boost::log
       picopng
       -lstdc++fs
+    PUBLIC
+      imgui
     INTERFACE
       SDL2::SDL2
       OpenGL::GL

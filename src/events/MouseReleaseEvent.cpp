@@ -36,7 +36,7 @@ Point MouseReleaseEvent::clickPos() const {
 std::ostream &operator<<(std::ostream &                      stream,
                          const KaliLaska::MouseReleaseEvent &event) {
   using namespace KaliLaska;
-  stream << "MousePressEvent: clickPos " << event.clickPos() << ", button ";
+  stream << "MouseReleaseEvent: clickPos " << event.clickPos() << ", button ";
   switch (event.button()) {
   case Mouse::Button::Left:
     stream << "Left";

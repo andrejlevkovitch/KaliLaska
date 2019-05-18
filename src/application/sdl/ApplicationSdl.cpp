@@ -6,6 +6,8 @@
 #include "debug.hpp"
 #include "events/sdl/EventConverterSdl.hpp"
 #include "events/sdl/EventSdlFactory.hpp"
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
 #include "logger/logger.hpp"
 #include "window/sdl/WindowSdlFactory.hpp"
 #include <GLES3/gl3.h>
@@ -100,15 +102,38 @@ int ApplicationSdl::exec() {
   int  waitTime{iterationTime_};
   auto lastTimePoint = std::chrono::system_clock::now();
 
+  auto &io = ImGui::GetIO();
+
   // all events deliver emidiatly, but update calls for window only in regular
   // intervals
   while (loop_) {
     // event notifying have to be in main thread, especally because othrerwise
     // we not get quit event, after closed last window
     if (SDL_WaitEventTimeout(&sdlEvent, waitTime)) {
-      auto [window, event] =
-          EventConverterSdl::convert(sdlEvent, *windowFactory_);
-      EventNotifyer::notify(window, std::move(event));
+      switch (sdlEvent.type) {
+      // TODO imgui also can get whele event
+      case SDL_TEXTINPUT:
+        if (io.WantTextInput) {
+          ::ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+          break;
+        }
+      case SDL_MOUSEBUTTONDOWN:
+        if (io.WantCaptureMouse) {
+          ::ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+          break;
+        }
+      case SDL_KEYDOWN:
+      case SDL_KEYUP:
+        if (io.WantCaptureKeyboard) {
+          ::ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+          break;
+        }
+      default:
+        auto [window, event] =
+            EventConverterSdl::convert(sdlEvent, *windowFactory_);
+        EventNotifyer::notify(window, std::move(event));
+        break;
+      }
     }
 
     auto curDuration = std::chrono::system_clock::now() - lastTimePoint;

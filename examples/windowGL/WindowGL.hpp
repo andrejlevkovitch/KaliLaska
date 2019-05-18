@@ -11,6 +11,7 @@ public:
   ~WindowGL() override;
 
   void update() override;
+  void render() const override;
 
 private:
   std::chrono::time_point<std::chrono::system_clock> last_;

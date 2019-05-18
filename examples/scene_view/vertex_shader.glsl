@@ -4,8 +4,7 @@ uniform vec2 win_size;
 uniform mat3 view_mat;
 uniform mat3 item_mat;
 
-out vec4 o_color;
-out vec2 o_texcoord;
+smooth centroid out vec4 o_color;
 
 layout(location = 0) in vec2 pos;
 layout(location = 1) in vec3 color;

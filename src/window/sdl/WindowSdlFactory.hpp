@@ -17,6 +17,8 @@ public:
                                              Point            pos,
                                              Size             size) override;
 
+  std::unique_ptr<MenuImp> createMenuImp(Window &window) override;
+
   /**\return pointer to window from id of SDL_Window
    */
   Window *getWindowFromId(uint32_t id) const;

@@ -1,6 +1,8 @@
 // WindowSdlFactory.cpp
 
 #include "WindowSdlFactory.hpp"
+#include "KaliLaska/Window.hpp"
+#include "MenuImgui.hpp"
 #include "WindowSdl.hpp"
 #include <algorithm>
 
@@ -72,5 +74,12 @@ std::list<Window *> WindowSdlFactory::allWindows() {
       std::back_inserter(retval),
       [](std::pair<uint32_t, Window *> element) { return element.second; });
   return retval;
+}
+
+std::unique_ptr<MenuImp> WindowSdlFactory::createMenuImp(Window &window) {
+  // all implementation will be sdl implementations, because in other way will
+  // be other factory
+  return std::make_unique<MenuImgui>(
+      reinterpret_cast<WindowSdl *>(window.implementation())->window_);
 }
 } // namespace KaliLaska

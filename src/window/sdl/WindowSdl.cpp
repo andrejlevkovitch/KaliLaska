@@ -5,6 +5,9 @@
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
 #include "debug.hpp"
+#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl.h"
 #include "logger/logger.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
@@ -20,16 +23,33 @@ WindowSdl::WindowSdl(std::string_view title, Size size)
 
 WindowSdl::WindowSdl(std::string_view title, Point pos, Size size)
     : window_{}
-    , glContext_{} {
+    , glContext_{}
+    , imguiContext_{} {
   LOG_TRACE << "WindowSdl: konstructor";
   if (!createWindow(std::string{title}.c_str(), pos, size) ||
       !createGLContext()) {
     LOG_THROW(std::runtime_error, SDL_GetError());
   }
+
+  IMGUI_CHECKVERSION();
+  if (imguiContext_ = ImGui::CreateContext(); !imguiContext_) {
+    LOG_ERROR << "imgui can not create context";
+  }
+  ImGui::GetIO();
+  ImGui::StyleColorsClassic();
+  if (!ImGui_ImplSDL2_InitForOpenGL(window_, glContext_) ||
+      !ImGui_ImplOpenGL3_Init("#version 300 es")) {
+    LOG_ERROR << "imgui can not be init by sdl2 and opengl3";
+  }
 }
 
 WindowSdl::~WindowSdl() {
   LOG_TRACE << "WindowSdl: destructor";
+
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplSDL2_Shutdown();
+  ImGui::DestroyContext(imguiContext_);
+
   SDL_GL_DeleteContext(glContext_);
   SDL_DestroyWindow(window_);
 }
@@ -103,7 +123,7 @@ bool WindowSdl::isResizable() const {
   return SDL_GetWindowFlags(window_) & SDL_WINDOW_RESIZABLE;
 }
 
-void WindowSdl::swapWindow() {
+void WindowSdl::swapWindow() const {
   SDL_GL_SwapWindow(window_);
 }
 
@@ -120,7 +140,7 @@ bool WindowSdl::createGLContext() {
   return glContext_;
 }
 
-void WindowSdl::makeCurrent() {
+void WindowSdl::makeCurrent() const {
   SDL_GL_MakeCurrent(window_, glContext_);
 }
 } // namespace KaliLaska
