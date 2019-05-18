@@ -302,7 +302,7 @@ void GraphicsItem::stackAbove() {
 }
 
 bool GraphicsItem::isAbove(const GraphicsItem *rhs) const {
-  if (rhs && rhs->scene() == scene()) {
+  if (rhs) {
     return index_ > rhs->index_;
   }
   return false;

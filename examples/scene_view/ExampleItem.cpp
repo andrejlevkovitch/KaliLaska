@@ -22,17 +22,17 @@ KaliLaska::Ring ExampleItem::shape() const {
 }
 
 void ExampleItem::render(KaliLaska::GL::Renderer *renderer) const {
-  // if (cache_) {
-  //  renderer->render(cache_, matrix(), color_);
-  //} else {
-  /*cache_ =*/renderer->render(boundingBox(), matrix(), color_);
-  //}
+  if (cache_) {
+    renderer->render(cache_, matrix(), color_);
+  } else {
+    cache_ = renderer->render(boundingBox(), matrix(), color_);
+  }
 }
 
 void ExampleItem::update() {
-  // KaliLaska::PointF newPos = pos();
-  // bg::add_point(newPos, KaliLaska::PointF{0.5, 0.5});
-  // setPos(newPos);
+  KaliLaska::PointF newPos = pos();
+  bg::add_point(newPos, KaliLaska::PointF{0.5, 0.5});
+  setPos(newPos);
 }
 
 void ExampleItem::mouseMoveEvent(KaliLaska::SceneMouseMoveEvent *event) {

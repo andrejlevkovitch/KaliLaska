@@ -11,10 +11,11 @@ Cache::Cache()
     , vertexCount_{} {
 }
 
-Cache::Cache(uint32_t vertexCount)
+Cache::Cache(uint32_t trianglesType, uint32_t vertexCount)
     : vao_{}
     , vbo_{}
     , ebo_{}
+    , trianglesType_{trianglesType}
     , vertexCount_{vertexCount} {
   ::glGenVertexArrays(1, &vao_);
   ::glGenBuffers(1, &vbo_);
@@ -33,6 +34,7 @@ Cache::Cache(Cache &&rhs)
     : vao_{rhs.vao_}
     , vbo_{rhs.vbo_}
     , ebo_{rhs.ebo_}
+    , trianglesType_{rhs.trianglesType_}
     , vertexCount_{rhs.vertexCount_} {
   rhs.vao_ = 0;
   rhs.vbo_ = 0;
@@ -46,13 +48,14 @@ Cache &Cache::operator=(Cache &&rhs) {
     ::glDeleteBuffers(1, &ebo_);
   }
 
-  vao_         = rhs.vao_;
-  vbo_         = rhs.vbo_;
-  ebo_         = rhs.ebo_;
-  vertexCount_ = rhs.vertexCount_;
-  rhs.vao_     = 0;
-  rhs.vbo_     = 0;
-  rhs.ebo_     = 0;
+  vao_           = rhs.vao_;
+  vbo_           = rhs.vbo_;
+  ebo_           = rhs.ebo_;
+  trianglesType_ = rhs.trianglesType_;
+  vertexCount_   = rhs.vertexCount_;
+  rhs.vao_       = 0;
+  rhs.vbo_       = 0;
+  rhs.ebo_       = 0;
 
   return *this;
 }

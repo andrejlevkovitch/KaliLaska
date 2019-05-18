@@ -22,20 +22,20 @@ RingItem::RingItem() {
 }
 
 void RingItem::update() {
-  // if (scene() && scene()->grabbedItem() != this) {
-  //  auto curpos = pos();
-  //  bg::add_point(curpos, KaliLaska::PointF{1, 0.5});
-  //  setPos(curpos);
-  //}
+  if (scene() && scene()->grabbedItem() != this) {
+    auto curpos = pos();
+    bg::add_point(curpos, KaliLaska::PointF{1, 0.5});
+    setPos(curpos);
+  }
 }
 
 void RingItem::render(KaliLaska::GL::Renderer *renderer) const {
-  // if (cache_) {
-  //  renderer->render(cache_, matrix(), KaliLaska::Color::Colors::Blue);
-  //} else {
-  /*cache_ =*/
-  renderer->render(shape(), matrix(), KaliLaska::Color::Colors::Blue);
-  //}
+  if (cache_) {
+    renderer->render(cache_, matrix(), KaliLaska::Color::Colors::Blue);
+  } else {
+    cache_ =
+        renderer->render(shape(), matrix(), KaliLaska::Color::Colors::Blue);
+  }
 }
 
 KaliLaska::Ring RingItem::shape() const {

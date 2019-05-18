@@ -9,6 +9,18 @@
 namespace bg = boost::geometry;
 
 namespace KaliLaska::GL {
+Renderer::Renderer() {
+}
+
+void Renderer::blending(bool val) {
+  if (val) {
+    ::glEnable(GL_BLEND);
+    ::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  } else {
+    ::glDisable(GL_BLEND);
+  }
+}
+
 void Renderer::registerProgram(std::string_view programName,
                                GL::Program      program) {
   // you can not register empty string
@@ -47,7 +59,7 @@ bool Renderer::use(std::string_view programName) {
 Cache Renderer::render(const Box &            box,
                        const TransformMatrix &mat,
                        const Color &          color) {
-  Cache retval{4};
+  Cache retval{GL_TRIANGLE_STRIP, 4};
 
   if (auto found = programs_.find(currentProgram_); found != programs_.end()) {
     ::glUniformMatrix3fv(
@@ -90,7 +102,7 @@ Cache Renderer::render(const Ring &           ring,
                        const TransformMatrix &mat,
                        const Color &          color) {
   if (auto triangles = triangulation(ring); !triangles.empty()) {
-    Cache retval(triangles.size());
+    Cache retval(GL_TRIANGLES, triangles.size());
 
     if (auto found = programs_.find(currentProgram_);
         found != programs_.end()) {
@@ -149,7 +161,7 @@ void Renderer::render(const Cache &          cache,
     glEnableVertexAttribArray(static_cast<int>(Attributes::Vertex));
 
     glDrawElements(
-        GL_TRIANGLE_STRIP, cache.vertexCount_, GL_UNSIGNED_SHORT, nullptr);
+        cache.trianglesType_, cache.vertexCount_, GL_UNSIGNED_SHORT, nullptr);
 
     glDisableVertexAttribArray(static_cast<int>(Attributes::Vertex));
     cache.bind(false);
@@ -160,9 +172,8 @@ Cache Renderer::render(const Ring &           itemRing,
                        const TransformMatrix &itemMat,
                        const Texture &        texture,
                        const Ring &           textureRing) {
-  // TODO fix that
   if (auto triangles = triangulation(itemRing); !triangles.empty()) {
-    Cache retval(triangles.size());
+    Cache retval(GL_TRIANGLES, triangles.size());
 
     if (auto found = programs_.find(currentProgram_);
         found != programs_.end()) {
@@ -238,28 +249,17 @@ void Renderer::render(const Cache &          cache,
     cache.bind(true);
     glEnableVertexAttribArray(static_cast<int>(Attributes::Vertex));
     glEnableVertexAttribArray(static_cast<int>(Attributes::TexVertex));
-    ::glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
     texture.bind();
 
     glDrawElements(
-        GL_TRIANGLES, cache.vertexCount_, GL_UNSIGNED_SHORT, nullptr);
+        cache.trianglesType_, cache.vertexCount_, GL_UNSIGNED_SHORT, nullptr);
 
     texture.bind(false);
     glDisableVertexAttribArray(static_cast<int>(Attributes::Vertex));
     glDisableVertexAttribArray(static_cast<int>(Attributes::TexVertex));
     cache.bind(false);
   }
-}
-
-void Renderer::render(const Ring &           itemRing,
-                      const TransformMatrix &itemMat,
-                      const Texture &        texture,
-                      const TransformMatrix &textureMat) {
-  // FIXME not implement
-  UNUSED(itemRing);
-  UNUSED(itemMat);
-  UNUSED(texture);
-  UNUSED(textureMat);
 }
 
 void Renderer::setViewMat(const TransformMatrix &mat) {

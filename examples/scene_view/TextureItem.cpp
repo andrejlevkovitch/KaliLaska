@@ -27,15 +27,11 @@ KaliLaska::Ring TextureItem::shape() const {
 
 void TextureItem::render(KaliLaska::GL::Renderer *renderer) const {
   if (renderer->use("texture")) {
-    //  if (cache_) {
-    //    renderer->render(cache_, matrix(), texture_);
-    //  } else {
-    /*cache_ =*/renderer->render(
-        shape_,
-        matrix(),
-        texture_,
-        KaliLaska::Ring{{0, 0}, {0, 1}, {1, 1}, {1, 0}, {0, 0}});
-    //  }
+    if (cache_) {
+      renderer->render(cache_, matrix(), texture_);
+    } else {
+      cache_ = renderer->render(shape_, matrix(), texture_);
+    }
     renderer->use("default");
   }
 }

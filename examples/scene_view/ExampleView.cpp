@@ -55,6 +55,7 @@ ExampleView::ExampleView(std::string_view        title,
     std::runtime_error{"opengl program not valid"};
   }
   renderer()->setWinSize(drawSize());
+  renderer()->blending(true);
 }
 
 ExampleView::~ExampleView() {

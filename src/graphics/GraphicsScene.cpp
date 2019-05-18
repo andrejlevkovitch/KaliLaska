@@ -19,7 +19,8 @@ namespace bg = boost::geometry;
 namespace KaliLaska {
 GraphicsScene::GraphicsScene()
     : imp_{GraphicsSceneImpFactory::createImp()}
-    , grabbed_{} {
+    , grabbed_{}
+    , lastIndex_{} {
   LOG_TRACE << "GraphicsScene: konstructor";
   Application::registerObject(this);
 }
@@ -67,7 +68,7 @@ GraphicsItem *GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
   if (item) {
     item->scene_ = this;
     if (auto retval = imp_->addItem(std::move(item))) {
-      retval->index_ = lastIndex_++;
+      retval->index_ = ++lastIndex_;
       return retval;
     }
   }
@@ -236,7 +237,7 @@ GraphicsItem *GraphicsScene::grabbedItem() const {
 
 void GraphicsScene::stackAbove(GraphicsItem *item) {
   if (item) {
-    item->index_ = lastIndex_++;
+    item->index_ = ++lastIndex_;
   }
 }
 } // namespace KaliLaska

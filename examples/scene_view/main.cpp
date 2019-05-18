@@ -13,17 +13,17 @@ int main(int argc, char *argv[]) {
   KaliLaska::Application app{argc, argv};
 
   ExampleView view{"my graphics view", {0, 0}, {800, 800}};
-  ExampleView view2{"my mini view", {900, 0}, {300, 300}};
+  // ExampleView view2{"my mini view", {900, 0}, {300, 300}};
 
   view.setResizable(true);
   view.setProperty(KaliLaska::GraphicsView::Property::Movable);
-  view2.setProperty(KaliLaska::GraphicsView::Property::NotModificable |
-                    KaliLaska::GraphicsView::Property::Movable);
-  view2.setSceneBox(KaliLaska::Box{{-20, -20}, {800, 800}});
+  // view2.setProperty(KaliLaska::GraphicsView::Property::NotModificable |
+  //                  KaliLaska::GraphicsView::Property::Movable);
+  // view2.setSceneBox(KaliLaska::Box{{-20, -20}, {800, 800}});
 
   ExampleScene scene{};
   view.setScene(&scene);
-  view2.setScene(&scene);
+  // view2.setScene(&scene);
 
   auto item1 = std::make_shared<ExampleItem>(KaliLaska::Color::Colors::Blue);
   item1->setScenePos({0, 0}, {0, 0});

@@ -136,13 +136,14 @@ public:
 private:
   /**\brief create valid cache. Using by Renderer
    */
-  explicit Cache(uint32_t vertexCount);
+  explicit Cache(uint32_t trianglesType, uint32_t vertexCount);
 
 private:
   uint32_t vao_;
   uint32_t vbo_;
   uint32_t ebo_;
 
+  uint32_t trianglesType_;
   uint32_t vertexCount_;
 };
 
@@ -171,6 +172,8 @@ public:
     UserAttr = 8
   };
 
+  Renderer();
+
   /**\param box geometry for rendering
    * \param color that color will be used for filling of geometry (box)
    * \param mat transformation matrix (translate, scale, rotation)
@@ -191,33 +194,21 @@ public:
    * every vertex of item will be correlated with vertex in texture
    *
    * \param itemRing ring in which will be draw (in item koordinates)
-   * \param textureRing ring of texture (in texture koordinates)
+   * \param textureRing ring of texture (in texture ndc koordinates)
    * \param itemMat transformation matrix (translate, scale, rotation)
    */
   Cache render(const Ring &           itemRing,
                const TransformMatrix &itemMat,
                const Texture &        texture,
-               const Ring &           textureRing);
-
-  /**\brief draw Texture
-   * \param itemRing drawable item ring in item koordinates
-   * \param itemMat transformation matrix of GraphicItem
-   * \param textureMat matrix, which translate item koordinates to texture
-   * koordinates. If item koordinates and texture koordinates are equal or
-   * evulation not needed, then you can not set the parameter
-   */
-  void render(const Ring &           itemRing,
-              const TransformMatrix &itemMat,
-              const Texture &        texture,
-              const TransformMatrix &textureMat = TransformMatrix{
-                  {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}});
+               const Ring &           textureRing = {
+                   {0, 0}, {0, 1}, {1, 1}, {1, 0}, {0, 0}});
 
   void render(const Cache &          cache,
               const TransformMatrix &itemMat,
               const Texture &        texture);
 
-  /**\brief register program in Renderer, after the program can be used for use
-   * by the name
+  /**\brief register program in Renderer, after the program can be used for
+   * use by the name
    *
    * \param programName name of program, which will be use for get program
    *
@@ -232,8 +223,8 @@ public:
   /**\brief use the method for choise which registered GL::Program you want to
    * use for rendering. If you set empty string, then will be called 0 program
    *
-   * \return true if program in use, false - otherwise. If you set empty string,
-   * also will be returned true
+   * \return true if program in use, false - otherwise. If you set empty
+   * string, also will be returned true
    *
    * \param programName registered program name
    */
@@ -241,21 +232,26 @@ public:
 
   /**\brief call glViewPort and set uniform WinSize to current program. This
    * uses for all registered programs
-   * \warning if you set program after calling the method, then program can not
-   * have the value, so use the method again in this case
+   * \warning if you set program after calling the method, then program can
+   * not have the value, so use the method again in this case
    */
   void setWinSize(const Size &size);
 
-  /**\brief set uniform ViewMat to current program. This uses for all registered
-   * programs
-   * \warning if you set program after calling the method, then program can not
-   * have the value, so use the method again in this case
+  /**\brief set uniform ViewMat to current program. This uses for all
+   * registered programs \warning if you set program after calling the method,
+   * then program can not have the value, so use the method again in this case
    */
   void setViewMat(const TransformMatrix &mat);
 
   /**\brief call glClearColor and glClear
    */
   void clear(const Color &clearColor);
+
+  /**\param val if true enable bleanding, if false - disable. By default -
+   * disabled. Default function for blending (GL_SRC_ALPHA,
+   * GL_ONE_MINUS_SRC_ALPHA)
+   */
+  void blending(bool val);
 
   /**\return empty string if current program not set
    */
