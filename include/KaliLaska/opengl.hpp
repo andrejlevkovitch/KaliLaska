@@ -162,7 +162,7 @@ public:
     /**\brief vec2 input vertex for gl_Position
      */
     Vertex,
-    /**\brief vec3 input color for vertex
+    /**\brief vec4 input color for vertex
      */
     Color,
     TexVertex,

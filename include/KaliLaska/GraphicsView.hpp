@@ -68,24 +68,30 @@ public:
    * \brief scale sceneBox relatively to previous scale
    */
   void scale(float xFactor, float yFactor, const PointF &anchor);
+  void scale(std::pair<float, float> factors, const PointF &anchor);
 
   /**\brief set current scale
    */
   void setScale(float xFactor, float yFactor, const PointF &anchor);
+  void setScale(std::pair<float, float> factors, const PointF &anchor);
 
-  /**\return current scale
+  /**\return current x&y scale factors
    */
-  std::pair<float, float> scale() const;
+  std::pair<float, float> getScale() const;
 
   /**\brief rotate sceneBox relative to previous rotation
+   * \param angle in radians
    */
   void rotate(float angle, const PointF &anchor);
 
   /**\brief set rotation for sceneBox
+   * \param angle in radians
    */
   void setRotation(float angle, const PointF &anchor);
 
-  float angle() const;
+  /**\return angle in radians
+   */
+  float getRotation() const;
 
 protected:
   TransformMatrix &matrixC();

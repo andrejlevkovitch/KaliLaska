@@ -159,7 +159,7 @@ void GraphicsItem::rotate(float angle, const PointF &anchor) {
   // clang-format on
 
   TransformMatrix rotationMat{};
-  bq::set_rotz(rotationMat, toRad(angle));
+  bq::set_rotz(rotationMat, angle);
 
   matrix_ *= anchorMat;
   matrix_ *= rotationMat;
@@ -189,14 +189,14 @@ void GraphicsItem::setRotation(float angle, const PointF &anchor) {
   // clang-format on
 
   // rotate back
-  auto backRotationMat = bq::inverse(getRotaionMat(matrix_));
+  auto backRotationMat = bq::inverse(getRotationMat(matrix_));
 
   // rotate to new value
   TransformMatrix rotationMat{};
-  bq::set_rotz(rotationMat, toRad(angle));
+  bq::set_rotz(rotationMat, angle);
 
-  matrix_ *= backRotationMat;
   matrix_ *= anchorMat;
+  matrix_ *= backRotationMat;
   matrix_ *= rotationMat;
   matrix_ *= bq::inverse(anchorMat);
 
@@ -210,8 +210,8 @@ void GraphicsItem::setRotation(float angle, const PointF &anchor) {
   }
 }
 
-float GraphicsItem::angle() const {
-  return toDegrees(getAngle(matrix_));
+float GraphicsItem::getRotation() const {
+  return KaliLaska::getRotation(matrix_);
 }
 
 Box GraphicsItem::boundingBox() const {
@@ -269,8 +269,8 @@ void GraphicsItem::setScale(float x, float y, const PointF &anchor) {
   // rotate back
   auto backScaleMat = bq::inverse(getScaleMat(matrix_));
 
-  matrix_ *= backScaleMat;
   matrix_ *= anchorMat;
+  matrix_ *= backScaleMat;
   matrix_ *= scaleMat;
   matrix_ *= bq::inverse(anchorMat);
 
@@ -283,8 +283,8 @@ void GraphicsItem::setScale(float x, float y, const PointF &anchor) {
   }
 }
 
-std::pair<float, float> GraphicsItem::scale() const {
-  return getScale(matrix_);
+std::pair<float, float> GraphicsItem::getScale() const {
+  return KaliLaska::getScale(matrix_);
 }
 
 float GraphicsItem::zvalue() const {
@@ -306,5 +306,9 @@ bool GraphicsItem::isAbove(const GraphicsItem *rhs) const {
     return index_ > rhs->index_;
   }
   return false;
+}
+
+std::function<void(void)> GraphicsItem::contextMenu() {
+  return {};
 }
 } // namespace KaliLaska

@@ -163,8 +163,8 @@ void GraphicsView::setScale(float         xFactor,
   matrix_ *= bq::inverse(anchorMat);
 }
 
-std::pair<float, float> GraphicsView::scale() const {
-  return getScale(matrix_);
+std::pair<float, float> GraphicsView::getScale() const {
+  return KaliLaska::getScale(matrix_);
 }
 
 void GraphicsView::rotate(float angle, const PointF &anchor) {
@@ -176,7 +176,7 @@ void GraphicsView::rotate(float angle, const PointF &anchor) {
   // clang-format on
 
   TransformMatrix rotationMat{};
-  bq::set_rotz(rotationMat, toRad(angle));
+  bq::set_rotz(rotationMat, angle);
 
   matrix_ *= anchorMat;
   matrix_ *= rotationMat;
@@ -192,11 +192,11 @@ void GraphicsView::setRotation(float angle, const PointF &anchor) {
   // clang-format on
 
   // rotate back
-  auto backRotationMat = bq::inverse(getRotaionMat(matrix_));
+  auto backRotationMat = bq::inverse(getRotationMat(matrix_));
 
   // rotate to new value
   TransformMatrix rotationMat{};
-  bq::set_rotz(rotationMat, toRad(angle));
+  bq::set_rotz(rotationMat, angle);
 
   matrix_ *= anchorMat;
   matrix_ *= backRotationMat;
@@ -204,7 +204,7 @@ void GraphicsView::setRotation(float angle, const PointF &anchor) {
   matrix_ *= bq::inverse(anchorMat);
 }
 
-float GraphicsView::angle() const {
-  return getAngle(matrix_);
+float GraphicsView::getRotation() const {
+  return KaliLaska::getRotation(matrix_);
 }
 } // namespace KaliLaska

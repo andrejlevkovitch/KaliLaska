@@ -97,7 +97,7 @@ SCENARIO("test matrix operations", "[TransformMatrix]") {
           std::sin(angle);
 
       THEN("We have to get from matrix the value") {
-        auto getAngle = KaliLaska::getAngle(mat);
+        auto getAngle = KaliLaska::getRotation(mat);
         CHECK(getAngle == Approx(angle).epsilon(0.01));
       }
     }
@@ -154,16 +154,16 @@ SCENARIO("test matrix operations", "[TransformMatrix]") {
         COMPARE_MAT(getScaleMat, scale);
       }
       AND_THEN("Check get rotation mat") {
-        auto getRotMat = KaliLaska::getRotaionMat(mat);
+        auto getRotMat = KaliLaska::getRotationMat(mat);
 
         COMPARE_MAT(getRotMat, rotation);
-        CHECK(angle == Approx(KaliLaska::getAngle(mat)).epsilon(0.01));
+        CHECK(angle == Approx(KaliLaska::getRotation(mat)).epsilon(0.01));
       }
 
       WHEN("We multiplication all geted matrix to one") {
         auto getTrMat    = KaliLaska::getTranslationMat(mat);
         auto getScaleMat = KaliLaska::getScaleMat(mat);
-        auto getRotMat   = KaliLaska::getRotaionMat(mat);
+        auto getRotMat   = KaliLaska::getRotationMat(mat);
 
         // clang-format off
         KaliLaska::TransformMatrix multiMat{{

@@ -9,7 +9,7 @@ namespace bg = boost::geometry;
 namespace KaliLaska {
 // here we not check on 0 because the values in valid matrix can not be 0,
 // otherwise it is not valid matrix
-float getAngle(const TransformMatrix &mat) {
+float getRotation(const TransformMatrix &mat) {
   auto [xFactor, yFactor] = getScale(mat);
   auto sinAngl =
       bq::mat_traits<TransformMatrix>::read_element<0, 1>(mat) / yFactor;
@@ -37,7 +37,7 @@ PointF getTranslation(const TransformMatrix &mat) {
 
 // here we not check on 0 because the values in valid matrix can not be 0,
 // otherwise it is not valid matrix
-TransformMatrix getRotaionMat(const TransformMatrix &mat) {
+TransformMatrix getRotationMat(const TransformMatrix &mat) {
   auto [xFactor, yFactor] = getScale(mat);
 
   // clang-format off

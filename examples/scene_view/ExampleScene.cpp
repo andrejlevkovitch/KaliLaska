@@ -73,7 +73,7 @@ void ExampleScene::update() {
     for (auto i : items) {
       // if (i->type() == ExampleItem) {
       auto item = reinterpret_cast<BaseItem *>(i);
-      item->rotate(5);
+      item->rotate(KaliLaska::toRad(5));
       //}
     }
     break;
@@ -81,7 +81,7 @@ void ExampleScene::update() {
     for (auto i : items) {
       // if (i->type() == ExampleItem) {
       auto item = reinterpret_cast<BaseItem *>(i);
-      item->rotate(-5);
+      item->rotate(KaliLaska::toRad(-5));
       //}
     }
     break;

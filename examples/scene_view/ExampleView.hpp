@@ -31,5 +31,6 @@ private:
   std::chrono::time_point<std::chrono::system_clock> last_;
   std::shared_ptr<KaliLaska::Menu>                   menu_;
 
-  KaliLaska::Color clearColor_;
+  KaliLaska::Color  clearColor_;
+  KaliLaska::PointF anchor_;
 };

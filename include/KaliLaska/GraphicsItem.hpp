@@ -100,29 +100,33 @@ public:
 
   /**\param anchor relative to the position will be rotate item. In item
    * koordinates
+   * \param angle in radians
    */
   void rotate(float angle, const PointF &anchor);
 
   /**\param anchor relative to the position will be set rotation item. In item
    * koordinates
+   * \param angle in radians
    */
   void setRotation(float angle, const PointF &anchor);
 
-  /**\return current rotate angle in degrees. Relative to z-axis
+  /**\return current rotate angle in radians. Relative to z-axis
    */
-  float angle() const;
+  float getRotation() const;
 
   /**\brief scale current item relative to anchor. Relative to current scale.
    */
   void scale(float xFactor, float yFactor, const PointF &anchor);
+  void scale(std::pair<float, float> factors, const PointF &anchor);
 
   /**\brief set current scale
    */
   void setScale(float xFactor, float yFactor, const PointF &anchor);
+  void setScale(std::pair<float, float> factors, const PointF &anchor);
 
-  /**\return current scale of item.
+  /**\return current x&y scale factors of item.
    */
-  std::pair<float, float> scale() const;
+  std::pair<float, float> getScale() const;
 
   std::list<GraphicsItem *> children() const;
 
@@ -148,6 +152,11 @@ public:
    * not from one scene - return false
    */
   bool isAbove(const GraphicsItem *rhs) const;
+
+  // FIXME not preaty
+  /**\return implementation for Menu
+   */
+  virtual std::function<void(void)> contextMenu();
 
 protected:
   /**\brief by default does nothing

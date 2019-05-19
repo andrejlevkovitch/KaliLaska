@@ -10,6 +10,7 @@ public:
       : anchor_{0, 0} {}
 
   void setAnchor(const KaliLaska::PointF &anchor) { anchor_ = anchor; }
+  KaliLaska::PointF anchor() const { return anchor_; }
 
   void rotate(float angle) { KaliLaska::GraphicsItem::rotate(angle, anchor_); }
 
@@ -17,6 +18,6 @@ public:
     KaliLaska::GraphicsItem::scale(xFactor, yFactor, anchor_);
   }
 
-private:
+protected:
   KaliLaska::PointF anchor_;
 };

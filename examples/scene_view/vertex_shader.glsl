@@ -7,7 +7,7 @@ uniform mat3 item_mat;
 smooth centroid out vec4 o_color;
 
 layout(location = 0) in vec2 pos;
-layout(location = 1) in vec3 color;
+layout(location = 1) in vec4 color;
 
 void main() {
   mat4 to_ndc = mat4(
@@ -21,5 +21,5 @@ void main() {
   to_ndc *= mat4(item_mat);
 
   gl_Position = to_ndc * vec4(pos, 1, 1);
-  o_color = vec4(color, 1);
+  o_color = color;
 }
