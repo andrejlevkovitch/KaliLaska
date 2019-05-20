@@ -13,8 +13,6 @@ namespace KaliLaska {
 class WindowSdlFactory;
 
 class WindowSdl final : public WindowImp {
-  friend WindowSdlFactory;
-
 public:
   /**\throws when can not create window or OpenGL context
    */

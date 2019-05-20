@@ -60,9 +60,6 @@ public:
   Window(std::string_view title, const Point &pos, const Size &size);
   virtual ~Window();
 
-  // Window(Window &&rhs);
-  // Window &operator=(Window &&rhs);
-
   Window(const Window &) = delete;
   Window &operator=(const Window &) = delete;
 
@@ -119,8 +116,6 @@ public:
    */
   virtual void render() const;
 
-  WindowImp *implementation() const;
-
 protected:
   /**\brief prepare window for rendering. Because uses openGL for rendering
    * we first have to change OpenGL context, and only after draw somthing.
@@ -135,6 +130,9 @@ protected:
    */
   void swapWindow() const;
 
+  /**\brief by default every window have renderer, but you, also, can set you
+   * own renderer
+   */
   void setRenderer(std::unique_ptr<GL::Renderer> renderer);
 
   std::shared_ptr<Menu> createMenu();

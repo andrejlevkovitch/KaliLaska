@@ -4,6 +4,7 @@
 #include "KaliLaska/Window.hpp"
 #include "MenuImgui.hpp"
 #include "WindowSdl.hpp"
+#include <SDL2/SDL.h>
 #include <algorithm>
 
 namespace KaliLaska {
@@ -47,9 +48,17 @@ Window *WindowSdlFactory::getWindowFromId(uint32_t id) const {
 }
 
 std::unique_ptr<MenuImp> WindowSdlFactory::createMenuImp(Window &window) {
-  // all implementation will be sdl implementations, because in other way will
-  // be other factory
-  return std::make_unique<MenuImgui>(
-      reinterpret_cast<WindowSdl *>(window.implementation())->window_);
+  if (auto iter = std::find_if(windows_.begin(),
+                               windows_.end(),
+                               [winPtr = &window](const auto &val) {
+                                 if (val.second == winPtr) {
+                                   return true;
+                                 }
+                                 return false;
+                               });
+      iter != windows_.end()) {
+    return std::make_unique<MenuImgui>(::SDL_GetWindowFromID(iter->first));
+  }
+  return {};
 }
 } // namespace KaliLaska

@@ -217,10 +217,6 @@ void Window::setRenderer(std::unique_ptr<GL::Renderer> renderer) {
   renderer_ = std::move(renderer);
 }
 
-WindowImp *Window::implementation() const {
-  return imp_.get();
-}
-
 void Window::render() const {
   for (auto &i : menus_) {
     if (auto ptr = i.lock()) {
