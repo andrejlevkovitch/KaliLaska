@@ -15,12 +15,8 @@ SCENARIO("Test Application", "[Application]") {
   GIVEN("Application") {
     REQUIRE(KaliLaska::Application::instance());
 
-    THEN("Check windowFactory") {
-      CHECK(KaliLaska::Application::windowFactory());
-    }
-
-    THEN("Check eventFactory") {
-      CHECK(KaliLaska::Application::eventFactory());
+    THEN("Check implementation") {
+      CHECK(KaliLaska::Application::implementation());
     }
 
     WHEN("We get application") {

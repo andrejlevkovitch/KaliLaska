@@ -11,6 +11,8 @@
 
 namespace KaliLaska {
 class WindowSdlFactory;
+class EventSdlFactory;
+class GraphicsSceneRTreeFactory;
 
 /**\brief implementation of class Application
  */
@@ -25,8 +27,9 @@ public:
 
   void exit(int code) override;
 
-  WindowImpFactory *windowFactory() const override;
-  EventImpFactory * eventFactory() const override;
+  WindowImpFactory *       windowImpFactory() const override;
+  EventImpFactory *        eventImpFactory() const override;
+  GraphicsSceneImpFactory *graphicsSceneImpFactory() const override;
 
   void setIterationTimeInterval(std::chrono::milliseconds time) override;
 
@@ -44,8 +47,9 @@ private:
 
   std::atomic_int iterationTime_;
 
-  std::unique_ptr<WindowSdlFactory> windowFactory_;
-  std::unique_ptr<EventImpFactory>  eventFactory_;
+  std::unique_ptr<WindowSdlFactory>          windowImpFactory_;
+  std::unique_ptr<EventSdlFactory>           eventImpFactory_;
+  std::unique_ptr<GraphicsSceneRTreeFactory> graphicsSceneImpFactory_;
 
   std::set<Object *> objects_;
 };

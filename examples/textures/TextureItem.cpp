@@ -1,7 +1,7 @@
 // TextureItem.cpp
 
 #include "TextureItem.hpp"
-#include "ExampleScene.hpp"
+#include "KaliLaska/GraphicsScene.hpp"
 #include "KaliLaska/Picture.hpp"
 #include "KaliLaska/SceneMousePressEvent.hpp"
 #include "KaliLaska/SceneMouseReleaseEvent.hpp"
@@ -16,23 +16,15 @@ TextureItem::TextureItem(const std::filesystem::path &file)
     , texture_{KaliLaska::Picture{file}} {
 }
 
-BaseItem::ItemType TextureItem::type() const {
-  return static_cast<KaliLaska::GraphicsItem::ItemType>(
-      ExampleScene::TextureItem);
-}
-
 KaliLaska::Ring TextureItem::shape() const {
   return shape_;
 }
 
 void TextureItem::render(KaliLaska::GL::Renderer *renderer) const {
-  if (renderer->use("texture")) {
-    if (cache_) {
-      renderer->render(cache_, matrix(), texture_);
-    } else {
-      cache_ = renderer->render(shape_, matrix(), texture_);
-    }
-    renderer->use("default");
+  if (cache_) {
+    renderer->render(cache_, matrix(), texture_);
+  } else {
+    cache_ = renderer->render(shape_, matrix(), texture_);
   }
 }
 

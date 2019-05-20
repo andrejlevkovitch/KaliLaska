@@ -7,7 +7,7 @@
 #include "window/imp/WindowImp.hpp"
 
 class SDL_Window;
-class ImGuiContext;
+struct ImGuiContext;
 
 namespace KaliLaska {
 class WindowSdlFactory;

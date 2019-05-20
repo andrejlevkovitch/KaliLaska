@@ -19,7 +19,10 @@
 #include <fstream>
 #include <iostream>
 
-#define SCALE_VAL 1.1
+#define SCALE_FACTORS                                                          \
+  { 1.1, 1.1 }
+#define REVERS_FACTORS                                                         \
+  { 1 / 1.1, 1 / 1.1 }
 
 namespace bg = boost::geometry;
 namespace bq = boost::qvm;
@@ -36,7 +39,7 @@ ExampleView::ExampleView(std::string_view        title,
       throw std::runtime_error{"file not exists"};
     }
     std::ifstream fin;
-    fin.open(std::string{fileName}, std::ios::in);
+    fin.open(fileName, std::ios::in);
     if (fin.is_open()) {
       std::copy(std::istreambuf_iterator<char>(fin),
                 std::istreambuf_iterator<char>(),
@@ -48,13 +51,10 @@ ExampleView::ExampleView(std::string_view        title,
     return retval;
   };
 
-  std::string vertexShader      = shaderCodeLoader(vertexShaderFile);
-  std::string fragmentShader    = shaderCodeLoader(fragmentShaderFile);
-  std::string vertexTexShader   = shaderCodeLoader(vertexTexShaderFile);
-  std::string fragmentTexShader = shaderCodeLoader(fragmentTexShaderFile);
+  std::string vertexShader   = shaderCodeLoader(vertexShaderFile);
+  std::string fragmentShader = shaderCodeLoader(fragmentShaderFile);
 
   renderer()->registerProgram("default", {vertexShader, fragmentShader});
-  renderer()->registerProgram("texture", {vertexTexShader, fragmentTexShader});
 
   if (!renderer()->use("default")) {
     std::runtime_error{"opengl program not valid"};
@@ -64,10 +64,6 @@ ExampleView::ExampleView(std::string_view        title,
 }
 
 ExampleView::~ExampleView() {
-}
-
-void ExampleView::setScene(KaliLaska::GraphicsScene *scene) {
-  GraphicsView::setScene(scene);
 }
 
 void ExampleView::mousePressEvent(
@@ -126,7 +122,7 @@ void ExampleView::mousePressEvent(
         this->setRotation(angle, this->anchor_);
       }
       if (prevScale != scale) {
-        this->setScale(scale.first, scale.second, this->anchor_);
+        this->setScale(scale, this->anchor_);
       }
       if (clearColor_ != tmpColor) {
         this->renderer()->setClearColor(clearColor_);
@@ -144,13 +140,11 @@ void ExampleView::mouseWheelEvent(
     std::unique_ptr<KaliLaska::MouseWheelEvent> event) {
   switch (event->scale()) {
   case KaliLaska::Mouse::Scale::ScaleDown:
-    scale(SCALE_VAL,
-          SCALE_VAL,
+    scale(SCALE_FACTORS,
           KaliLaska::PointF(event->position().x(), event->position().y()));
     break;
   case KaliLaska::Mouse::Scale::ScaleUp:
-    scale(1 / SCALE_VAL,
-          1 / SCALE_VAL,
+    scale(REVERS_FACTORS,
           KaliLaska::PointF(event->position().x(), event->position().y()));
     break;
   default:

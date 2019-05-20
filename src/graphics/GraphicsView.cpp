@@ -52,9 +52,6 @@ void GraphicsView::setScene(GraphicsScene *scene) {
   scene_ = scene;
 }
 
-void GraphicsView::update() {
-}
-
 void GraphicsView::setSceneBox(const Box &sceneBox) {
   bq::mat_traits<TransformMatrix>::write_element<0, 2>(matrix_) =
       bg::get<0>(sceneBox.min_corner());
@@ -126,10 +123,11 @@ void GraphicsView::changeState(ViewState *state) {
   state_ = state;
 }
 
-void GraphicsView::scale(float x, float y, const PointF &anchor) {
+void GraphicsView::scale(std::pair<float, float> factors,
+                         const PointF &          anchor) {
   // clang-format off
-  TransformMatrix scaleMat{{ {x, 0, 0},
-                             {0, y, 0},
+  TransformMatrix scaleMat{{ {factors.first, 0, 0},
+                             {0, factors.second, 0},
                              {0, 0, 1}}};
 
   TransformMatrix anchorMat{{{1, 0, bg::get<0>(anchor)},
@@ -142,12 +140,11 @@ void GraphicsView::scale(float x, float y, const PointF &anchor) {
   matrix_ *= bq::inverse(anchorMat);
 }
 
-void GraphicsView::setScale(float         xFactor,
-                            float         yFactor,
-                            const PointF &anchor) {
+void GraphicsView::setScale(std::pair<float, float> factors,
+                            const PointF &          anchor) {
   // clang-format off
-  TransformMatrix scaleMat{{ {xFactor, 0, 0},
-                             {0, yFactor, 0},
+  TransformMatrix scaleMat{{ {factors.first, 0, 0},
+                             {0, factors.second, 0},
                              {0, 0, 1}}};
 
   TransformMatrix anchorMat{{{1, 0, bg::get<0>(anchor)},

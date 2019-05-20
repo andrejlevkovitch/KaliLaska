@@ -1,7 +1,7 @@
 // AppFactory.cpp
 
 #include "AppFactory.hpp"
-#include "sdl/ApplicationSdl.hpp"
+#include "application/sdl/ApplicationSdl.hpp"
 
 namespace KaliLaska {
 std::unique_ptr<ApplicationImp> AppFactory::createAppImp() {

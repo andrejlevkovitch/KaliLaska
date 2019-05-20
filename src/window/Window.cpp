@@ -5,10 +5,11 @@
 #include "KaliLaska/CloseEvent.hpp"
 #include "KaliLaska/Menu.hpp"
 #include "KaliLaska/opengl.hpp"
+#include "application/imp/ApplicationImp.hpp"
 #include "debug.hpp"
-#include "imp/WindowImp.hpp"
-#include "imp/WindowImpFactory.hpp"
 #include "logger/logger.hpp"
+#include "window/imp/WindowImp.hpp"
+#include "window/imp/WindowImpFactory.hpp"
 #include <stdexcept>
 
 #define INVALID_FACTORY                                                        \
@@ -20,7 +21,7 @@ Window::Window()
     , renderer_{std::make_unique<GL::Renderer>()} {
   LOG_TRACE << "Window: konstructor";
   try {
-    if (auto factory = Application::windowFactory()) {
+    if (auto factory = Application::implementation()->windowImpFactory()) {
       imp_ = factory->createWindowImp(*this);
     } else {
       LOG_THROW(std::runtime_error, INVALID_FACTORY);
@@ -36,7 +37,7 @@ Window::Window(std::string_view title, const Size &size)
     , renderer_{std::make_unique<GL::Renderer>()} {
   LOG_TRACE << "Window: konstructor";
   try {
-    if (auto factory = Application::windowFactory()) {
+    if (auto factory = Application::implementation()->windowImpFactory()) {
       imp_ = factory->createWindowImp(*this, title, size);
     } else {
       LOG_THROW(std::runtime_error, INVALID_FACTORY);
@@ -52,11 +53,8 @@ Window::Window(std::string_view title, const Point &pos, const Size &size)
     , renderer_{std::make_unique<GL::Renderer>()} {
   LOG_TRACE << "Window: konstructor";
   try {
-    if (auto factory = Application::windowFactory()) {
-      imp_ = factory->createWindowImp(*this, title, pos, size);
-    } else {
-      LOG_THROW(std::runtime_error, INVALID_FACTORY);
-    }
+    imp_ = Application::implementation()->windowImpFactory()->createWindowImp(
+        *this, title, pos, size);
   } catch (std::runtime_error &) {
     throw;
   }
@@ -71,7 +69,6 @@ Window::~Window() {
     renderer_.reset();
     // also if we manually remove window it have to unregisterd itself
     Application::unregisterObject(this);
-    Application::windowFactory()->resetWindow(this);
   }
 }
 
@@ -150,7 +147,6 @@ void Window::closeEvent(std::unique_ptr<CloseEvent> event) {
   renderer_.reset();
   // also if we manually remove window it have to unregisterd itself
   Application::unregisterObject(this);
-  Application::windowFactory()->resetWindow(this);
   imp_.reset();
 }
 

@@ -4,7 +4,7 @@
 #include "AppFactory.hpp"
 #include "EventNotifyer.hpp"
 #include "KaliLaska/Event.hpp"
-#include "imp/ApplicationImp.hpp"
+#include "application/imp/ApplicationImp.hpp"
 #include "logger/logger.hpp"
 #include <chrono>
 #include <stdexcept>
@@ -33,6 +33,9 @@ Application::Application(int argc, char *argv[])
   }
 }
 
+// brief we need the konstructor here, because only here we now how destroy
+// implementation, so we can not mark the destructor as default (in header for
+// implementation uses predeclaration)
 Application::~Application() {
   LOG_TRACE << "Application: destructor";
 }
@@ -72,16 +75,9 @@ void Application::exit(int code) {
   }
 }
 
-WindowImpFactory *Application::windowFactory() {
-  if (instancePtr && instancePtr->imp_) {
-    return instancePtr->imp_->windowFactory();
-  }
-  return nullptr;
-}
-
-EventImpFactory *Application::eventFactory() {
-  if (instancePtr && instancePtr->imp_) {
-    return instancePtr->imp_->eventFactory();
+ApplicationImp *Application::implementation() {
+  if (instancePtr) {
+    return instancePtr->imp_.get();
   }
   return nullptr;
 }

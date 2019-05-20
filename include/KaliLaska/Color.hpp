@@ -5,9 +5,10 @@
 #include <cstdint>
 
 namespace KaliLaska {
-/**\brief represent RGBA color
+/**\brief represent RGBA color. You can use pointer to the struct like pointer
+ * to 4 (or less) floats
  */
-class Color final {
+struct Color final {
 public:
   enum class Colors {
     Black,
@@ -29,23 +30,13 @@ public:
    */
   Color(Colors color);
 
-  void setR(float r);
-  void setG(float g);
-  void setB(float b);
-  void setA(float a);
-
-  float r() const;
-  float g() const;
-  float b() const;
-  float a() const;
-
   bool operator==(const Color &rhs);
   bool operator!=(const Color &rhs);
 
-private:
-  float r_;
-  float g_;
-  float b_;
-  float a_;
+public:
+  float r;
+  float g;
+  float b;
+  float a;
 };
 } // namespace KaliLaska

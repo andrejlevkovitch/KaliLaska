@@ -2,13 +2,16 @@
 
 #include "KaliLaska/MouseFocusEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "imp/EventImpFactory.hpp"
-#include "imp/MouseFocusEventImp.hpp"
+#include "application/imp/ApplicationImp.hpp"
+#include "events/imp/EventImpFactory.hpp"
+#include "events/imp/MouseFocusEventImp.hpp"
 
 namespace KaliLaska {
 MouseFocusEvent::MouseFocusEvent(Mouse::Focus focus)
     : Event{Type::MouseFocusEvent}
-    , imp_{Application::eventFactory()->createMouseFocusEventImp(focus)} {
+    , imp_{Application::implementation()
+               ->eventImpFactory()
+               ->createMouseFocusEventImp(focus)} {
 }
 
 MouseFocusEvent::MouseFocusEvent(std::unique_ptr<MouseFocusEventImp> imp)

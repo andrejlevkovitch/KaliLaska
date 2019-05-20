@@ -9,6 +9,8 @@ class GraphicsSceneImp;
 
 class GraphicsSceneImpFactory {
 public:
-  static std::unique_ptr<GraphicsSceneImp> createImp();
+  virtual ~GraphicsSceneImpFactory() = default;
+
+  virtual std::unique_ptr<GraphicsSceneImp> createGraphicsSceneImp() = 0;
 };
 } // namespace KaliLaska

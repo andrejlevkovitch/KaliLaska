@@ -3,16 +3,18 @@
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/Application.hpp"
 #include "KeyPrinter.hpp"
-#include "imp/EventImpFactory.hpp"
-#include "imp/KeyPressEventImp.hpp"
+#include "application/imp/ApplicationImp.hpp"
+#include "events/imp/EventImpFactory.hpp"
+#include "events/imp/KeyPressEventImp.hpp"
 
 namespace KaliLaska {
 KeyPressEvent::KeyPressEvent(Keyboard::Key       key,
                              Keyboard::Modifyers mode,
                              bool                isRepeat)
     : Event{Type::KeyPressEvent}
-    , imp_{Application::eventFactory()->createKeyPressEventImp(
-          key, mode, isRepeat)} {
+    , imp_{Application::implementation()
+               ->eventImpFactory()
+               ->createKeyPressEventImp(key, mode, isRepeat)} {
 }
 
 KeyPressEvent::KeyPressEvent(std::unique_ptr<KeyPressEventImp> imp)

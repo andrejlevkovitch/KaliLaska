@@ -2,13 +2,16 @@
 
 #include "KaliLaska/KeyboardFocusEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "imp/EventImpFactory.hpp"
-#include "imp/KeyboardFocusEventImp.hpp"
+#include "application/imp/ApplicationImp.hpp"
+#include "events/imp/EventImpFactory.hpp"
+#include "events/imp/KeyboardFocusEventImp.hpp"
 
 namespace KaliLaska {
 KeyboardFocusEvent::KeyboardFocusEvent(Keyboard::Focus focus)
     : Event{Type::KeyboardFocusEvent}
-    , imp_{Application::eventFactory()->createKeyboardFocusEventImp(focus)} {
+    , imp_{Application::implementation()
+               ->eventImpFactory()
+               ->createKeyboardFocusEventImp(focus)} {
 }
 
 KeyboardFocusEvent::KeyboardFocusEvent(

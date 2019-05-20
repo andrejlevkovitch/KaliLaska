@@ -1,7 +1,6 @@
 // GraphicsScene.cpp
 
 #include "KaliLaska/GraphicsScene.hpp"
-#include "GraphicsSceneImpFactory.hpp"
 #include "KaliLaska/Application.hpp"
 #include "KaliLaska/GraphicsItem.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
@@ -10,15 +9,19 @@
 #include "KaliLaska/SceneMouseMoveEvent.hpp"
 #include "KaliLaska/SceneMousePressEvent.hpp"
 #include "KaliLaska/SceneMouseReleaseEvent.hpp"
+#include "application/imp/ApplicationImp.hpp"
 #include "debug.hpp"
-#include "imp/GraphicsSceneImp.hpp"
+#include "graphics/imp/GraphicsSceneImp.hpp"
+#include "graphics/imp/GraphicsSceneImpFactory.hpp"
 #include "logger/logger.hpp"
 
 namespace bg = boost::geometry;
 
 namespace KaliLaska {
 GraphicsScene::GraphicsScene()
-    : imp_{GraphicsSceneImpFactory::createImp()}
+    : imp_{Application::implementation()
+               ->graphicsSceneImpFactory()
+               ->createGraphicsSceneImp()}
     , grabbed_{}
     , lastIndex_{} {
   LOG_TRACE << "GraphicsScene: konstructor";

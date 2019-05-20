@@ -31,10 +31,9 @@ void RingItem::update() {
 
 void RingItem::render(KaliLaska::GL::Renderer *renderer) const {
   if (cache_) {
-    renderer->render(cache_, matrix(), KaliLaska::Color::Colors::Blue);
+    renderer->render(cache_, matrix(), color_);
   } else {
-    cache_ =
-        renderer->render(shape(), matrix(), KaliLaska::Color::Colors::Blue);
+    cache_ = renderer->render(shape(), matrix(), color_);
   }
 }
 

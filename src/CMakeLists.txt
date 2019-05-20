@@ -75,7 +75,6 @@ set(graphics_SRC
   graphics/SceneMouseMoveEvent.cpp
   graphics/SceneMousePressEvent.cpp
   graphics/SceneMouseReleaseEvent.cpp
-  graphics/GraphicsSceneImpFactory.cpp
 
   graphics/MoveSceneState.cpp
   graphics/NotifySceneState.cpp
@@ -85,6 +84,7 @@ set(graphics_SRC
 
   graphics/rtree/GraphicsSceneRTree.cpp
   graphics/rtree/SceneIteratorRTree.cpp
+  graphics/rtree/GraphicsSceneRTreeFactory.cpp
   )
 
 

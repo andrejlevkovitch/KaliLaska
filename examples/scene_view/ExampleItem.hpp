@@ -12,8 +12,6 @@ public:
 
   ItemType type() const override;
 
-  std::function<void(void)> contextMenu() override;
-
   KaliLaska::Ring shape() const override;
   void            render(KaliLaska::GL::Renderer *renderer) const override;
   void            update() override;
@@ -23,6 +21,5 @@ public:
   void mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) override;
 
 private:
-  KaliLaska::Color             color_;
   mutable KaliLaska::GL::Cache cache_;
 };

@@ -5,7 +5,6 @@
 #include "ExampleView.hpp"
 #include "KaliLaska/Application.hpp"
 #include "RingItem.hpp"
-#include "TextureItem.hpp"
 #include "shaders.hpp"
 #include <iostream>
 
@@ -37,9 +36,6 @@ int main(int argc, char *argv[]) {
   auto ringItem = std::make_shared<RingItem>();
   ringItem->setScenePos({400, 400}, {0, 0});
 
-  auto texItem = std::make_shared<TextureItem>(png);
-  texItem->setScenePos({50, 50}, {0, 0});
-
   auto childItem =
       std::make_shared<ExampleItem>(KaliLaska::Color::Colors::White);
   childItem->setParent(ringItem.get());
@@ -51,7 +47,6 @@ int main(int argc, char *argv[]) {
   scene.addItem(item4);
   scene.addItem(ringItem);
   scene.addItem(childItem);
-  scene.addItem(texItem);
 
   int retval = app.exec();
 

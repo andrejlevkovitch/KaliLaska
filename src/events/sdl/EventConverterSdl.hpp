@@ -17,6 +17,9 @@ public:
   /**\param factory factory which create sdl windows. It also register
    * every window, and get interface, for get pointer to window, for which
    * the event
+   *
+   * \return pair of Window (reciver of event) and received (already converted)
+   * Event
    */
   static std::pair<Window *, std::unique_ptr<Event>>
   convert(const SDL_Event &event, const WindowSdlFactory &factory);

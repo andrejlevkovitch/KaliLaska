@@ -7,6 +7,8 @@
 namespace KaliLaska {
 class WindowImpFactory;
 class EventImpFactory;
+class GraphicsSceneImpFactory;
+
 class Object;
 
 /**\brief interface for Application
@@ -24,11 +26,21 @@ public:
    */
   virtual void exit(int code) = 0;
 
-  virtual WindowImpFactory *windowFactory() const = 0;
-  virtual EventImpFactory * eventFactory() const  = 0;
+  /**\return factory, which build implementations for windows
+   */
+  virtual WindowImpFactory *windowImpFactory() const = 0;
+  /**\return factory, which build implementations for events
+   */
+  virtual EventImpFactory *eventImpFactory() const = 0;
+  /**\return factory, which build implementations for graphics scenes
+   */
+  virtual GraphicsSceneImpFactory *graphicsSceneImpFactory() const = 0;
 
+  /**\brief set interval between call updates for objects
+   */
   virtual void setIterationTimeInterval(std::chrono::milliseconds time) = 0;
-
+  /**\return interval between call updates for objects
+   */
   virtual std::chrono::milliseconds iterationTimeInterval() const = 0;
 
   virtual void registerObject(Object *obj)   = 0;

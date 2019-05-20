@@ -10,8 +10,6 @@ class TextureItem final : public BaseItem {
 public:
   TextureItem(const std::filesystem::path &file);
 
-  ItemType type() const override;
-
   void render(KaliLaska::GL::Renderer *renderer) const override;
 
   KaliLaska::Ring shape() const override;

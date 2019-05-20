@@ -2,14 +2,17 @@
 
 #include "KaliLaska/CloseEvent.hpp"
 #include "KaliLaska/Application.hpp"
+#include "application/imp/ApplicationImp.hpp"
 #include "debug.hpp"
-#include "imp/CloseEventImp.hpp"
-#include "imp/EventImpFactory.hpp"
+#include "events/imp/CloseEventImp.hpp"
+#include "events/imp/EventImpFactory.hpp"
 
 namespace KaliLaska {
 CloseEvent::CloseEvent()
     : Event{Event::Type::CloseEvent}
-    , imp_{Application::eventFactory()->createCloseEventImp()} {
+    , imp_{Application::implementation()
+               ->eventImpFactory()
+               ->createCloseEventImp()} {
 }
 
 CloseEvent::CloseEvent(std::unique_ptr<CloseEventImp> imp)

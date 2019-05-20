@@ -6,6 +6,7 @@
 #include "debug.hpp"
 #include "events/sdl/EventConverterSdl.hpp"
 #include "events/sdl/EventSdlFactory.hpp"
+#include "graphics/rtree/GraphicsSceneRTreeFactory.hpp"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "logger/logger.hpp"
@@ -32,8 +33,9 @@ ApplicationSdl::ApplicationSdl()
     : loop_{false}
     , return_code_{EXIT_SUCCESS}
     , iterationTime_{DEFAULT_WAIT_TIMEOUT}
-    , windowFactory_{std::make_unique<WindowSdlFactory>()}
-    , eventFactory_{std::make_unique<EventSdlFactory>()} {
+    , windowImpFactory_{std::make_unique<WindowSdlFactory>()}
+    , eventImpFactory_{std::make_unique<EventSdlFactory>()}
+    , graphicsSceneImpFactory_{std::make_unique<GraphicsSceneRTreeFactory>()} {
   LOG_TRACE << "ApplicationSdl: konstructor";
 
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS)) {
@@ -130,7 +132,7 @@ int ApplicationSdl::exec() {
         }
       default:
         auto [window, event] =
-            EventConverterSdl::convert(sdlEvent, *windowFactory_);
+            EventConverterSdl::convert(sdlEvent, *windowImpFactory_);
         EventNotifyer::notify(window, std::move(event));
         break;
       }
@@ -161,12 +163,16 @@ void ApplicationSdl::exit(int code) {
   return_code_ = code;
 }
 
-WindowImpFactory *ApplicationSdl::windowFactory() const {
-  return windowFactory_.get();
+WindowImpFactory *ApplicationSdl::windowImpFactory() const {
+  return windowImpFactory_.get();
 }
 
-EventImpFactory *ApplicationSdl::eventFactory() const {
-  return eventFactory_.get();
+EventImpFactory *ApplicationSdl::eventImpFactory() const {
+  return eventImpFactory_.get();
+}
+
+GraphicsSceneImpFactory *ApplicationSdl::graphicsSceneImpFactory() const {
+  return graphicsSceneImpFactory_.get();
 }
 
 void ApplicationSdl::setIterationTimeInterval(std::chrono::milliseconds time) {

@@ -1,7 +1,7 @@
 // ConstIterator.cpp
 
 #include "KaliLaska/GraphicsScene.hpp"
-#include "imp/GraphicsSceneImp.hpp"
+#include "graphics/imp/GraphicsSceneImp.hpp"
 
 namespace KaliLaska {
 GraphicsScene::ConstIterator::~ConstIterator() {

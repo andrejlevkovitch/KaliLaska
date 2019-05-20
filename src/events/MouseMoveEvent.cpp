@@ -2,16 +2,18 @@
 
 #include "KaliLaska/MouseMoveEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "imp/EventImpFactory.hpp"
-#include "imp/MouseMoveEventImp.hpp"
+#include "application/imp/ApplicationImp.hpp"
+#include "events/imp/EventImpFactory.hpp"
+#include "events/imp/MouseMoveEventImp.hpp"
 
 namespace KaliLaska {
 MouseMoveEvent::MouseMoveEvent(Mouse::Buttons buttons,
                                Point          curPos,
                                Point          prevPos)
     : Event{Type::MouseMoveEvent}
-    , imp_{Application::eventFactory()->createMouseMoveEventImp(
-          buttons, curPos, prevPos)} {
+    , imp_{Application::implementation()
+               ->eventImpFactory()
+               ->createMouseMoveEventImp(buttons, curPos, prevPos)} {
 }
 
 MouseMoveEvent::MouseMoveEvent(std::unique_ptr<MouseMoveEventImp> imp)

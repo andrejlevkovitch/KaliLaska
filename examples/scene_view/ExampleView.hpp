@@ -11,8 +11,6 @@ public:
               const KaliLaska::Size & size);
   ~ExampleView();
 
-  void setScene(KaliLaska::GraphicsScene *scene) override;
-
   void update() override;
   void render() const override;
 

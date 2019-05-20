@@ -18,7 +18,7 @@ using Box = boost::geometry::model::box<PointF>;
 KALILASKA_EXPORT bool operator==(const KaliLaska::Box &lhs,
                                  const KaliLaska::Box &rhs);
 
-KALILASKA_EXPORT bool operator==(const KaliLaska::Box &lhs,
+KALILASKA_EXPORT bool operator!=(const KaliLaska::Box &lhs,
                                  const KaliLaska::Box &rhs);
 
 KALILASKA_EXPORT std::ostream &operator<<(std::ostream &        stream,

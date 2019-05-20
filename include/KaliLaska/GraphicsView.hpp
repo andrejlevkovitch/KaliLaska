@@ -37,6 +37,9 @@ public:
   GraphicsView(std::string_view title, const Point &pos, const Size &size);
   ~GraphicsView() override = default;
 
+  /**\brief by default view have several properties (look in Property enum),
+   * which you can set by the method
+   */
   void setProperty(Properties prop);
 
   /**\warning not set ownershiep of scene
@@ -46,33 +49,26 @@ public:
   GraphicsScene *scene() const;
 
   /**\brief by default equal to viewBox
+   * \param sceneBox rectangle which will be displayed be the view
    */
   void setSceneBox(const Box &sceneBox);
   Box  sceneBox() const;
-
-  /**\brief set postion relative to which will be all changes, like rotation and
-   * scale. In view koordinates. By default {0, 0}
-   */
-  void   anchor(const PointF &pos);
-  PointF anchor() const;
 
   /**\return box in view koordinates {0, 0, width, height}
    */
   Box viewBox() const;
 
-  void update() override;
-
+  /**\return constant matrix of the view
+   */
   const TransformMatrix &matrix() const;
 
   /**\param anchor position of view, relative to it will be scaled.
-   * \brief scale sceneBox relatively to previous scale
+   * \brief scale sceneBox relatively to previous scale.
    */
-  void scale(float xFactor, float yFactor, const PointF &anchor);
   void scale(std::pair<float, float> factors, const PointF &anchor);
 
-  /**\brief set current scale
+  /**\brief set current scale.
    */
-  void setScale(float xFactor, float yFactor, const PointF &anchor);
   void setScale(std::pair<float, float> factors, const PointF &anchor);
 
   /**\return current x&y scale factors
@@ -94,6 +90,8 @@ public:
   float getRotation() const;
 
 protected:
+  /**\return not constant matrix of the view
+   */
   TransformMatrix &matrixC();
 
 protected:

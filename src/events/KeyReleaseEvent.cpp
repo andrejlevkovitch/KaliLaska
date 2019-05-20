@@ -3,15 +3,17 @@
 #include "KaliLaska/KeyReleaseEvent.hpp"
 #include "KaliLaska/Application.hpp"
 #include "KeyPrinter.hpp"
-#include "imp/EventImpFactory.hpp"
-#include "imp/KeyReleaseEventImp.hpp"
+#include "application/imp/ApplicationImp.hpp"
+#include "events/imp/EventImpFactory.hpp"
+#include "events/imp/KeyReleaseEventImp.hpp"
 
 namespace KaliLaska {
 KeyReleaseEvent::KeyReleaseEvent(Keyboard::Key       key,
                                  Keyboard::Modifyers modifyers)
     : Event{Type::KeyReleaseEvent}
-    , imp_{Application::eventFactory()->createKeyReleaseEventImp(key,
-                                                                 modifyers)} {
+    , imp_{Application::implementation()
+               ->eventImpFactory()
+               ->createKeyReleaseEventImp(key, modifyers)} {
 }
 
 KeyReleaseEvent::KeyReleaseEvent(std::unique_ptr<KeyReleaseEventImp> imp)

@@ -2,14 +2,16 @@
 
 #include "KaliLaska/MouseReleaseEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "imp/EventImpFactory.hpp"
-#include "imp/MouseReleaseEventImp.hpp"
+#include "application/imp/ApplicationImp.hpp"
+#include "events/imp/EventImpFactory.hpp"
+#include "events/imp/MouseReleaseEventImp.hpp"
 
 namespace KaliLaska {
 MouseReleaseEvent::MouseReleaseEvent(Mouse::Button button, Point clickPos)
     : Event{Type::MouseReleaseEvent}
-    , imp_{Application::eventFactory()->createMouseReleaseImp(button,
-                                                              clickPos)} {
+    , imp_{Application::implementation()
+               ->eventImpFactory()
+               ->createMouseReleaseImp(button, clickPos)} {
 }
 
 MouseReleaseEvent::MouseReleaseEvent(std::unique_ptr<MouseReleaseEventImp> imp)

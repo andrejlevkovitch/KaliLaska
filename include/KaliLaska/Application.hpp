@@ -7,10 +7,6 @@
 #include <memory>
 
 namespace KaliLaska {
-class WindowImpFactory;
-class EventImpFactory;
-class GraphicsSceneImpFactory;
-
 class Window;
 class Event;
 
@@ -29,6 +25,10 @@ public:
    */
   Application(int argc, char *argv[]);
 
+  /**\brief you need initialize (call constructor) application before get
+   * instance
+   * \return nullptr if not initialize
+   */
   static Application *instance();
 
   ~Application();
@@ -44,12 +44,10 @@ public:
    */
   static void exit(int code);
 
-  /**\return abstract factory, which create implementaion for window.
+  /**\return implementation of current application. Need for access to
+   * abstract factories, which dependens from realization
    */
-  static WindowImpFactory *windowFactory();
-  /**\return abstract factory, which create custom user events
-   */
-  static EventImpFactory *eventFactory();
+  static ApplicationImp *implementation();
 
   /**\brief send event to window. This event will be delivered momentally (in
    * current iteration of the main cikle).
@@ -69,12 +67,17 @@ public:
    */
   std::chrono::milliseconds iterationTimeInterval() const;
 
-  /**\brief registered object call by the application every loop iteration
+  /**\brief registered object call (method update) by the application every loop
+   * iteration
    */
   static void registerObject(Object *obj);
+  /**\brief if we destroy object we have to unregister this, because it can not
+   * receive events after removing
+   */
   static void unregisterObject(Object *obj);
 
 private:
+  // TODO not realized
   void parseArguments(int argc, char *argv[]);
 
 private:

@@ -2,12 +2,14 @@
 
 #include "KaliLaska/Menu.hpp"
 #include "KaliLaska/Application.hpp"
+#include "application/imp/ApplicationImp.hpp"
 #include "window/imp/MenuImp.hpp"
 #include "window/imp/WindowImpFactory.hpp"
 
 namespace KaliLaska {
 Menu::Menu(Window &window)
-    : imp_{Application::windowFactory()->createMenuImp(window)} {
+    : imp_{Application::implementation()->windowImpFactory()->createMenuImp(
+          window)} {
 }
 
 Menu::~Menu() {

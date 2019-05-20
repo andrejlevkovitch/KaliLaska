@@ -222,14 +222,15 @@ GraphicsItem::ItemType GraphicsItem::type() const {
   return ItemType::None;
 }
 
-void GraphicsItem::scale(float x, float y, const PointF &anchor) {
+void GraphicsItem::scale(std::pair<float, float> factors,
+                         const PointF &          anchor) {
   PointF                                                   prevPos;
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
   bg::transform(bg::return_centroid<PointF>(boundingBox()), prevPos, translate);
 
   // clang-format off
-  TransformMatrix scaleMat{{ {x, 0, 0},
-                             {0, y, 0},
+  TransformMatrix scaleMat{{ {factors.first, 0, 0},
+                             {0, factors.second, 0},
                              {0, 0, 1}}};
 
   TransformMatrix anchorMat{{{1, 0, bg::get<0>(anchor)},
@@ -246,19 +247,20 @@ void GraphicsItem::scale(float x, float y, const PointF &anchor) {
   // update children
   for (auto child : children_) {
     // TODO I do not know it is right?
-    child->scale(x, y, anchor);
+    child->scale(factors, anchor);
   }
 }
 
-void GraphicsItem::setScale(float x, float y, const PointF &anchor) {
+void GraphicsItem::setScale(std::pair<float, float> factors,
+                            const PointF &          anchor) {
   // for get previous pos
   PointF                                                   prevPos;
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
   bg::transform(bg::return_centroid<PointF>(boundingBox()), prevPos, translate);
 
   // clang-format off
-  TransformMatrix scaleMat{{ {x, 0, 0},
-                             {0, y, 0},
+  TransformMatrix scaleMat{{ {factors.first, 0, 0},
+                             {0, factors.second, 0},
                              {0, 0, 1}}};
 
   TransformMatrix anchorMat{{{1, 0, bg::get<0>(anchor)},
@@ -279,7 +281,7 @@ void GraphicsItem::setScale(float x, float y, const PointF &anchor) {
   // update children
   for (auto child : children_) {
     // TODO I do not know it is right?
-    child->setScale(x, y, anchor);
+    child->setScale(factors, anchor);
   }
 }
 

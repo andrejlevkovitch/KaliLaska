@@ -6,6 +6,8 @@
 #include <iostream>
 
 namespace KaliLaska::GL {
+// FIXME here we have problem, because we can initialize texture only after
+// create opengl program
 Texture::Texture(const Picture &fromRGBA32)
     : glTexture_{} {
   ::glActiveTexture(GL_TEXTURE7);

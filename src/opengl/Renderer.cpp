@@ -288,8 +288,7 @@ void Renderer::setClearColor(const Color &clearColor) {
   auto saved = currentProgram_;
   for (auto &[name, program] : programs_) {
     use(name);
-    glClearColor(
-        clearColor.r(), clearColor.g(), clearColor.b(), clearColor.a());
+    glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
   }
   use(saved);
 }

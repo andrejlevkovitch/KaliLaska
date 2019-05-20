@@ -2,13 +2,16 @@
 
 #include "KaliLaska/ResizeEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "imp/EventImpFactory.hpp"
-#include "imp/ResizeEventImp.hpp"
+#include "application/imp/ApplicationImp.hpp"
+#include "events/imp/EventImpFactory.hpp"
+#include "events/imp/ResizeEventImp.hpp"
 
 namespace KaliLaska {
 ResizeEvent::ResizeEvent(Size newSize)
     : Event{Type::ResizeEvent}
-    , imp_{Application::eventFactory()->createResizeEventImp(newSize)} {
+    , imp_{Application::implementation()
+               ->eventImpFactory()
+               ->createResizeEventImp(newSize)} {
 }
 
 ResizeEvent::ResizeEvent(std::unique_ptr<ResizeEventImp> imp)

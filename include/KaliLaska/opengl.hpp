@@ -87,6 +87,9 @@ private:
   uint32_t fragmentShader_;
 };
 
+/**\brief class which wrap opengl structure
+ * \warning you can create textures only after initialization opengl program!
+ */
 class Texture final {
 public:
   /**\brief load all picture to texture.

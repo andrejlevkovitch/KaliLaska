@@ -2,14 +2,12 @@
 
 #pragma once
 
-#include "KaliLaska/Color.hpp"
 #include "KaliLaska/GraphicsItem.hpp"
 
 class BaseItem : public KaliLaska::GraphicsItem {
 public:
   BaseItem()
-      : anchor_{0, 0}
-      , color_{KaliLaska::Color::Colors::White} {}
+      : anchor_{0, 0} {}
 
   void setAnchor(const KaliLaska::PointF &anchor) { anchor_ = anchor; }
   KaliLaska::PointF anchor() const { return anchor_; }
@@ -39,9 +37,6 @@ public:
           "view scalse", reinterpret_cast<float *>(&scale), 0.1f, 10.f);
       ImGui::SliderAngle("view rotation", &angle);
       ImGui::Separator();
-      ImGui::ColorEdit4("color of item",
-                        reinterpret_cast<float *>(&this->color_));
-      ImGui::Separator();
       // clang-format off
       ImGui::Text("ItemMatrix:\n%.3f %.3f %.3f\n%.3f %.3f %.3f\n%.3f %.3f %.3f",
                   curMatrix.a[0][0], curMatrix.a[0][1], curMatrix.a[0][2],
@@ -67,5 +62,4 @@ public:
 
 protected:
   KaliLaska::PointF anchor_;
-  KaliLaska::Color  color_;
 };

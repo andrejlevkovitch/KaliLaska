@@ -7,6 +7,11 @@
 #include "KaliLaska/KeyReleaseEvent.hpp"
 #include <iostream>
 
+#define SCALE_FACTORS                                                          \
+  { 1.1, 1.1 }
+#define REVERS_FACTORS                                                         \
+  { 1 / 1.1, 1 / 1.1 }
+
 ExampleScene::ExampleScene()
     : turn_{Turn::None}
     , scale_{Scale::None} {
@@ -95,7 +100,7 @@ void ExampleScene::update() {
       if (i->type() ==
           static_cast<KaliLaska::GraphicsItem::ItemType>(RingItem)) {
         auto item = reinterpret_cast<BaseItem *>(i);
-        item->scale(1.1, 1.1);
+        item->scale(SCALE_FACTORS);
       }
     }
     break;
@@ -104,7 +109,7 @@ void ExampleScene::update() {
       if (i->type() ==
           static_cast<KaliLaska::GraphicsItem::ItemType>(RingItem)) {
         auto item = reinterpret_cast<BaseItem *>(i);
-        item->scale(1 / 1.1, 1 / 1.1);
+        item->scale(REVERS_FACTORS);
       }
     }
     break;

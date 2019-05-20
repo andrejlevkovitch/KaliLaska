@@ -2,13 +2,15 @@
 
 #include "KaliLaska/ShowEvent.hpp"
 #include "KaliLaska/Application.hpp"
-#include "imp/EventImpFactory.hpp"
-#include "imp/ShowEventImp.hpp"
+#include "application/imp/ApplicationImp.hpp"
+#include "events/imp/EventImpFactory.hpp"
+#include "events/imp/ShowEventImp.hpp"
 
 namespace KaliLaska {
 ShowEvent::ShowEvent(ShowAction action)
     : Event{Type::ShowEvent}
-    , imp_{Application::eventFactory()->createShowEventImp(action)} {
+    , imp_{Application::implementation()->eventImpFactory()->createShowEventImp(
+          action)} {
 }
 
 ShowEvent::ShowEvent(std::unique_ptr<ShowEventImp> imp)

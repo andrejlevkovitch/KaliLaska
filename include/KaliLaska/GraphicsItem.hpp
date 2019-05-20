@@ -116,23 +116,22 @@ public:
 
   /**\brief scale current item relative to anchor. Relative to current scale.
    */
-  void scale(float xFactor, float yFactor, const PointF &anchor);
   void scale(std::pair<float, float> factors, const PointF &anchor);
 
   /**\brief set current scale
    */
-  void setScale(float xFactor, float yFactor, const PointF &anchor);
   void setScale(std::pair<float, float> factors, const PointF &anchor);
 
   /**\return current x&y scale factors of item.
    */
   std::pair<float, float> getScale() const;
 
+  /**\return list of all children of the item.
+   * \warning not sorted
+   */
   std::list<GraphicsItem *> children() const;
 
   /**\return current transformation matrix
-   * \warning all changes of item (like change position) have to be from methods
-   * of item, because it change postion of item in rtree
    */
   const TransformMatrix &matrix() const;
 

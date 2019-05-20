@@ -55,7 +55,7 @@ public:
    */
   Window(std::string_view title, const Size &size);
 
-  /**\throw std::runtime_error if window can not be crated
+  /**\throw std::runtime_error if window can not be created
    */
   Window(std::string_view title, const Point &pos, const Size &size);
   virtual ~Window();

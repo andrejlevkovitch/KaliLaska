@@ -12,7 +12,6 @@ public:
   enum {
     ExampleItem = KaliLaska::GraphicsItem::UserType + 1,
     RingItem,
-    TextureItem
   };
   ExampleScene();
 
