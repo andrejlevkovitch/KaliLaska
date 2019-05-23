@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
   return result;
 }
 
-#include "KaliLaska/Window.hpp"
+#include "KaliLaska/AbstractWindow.hpp"
 #include "KaliLaska/opengl.hpp"
 #include <GLES3/gl3.h>
 
@@ -38,10 +38,10 @@ void main() {
 }
 )"};
 
-class OpenGLWindow : public KaliLaska::Window {
+class OpenGLWindow final : public KaliLaska::AbstractWindow {
 public:
   OpenGLWindow()
-      : KaliLaska::Window{"", KaliLaska::Size{100, 100}} {
+      : KaliLaska::AbstractWindow{"", KaliLaska::Size{100, 100}} {
     renderer()->registerProgram("default", {vertexShader, fragmentShader});
     try {
       renderer()->use("default");
@@ -53,8 +53,10 @@ public:
 
   ~OpenGLWindow() {}
 
-  void update() {
-    Window::makeCurrent();
+  void update() override {}
+
+  void render() const override {
+    makeCurrent();
 
     glViewport(0, 0, drawSize().width(), drawSize().height());
     renderer()->clear();
@@ -110,11 +112,11 @@ public:
 SCENARIO("Test openGL", "[OpenGLWindow]") {
   GIVEN("Application") {
     WHEN("We get window") {
-      KaliLaska::Window *window{};
+      std::unique_ptr<KaliLaska::AbstractWindow> window;
 
-      REQUIRE_NOTHROW(window = new OpenGLWindow);
+      REQUIRE_NOTHROW(window = std::make_unique<OpenGLWindow>());
 
-      THEN("Try update window") { REQUIRE_NOTHROW(window->update()); }
+      THEN("Try update window") { REQUIRE_NOTHROW(window->render()); }
     }
   }
 }

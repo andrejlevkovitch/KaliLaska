@@ -1,8 +1,8 @@
 // NotifySceneState.cpp
 
 #include "NotifySceneState.hpp"
+#include "KaliLaska/AbstractGraphicsView.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
-#include "KaliLaska/GraphicsView.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/KeyReleaseEvent.hpp"
 #include "KaliLaska/MouseFocusEvent.hpp"
@@ -26,7 +26,7 @@ ViewState::Type NotifySceneState::type() const {
 }
 
 void NotifySceneState::mousePressEvent(
-    GraphicsView *view, std::unique_ptr<MousePressEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<MousePressEvent> event) const {
   if (view->scene() && event) {
     auto sceneEvent =
         std::make_unique<SceneMousePressEvent>(std::move(event), view->matrix_);
@@ -39,7 +39,8 @@ void NotifySceneState::mousePressEvent(
 }
 
 void NotifySceneState::mouseReleaseEvent(
-    GraphicsView *view, std::unique_ptr<MouseReleaseEvent> event) const {
+    AbstractGraphicsView *             view,
+    std::unique_ptr<MouseReleaseEvent> event) const {
   if (view->scene() && event) {
     auto sceneEvent = std::make_unique<SceneMouseReleaseEvent>(std::move(event),
                                                                view->matrix_);
@@ -48,7 +49,7 @@ void NotifySceneState::mouseReleaseEvent(
 }
 
 void NotifySceneState::mouseMoveEvent(
-    GraphicsView *view, std::unique_ptr<MouseMoveEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<MouseMoveEvent> event) const {
   if (view->scene() && event) {
     auto sceneEvent =
         std::make_unique<SceneMouseMoveEvent>(std::move(event), view->matrix_);
@@ -57,21 +58,21 @@ void NotifySceneState::mouseMoveEvent(
 }
 
 void NotifySceneState::keyPressEvent(
-    GraphicsView *view, std::unique_ptr<KeyPressEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<KeyPressEvent> event) const {
   if (view->scene() && event) {
     view->scene()->keyPressEvent(event.get());
   }
 }
 
 void NotifySceneState::keyReleaseEvent(
-    GraphicsView *view, std::unique_ptr<KeyReleaseEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<KeyReleaseEvent> event) const {
   if (view->scene() && event) {
     view->scene()->keyReleaseEvent(event.get());
   }
 }
 
 void NotifySceneState::mouseFocusEvent(
-    GraphicsView *view, std::unique_ptr<MouseFocusEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<MouseFocusEvent> event) const {
   if (view->scene() && event) {
     view->scene()->mouseFocusEvent(event.get());
   }

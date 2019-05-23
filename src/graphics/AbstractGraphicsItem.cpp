@@ -1,6 +1,6 @@
-// GraphicsItem.cpp
+// AbstractGraphicsItem.cpp
 
-#include "KaliLaska/GraphicsItem.hpp"
+#include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
 #include "debug.hpp"
 #include <algorithm>
@@ -13,29 +13,29 @@ namespace bq = boost::qvm;
 namespace bg = boost::geometry;
 
 namespace KaliLaska {
-GraphicsItem::GraphicsItem()
+AbstractGraphicsItem::AbstractGraphicsItem()
     : scene_{}
     , parent_{}
     , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}}
     , zvalue_{} {
 }
 
-GraphicsItem::~GraphicsItem() {
+AbstractGraphicsItem::~AbstractGraphicsItem() {
   // here I not remove children and not remove the item from children of parent
   // item because destructor can call only after remove item from scene. It can
   // happens only if we call GraphicsScene::removeItem. So, the operations makes
   // there
 }
 
-GraphicsScene *GraphicsItem::scene() const {
+GraphicsScene *AbstractGraphicsItem::scene() const {
   return scene_;
 }
 
-GraphicsItem *GraphicsItem::parent() const {
+AbstractGraphicsItem *AbstractGraphicsItem::parent() const {
   return parent_;
 }
 
-void GraphicsItem::setParent(GraphicsItem *parent) {
+void AbstractGraphicsItem::setParent(AbstractGraphicsItem *parent) {
   // We have to save previous postion in parent koordinates and set it after all
   // operations
   PointF currentPos = pos();
@@ -49,7 +49,7 @@ void GraphicsItem::setParent(GraphicsItem *parent) {
   setPos(currentPos);
 }
 
-PointF GraphicsItem::pos() const {
+PointF AbstractGraphicsItem::pos() const {
   if (parent_) {
     PointF retval = scenePos();
     bg::subtract_point(retval, parent_->scenePos());
@@ -58,11 +58,11 @@ PointF GraphicsItem::pos() const {
   return scenePos();
 }
 
-PointF GraphicsItem::scenePos() const {
+PointF AbstractGraphicsItem::scenePos() const {
   return getTranslation(matrix_);
 }
 
-void GraphicsItem::setPos(const PointF &pos) {
+void AbstractGraphicsItem::setPos(const PointF &pos) {
   if (parent_) {
     PointF parentAnchor{0, 0};
     bg::subtract_point(parentAnchor, pos);
@@ -72,7 +72,8 @@ void GraphicsItem::setPos(const PointF &pos) {
   }
 }
 
-void GraphicsItem::setScenePos(const PointF &pos, const PointF &anchor) {
+void AbstractGraphicsItem::setScenePos(const PointF &pos,
+                                       const PointF &anchor) {
   // for get previous pos
   PointF                                                   prevPos;
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
@@ -96,56 +97,56 @@ void GraphicsItem::setScenePos(const PointF &pos, const PointF &anchor) {
   itemChanged(prevPos);
 }
 
-void GraphicsItem::itemChanged(const PointF &prevPos) const {
+void AbstractGraphicsItem::itemChanged(const PointF &prevPos) const {
   if (scene_) {
     scene_->itemChanged(this, prevPos);
   }
 }
 
-std::list<GraphicsItem *> GraphicsItem::children() const {
-  std::list<GraphicsItem *> retval;
+std::list<AbstractGraphicsItem *> AbstractGraphicsItem::children() const {
+  std::list<AbstractGraphicsItem *> retval;
   std::copy(children_.begin(), children_.end(), std::back_inserter(retval));
   return retval;
 }
 
-void GraphicsItem::mouseMoveEvent(SceneMouseMoveEvent *event) {
+void AbstractGraphicsItem::mouseMoveEvent(SceneMouseMoveEvent *event) {
   UNUSED(event);
 }
 
-void GraphicsItem::mousePressEvent(SceneMousePressEvent *event) {
+void AbstractGraphicsItem::mousePressEvent(SceneMousePressEvent *event) {
   UNUSED(event);
 }
 
-void GraphicsItem::mouseReleaseEvent(SceneMouseReleaseEvent *event) {
+void AbstractGraphicsItem::mouseReleaseEvent(SceneMouseReleaseEvent *event) {
   UNUSED(event);
 }
 
-void GraphicsItem::userEvent(Event *event) {
+void AbstractGraphicsItem::userEvent(Event *event) {
   UNUSED(event);
 }
 
-void GraphicsItem::addToChildren(GraphicsItem *item) {
+void AbstractGraphicsItem::addToChildren(AbstractGraphicsItem *item) {
   children_.insert(item);
 }
 
-void GraphicsItem::removeFromChildren(GraphicsItem *item) {
+void AbstractGraphicsItem::removeFromChildren(AbstractGraphicsItem *item) {
   if (auto found = children_.find(item); found != children_.end()) {
     children_.erase(found);
   }
 }
 
-const TransformMatrix &GraphicsItem::matrix() const {
+const TransformMatrix &AbstractGraphicsItem::matrix() const {
   return matrix_;
 }
 
-TransformMatrix &GraphicsItem::matrixC() {
+TransformMatrix &AbstractGraphicsItem::matrixC() {
   return matrix_;
 }
 
-void GraphicsItem::update() {
+void AbstractGraphicsItem::update() {
 }
 
-void GraphicsItem::rotate(float angle, const PointF &anchor) {
+void AbstractGraphicsItem::rotate(float angle, const PointF &anchor) {
   // for get previous pos
   PointF                                                   prevPos;
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
@@ -175,7 +176,7 @@ void GraphicsItem::rotate(float angle, const PointF &anchor) {
   }
 }
 
-void GraphicsItem::setRotation(float angle, const PointF &anchor) {
+void AbstractGraphicsItem::setRotation(float angle, const PointF &anchor) {
   // for get previous pos
   PointF                                                   prevPos;
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
@@ -210,20 +211,20 @@ void GraphicsItem::setRotation(float angle, const PointF &anchor) {
   }
 }
 
-float GraphicsItem::getRotation() const {
+float AbstractGraphicsItem::getRotation() const {
   return KaliLaska::getRotation(matrix_);
 }
 
-Box GraphicsItem::boundingBox() const {
+Box AbstractGraphicsItem::boundingBox() const {
   return bg::return_envelope<Box>(shape());
 }
 
-GraphicsItem::ItemType GraphicsItem::type() const {
+AbstractGraphicsItem::ItemType AbstractGraphicsItem::type() const {
   return ItemType::None;
 }
 
-void GraphicsItem::scale(std::pair<float, float> factors,
-                         const PointF &          anchor) {
+void AbstractGraphicsItem::scale(std::pair<float, float> factors,
+                                 const PointF &          anchor) {
   PointF                                                   prevPos;
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
   bg::transform(bg::return_centroid<PointF>(boundingBox()), prevPos, translate);
@@ -251,8 +252,8 @@ void GraphicsItem::scale(std::pair<float, float> factors,
   }
 }
 
-void GraphicsItem::setScale(std::pair<float, float> factors,
-                            const PointF &          anchor) {
+void AbstractGraphicsItem::setScale(std::pair<float, float> factors,
+                                    const PointF &          anchor) {
   // for get previous pos
   PointF                                                   prevPos;
   bg::strategy::transform::matrix_transformer<float, 2, 2> translate{matrix_};
@@ -285,32 +286,32 @@ void GraphicsItem::setScale(std::pair<float, float> factors,
   }
 }
 
-std::pair<float, float> GraphicsItem::getScale() const {
+std::pair<float, float> AbstractGraphicsItem::getScale() const {
   return KaliLaska::getScale(matrix_);
 }
 
-float GraphicsItem::zvalue() const {
+float AbstractGraphicsItem::zvalue() const {
   return zvalue_;
 }
 
-void GraphicsItem::setZvalue(ushort val) {
+void AbstractGraphicsItem::setZvalue(ushort val) {
   zvalue_ = val;
   itemChanged(scenePos());
   // TODO maybe it also have to be dependency of parent?
 }
 
-void GraphicsItem::stackAbove() {
+void AbstractGraphicsItem::stackAbove() {
   scene_->stackAbove(this);
 }
 
-bool GraphicsItem::isAbove(const GraphicsItem *rhs) const {
+bool AbstractGraphicsItem::isAbove(const AbstractGraphicsItem *rhs) const {
   if (rhs) {
     return index_ > rhs->index_;
   }
   return false;
 }
 
-std::function<void(void)> GraphicsItem::contextMenu() {
+std::function<void(void)> AbstractGraphicsItem::contextMenu() {
   return {};
 }
 } // namespace KaliLaska

@@ -7,7 +7,7 @@
 #include <memory>
 
 namespace KaliLaska {
-class Window;
+class AbstractWindow;
 class WindowSdlFactory;
 
 /**\brief create KaliLaska::Event-s from SDL events
@@ -21,65 +21,65 @@ public:
    * \return pair of Window (reciver of event) and received (already converted)
    * Event
    */
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convert(const SDL_Event &event, const WindowSdlFactory &factory);
 
 private:
   // mouse events---------------------------------------------------------------
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertMouseMoveEvent(const SDL_MouseMotionEvent &event,
                         const WindowSdlFactory &    factory);
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertMousePressEvent(const SDL_MouseButtonEvent &event,
                          const WindowSdlFactory &    factory);
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertMouseReleaseEvent(const SDL_MouseButtonEvent &event,
                            const WindowSdlFactory &    factory);
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertMouseWheelEvent(const SDL_MouseWheelEvent &event,
                          const WindowSdlFactory &   factory);
 
   // key events-----------------------------------------------------------------
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertKeyPressEvent(const SDL_KeyboardEvent &event,
                        const WindowSdlFactory & factory);
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertKeyReleaseEvent(const SDL_KeyboardEvent &event,
                          const WindowSdlFactory & factory);
 
   // window events--------------------------------------------------------------
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertWindowEvent(const SDL_WindowEvent & event,
                      const WindowSdlFactory &factory);
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertCloseEvent(const SDL_WindowEvent & event,
                     const WindowSdlFactory &factory);
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertShowEvent(const SDL_WindowEvent & event,
                    const WindowSdlFactory &factory);
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertResizeEvent(const SDL_WindowEvent & event,
                      const WindowSdlFactory &factory);
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertMoveEvent(const SDL_WindowEvent & event,
                    const WindowSdlFactory &factory);
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertMouseFocusEvent(const SDL_WindowEvent & event,
                          const WindowSdlFactory &factory);
 
-  static std::pair<Window *, std::unique_ptr<Event>>
+  static std::pair<AbstractWindow *, std::unique_ptr<Event>>
   convertKeyboardFocusEvent(const SDL_WindowEvent & event,
                             const WindowSdlFactory &factory);
 };

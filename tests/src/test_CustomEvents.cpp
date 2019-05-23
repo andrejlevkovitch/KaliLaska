@@ -9,6 +9,7 @@ int main(int argc, char *argv[]) {
   return result;
 }
 
+#include "KaliLaska/AbstractWindow.hpp"
 #include "KaliLaska/CloseEvent.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/KeyReleaseEvent.hpp"
@@ -20,11 +21,10 @@ int main(int argc, char *argv[]) {
 #include "KaliLaska/MoveEvent.hpp"
 #include "KaliLaska/ResizeEvent.hpp"
 #include "KaliLaska/ShowEvent.hpp"
-#include "KaliLaska/Window.hpp"
 
-class TestWindow : public KaliLaska::Window {
+class TestWindow : public KaliLaska::AbstractWindow {
 public:
-  using Window::Window;
+  using AbstractWindow::AbstractWindow;
 
   void closeEvent(std::unique_ptr<KaliLaska::CloseEvent> event) override {
     closeEvent_ = std::move(event);
@@ -71,6 +71,9 @@ public:
   void userEvent(std::unique_ptr<KaliLaska::Event> event) override {
     userEvent_ = std::move(event);
   }
+
+  void update() override{};
+  void render() const override{};
 
 public:
   std::unique_ptr<KaliLaska::CloseEvent>         closeEvent_;

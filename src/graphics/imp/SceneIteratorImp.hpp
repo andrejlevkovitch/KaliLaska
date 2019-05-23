@@ -6,13 +6,13 @@
 #include <memory>
 
 namespace KaliLaska {
-class GraphicsItem;
+class AbstractGraphicsItem;
 class SceneIteratorImp {
 public:
   virtual ~SceneIteratorImp() = default;
 
-  virtual GraphicsItem *operator*() const  = 0;
-  virtual GraphicsItem *operator->() const = 0;
+  virtual AbstractGraphicsItem *operator*() const  = 0;
+  virtual AbstractGraphicsItem *operator->() const = 0;
 
   virtual SceneIteratorImp &operator++()    = 0;
   virtual SceneIteratorImp &operator++(int) = 0;
@@ -31,8 +31,8 @@ namespace std {
 template <>
 struct iterator_traits<KaliLaska::SceneIteratorImp> {
   using iterator_category = std::forward_iterator_tag;
-  using value_type        = KaliLaska::GraphicsItem *;
-  using pointer           = KaliLaska::GraphicsItem *;
-  using reference         = KaliLaska::GraphicsItem *;
+  using value_type        = KaliLaska::AbstractGraphicsItem *;
+  using pointer           = KaliLaska::AbstractGraphicsItem *;
+  using reference         = KaliLaska::AbstractGraphicsItem *;
 };
 } // namespace std

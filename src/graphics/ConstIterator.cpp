@@ -21,14 +21,14 @@ GraphicsScene::ConstIterator &GraphicsScene::ConstIterator::ConstIterator::
   return *this;
 }
 
-GraphicsItem *GraphicsScene::ConstIterator::operator*() const {
+AbstractGraphicsItem *GraphicsScene::ConstIterator::operator*() const {
   if (imp_) {
     return imp_->operator*();
   }
   return nullptr;
 }
 
-GraphicsItem *GraphicsScene::ConstIterator::operator->() const {
+AbstractGraphicsItem *GraphicsScene::ConstIterator::operator->() const {
   if (imp_) {
     return imp_->operator->();
   }

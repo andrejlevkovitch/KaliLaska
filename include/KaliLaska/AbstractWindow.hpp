@@ -1,4 +1,4 @@
-// Window.hpp
+// AbstractWindow.hpp
 
 #pragma once
 
@@ -32,8 +32,6 @@ class KeyboardFocusEvent;
 class KeyPressEvent;
 class KeyReleaseEvent;
 
-class Menu;
-
 namespace GL {
 class Renderer;
 }
@@ -42,26 +40,26 @@ class Renderer;
  * finish
  * \brief uses OpenGL for rendering
  */
-class KALILASKA_EXPORT Window : public Object {
+class KALILASKA_EXPORT AbstractWindow : public Object {
   friend EventNotifyer;
 
 public:
   /**\brief create window with minimal size in corner of screen
    * \throw std::runtime_error if window can not be crated
    */
-  Window();
+  AbstractWindow();
   /**\brief create centered window
    * \throw std::runtime_error if window can not be crated
    */
-  Window(std::string_view title, const Size &size);
+  AbstractWindow(std::string_view title, const Size &size);
 
   /**\throw std::runtime_error if window can not be created
    */
-  Window(std::string_view title, const Point &pos, const Size &size);
-  virtual ~Window();
+  AbstractWindow(std::string_view title, const Point &pos, const Size &size);
+  virtual ~AbstractWindow();
 
-  Window(const Window &) = delete;
-  Window &operator=(const Window &) = delete;
+  AbstractWindow(const AbstractWindow &) = delete;
+  AbstractWindow &operator=(const AbstractWindow &) = delete;
 
   Point pos() const;
   void  setPos(Point pos);
@@ -102,19 +100,19 @@ public:
    */
   void close();
 
-  /**\brief this method call by Application every cickle iteration. By default
-   * does nothing
+  /**\brief this method will be called by Application every cickle iteration.
    */
-  void update() override;
+  void update() override = 0;
 
   /**\brief get current renderer. By default every vindow have default renderer
    * without any GL::Program
    */
   GL::Renderer *renderer() const;
 
-  /**\brief render window and all nested elements
+  /**\brief render window and all nested elements. You should call it manually
+   * from update method
    */
-  virtual void render() const;
+  virtual void render() const = 0;
 
 protected:
   /**\brief prepare window for rendering. Because uses openGL for rendering
@@ -134,8 +132,6 @@ protected:
    * own renderer
    */
   void setRenderer(std::unique_ptr<GL::Renderer> renderer);
-
-  std::shared_ptr<Menu> createMenu();
 
 protected:
   /**\warning after call this method you can not call the object
@@ -192,7 +188,5 @@ protected:
 private:
   std::unique_ptr<WindowImp>    imp_;
   std::unique_ptr<GL::Renderer> renderer_;
-
-  std::list<std::weak_ptr<Menu>> menus_;
 };
 } // namespace KaliLaska

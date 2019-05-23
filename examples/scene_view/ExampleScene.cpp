@@ -2,7 +2,7 @@
 
 #include "ExampleScene.hpp"
 #include "BaseItem.hpp"
-#include "KaliLaska/GraphicsItem.hpp"
+#include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/KeyReleaseEvent.hpp"
 #include <iostream>
@@ -71,7 +71,7 @@ void ExampleScene::keyReleaseEvent(KaliLaska::KeyReleaseEvent *event) {
 
 void ExampleScene::update() {
   // TODO here we get all items at first, because rotation of item change scene
-  std::list<KaliLaska::GraphicsItem *> items;
+  std::list<KaliLaska::AbstractGraphicsItem *> items;
   std::copy(begin(), end(), std::back_inserter(items));
   switch (turn_) {
   case Turn::Left:
@@ -98,7 +98,7 @@ void ExampleScene::update() {
   case Scale::In:
     for (auto i : items) {
       if (i->type() ==
-          static_cast<KaliLaska::GraphicsItem::ItemType>(RingItem)) {
+          static_cast<KaliLaska::AbstractGraphicsItem::ItemType>(RingItem)) {
         auto item = reinterpret_cast<BaseItem *>(i);
         item->scale(SCALE_FACTORS);
       }
@@ -107,7 +107,7 @@ void ExampleScene::update() {
   case Scale::Out:
     for (auto i : items) {
       if (i->type() ==
-          static_cast<KaliLaska::GraphicsItem::ItemType>(RingItem)) {
+          static_cast<KaliLaska::AbstractGraphicsItem::ItemType>(RingItem)) {
         auto item = reinterpret_cast<BaseItem *>(i);
         item->scale(REVERS_FACTORS);
       }

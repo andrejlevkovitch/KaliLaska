@@ -11,11 +11,11 @@ SceneIteratorRTree::SceneIteratorRTree(
 SceneIteratorRTree::~SceneIteratorRTree() {
 }
 
-GraphicsItem *SceneIteratorRTree::operator*() const {
+AbstractGraphicsItem *SceneIteratorRTree::operator*() const {
   return it_.operator*().second.get();
 }
 
-GraphicsItem *SceneIteratorRTree::operator->() const {
+AbstractGraphicsItem *SceneIteratorRTree::operator->() const {
   return it_.operator->()->second.get();
 }
 

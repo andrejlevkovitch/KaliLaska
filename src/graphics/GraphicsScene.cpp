@@ -1,8 +1,8 @@
 // GraphicsScene.cpp
 
 #include "KaliLaska/GraphicsScene.hpp"
+#include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/Application.hpp"
-#include "KaliLaska/GraphicsItem.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/KeyReleaseEvent.hpp"
 #include "KaliLaska/MouseFocusEvent.hpp"
@@ -37,10 +37,11 @@ GraphicsScene::~GraphicsScene() {
   }
 }
 
-GraphicsItem *GraphicsScene::itemAt(
-    const PointF &                                                  pos,
-    std::function<bool(const GraphicsItem *, const GraphicsItem *)> comparator,
-    Spatials spat) const {
+AbstractGraphicsItem *GraphicsScene::itemAt(
+    const PointF &                                    pos,
+    std::function<bool(const AbstractGraphicsItem *,
+                       const AbstractGraphicsItem *)> comparator,
+    Spatials                                          spat) const {
   auto list = imp_->itemsAt(pos, spat);
   if (list.empty()) {
     return nullptr;
@@ -48,25 +49,28 @@ GraphicsItem *GraphicsScene::itemAt(
   return *std::min_element(list.begin(), list.end(), comparator);
 }
 
-std::list<GraphicsItem *> GraphicsScene::itemsAt(
-    const PointF &                                                  pos,
-    std::function<bool(const GraphicsItem *, const GraphicsItem *)> comparator,
-    Spatials spat) const {
+std::list<AbstractGraphicsItem *> GraphicsScene::itemsAt(
+    const PointF &                                    pos,
+    std::function<bool(const AbstractGraphicsItem *,
+                       const AbstractGraphicsItem *)> comparator,
+    Spatials                                          spat) const {
   auto retval = imp_->itemsAt(pos, spat);
   retval.sort(comparator);
   return retval;
 }
 
-std::list<GraphicsItem *> GraphicsScene::itemsAt(
-    const Box &                                                     box,
-    std::function<bool(const GraphicsItem *, const GraphicsItem *)> comparator,
-    Spatials spat) const {
+std::list<AbstractGraphicsItem *> GraphicsScene::itemsAt(
+    const Box &                                       box,
+    std::function<bool(const AbstractGraphicsItem *,
+                       const AbstractGraphicsItem *)> comparator,
+    Spatials                                          spat) const {
   auto retval = imp_->itemsAt(box, spat);
   retval.sort(comparator);
   return retval;
 }
 
-GraphicsItem *GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
+AbstractGraphicsItem *
+GraphicsScene::addItem(std::shared_ptr<AbstractGraphicsItem> item) {
   LOG_DEBUG << "GraphicsScene: add item " << item;
   if (item) {
     item->scene_ = this;
@@ -78,7 +82,7 @@ GraphicsItem *GraphicsScene::addItem(std::shared_ptr<GraphicsItem> item) {
   return nullptr;
 }
 
-int GraphicsScene::removeItem(GraphicsItem *item) {
+int GraphicsScene::removeItem(AbstractGraphicsItem *item) {
   if (!item) {
     return 0;
   }
@@ -217,28 +221,28 @@ void GraphicsScene::event(Event *event) {
 void GraphicsScene::update() {
   // here we first copy pointers to all items because in update operation item
   // can change position
-  std::list<GraphicsItem *> items;
+  std::list<AbstractGraphicsItem *> items;
   std::copy(this->begin(), this->end(), std::back_inserter(items));
   for (auto i : items) {
     i->update();
   }
 }
 
-void GraphicsScene::itemChanged(const GraphicsItem *item,
-                                const PointF &      prevPos) {
+void GraphicsScene::itemChanged(const AbstractGraphicsItem *item,
+                                const PointF &              prevPos) {
   imp_->itemChanged(item, prevPos);
 }
 
-void GraphicsScene::grabbItem(GraphicsItem *item) {
+void GraphicsScene::grabbItem(AbstractGraphicsItem *item) {
   LOG_DEBUG << "GraphicsScene: item grabbed " << item;
   grabbed_ = item;
 }
 
-GraphicsItem *GraphicsScene::grabbedItem() const {
+AbstractGraphicsItem *GraphicsScene::grabbedItem() const {
   return grabbed_;
 }
 
-void GraphicsScene::stackAbove(GraphicsItem *item) {
+void GraphicsScene::stackAbove(AbstractGraphicsItem *item) {
   if (item) {
     item->index_ = ++lastIndex_;
   }

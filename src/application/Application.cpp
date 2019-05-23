@@ -82,7 +82,7 @@ ApplicationImp *Application::implementation() {
   return nullptr;
 }
 
-void Application::notify(Window *window, std::unique_ptr<Event> event) {
+void Application::notify(AbstractWindow *window, std::unique_ptr<Event> event) {
   EventNotifyer::notify(window, std::move(event));
 }
 

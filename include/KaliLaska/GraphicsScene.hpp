@@ -2,8 +2,8 @@
 
 #pragma once
 
+#include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/Box.hpp"
-#include "KaliLaska/GraphicsItem.hpp"
 #include "KaliLaska/Object.hpp"
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/geometry.hpp"
@@ -11,7 +11,7 @@
 #include <memory>
 
 #define DEFAULT_ITEM_COMPARATOR                                                \
-  [](const GraphicsItem *lhs, const GraphicsItem *rhs) {                       \
+  [](const AbstractGraphicsItem *lhs, const AbstractGraphicsItem *rhs) {       \
     if (lhs->zvalue() < rhs->zvalue() ||                                       \
         (lhs->zvalue() == rhs->zvalue() && lhs->isAbove(rhs))) {               \
       return true;                                                             \
@@ -40,7 +40,7 @@ class SceneIterator;
 class NotModificableState;
 class NotifySceneState;
 
-/**\brief store and manage GraphicsItem-s.
+/**\brief store and manage AbstractGraphicsItem-s.
  * \waring all operation with inserting or removing elements invalidate
  * iterators
  */
@@ -59,30 +59,32 @@ public:
    */
   void update() override;
 
-  GraphicsItem *
-  itemAt(const PointF &pos,
-         std::function<bool(const GraphicsItem *, const GraphicsItem *)>
-             comparator = DEFAULT_ITEM_COMPARATOR,
-         Spatials       = Spatials::Intersects) const;
-  std::list<GraphicsItem *>
-  itemsAt(const PointF &pos,
-          std::function<bool(const GraphicsItem *, const GraphicsItem *)>
-              comparator = DEFAULT_ITEM_COMPARATOR,
-          Spatials       = Spatials::Intersects) const;
-  std::list<GraphicsItem *>
-  itemsAt(const Box &pos,
-          std::function<bool(const GraphicsItem *, const GraphicsItem *)>
-              comparator = DEFAULT_ITEM_COMPARATOR,
-          Spatials       = Spatials::Intersects) const;
+  AbstractGraphicsItem *itemAt(const PointF &pos,
+                               std::function<bool(const AbstractGraphicsItem *,
+                                                  const AbstractGraphicsItem *)>
+                                   comparator = DEFAULT_ITEM_COMPARATOR,
+                               Spatials       = Spatials::Intersects) const;
+  std::list<AbstractGraphicsItem *>
+  itemsAt(const PointF &                                    pos,
+          std::function<bool(const AbstractGraphicsItem *,
+                             const AbstractGraphicsItem *)> comparator =
+              DEFAULT_ITEM_COMPARATOR,
+          Spatials = Spatials::Intersects) const;
+  std::list<AbstractGraphicsItem *>
+  itemsAt(const Box &                                       pos,
+          std::function<bool(const AbstractGraphicsItem *,
+                             const AbstractGraphicsItem *)> comparator =
+              DEFAULT_ITEM_COMPARATOR,
+          Spatials = Spatials::Intersects) const;
 
   /**\warning after inserting all iterators invalidated
    * \return true if item added, oterwise - false
    */
-  GraphicsItem *addItem(std::shared_ptr<GraphicsItem> item);
+  AbstractGraphicsItem *addItem(std::shared_ptr<AbstractGraphicsItem> item);
   /**\warning after removing all iterators invalidated
    * \return capacity of removing items
    */
-  int removeItem(GraphicsItem *item);
+  int removeItem(AbstractGraphicsItem *item);
   /**\warning after removing all iterators invalidated
    * \return capacity of removing items
    */
@@ -107,24 +109,24 @@ public:
    */
   Box bounds() const;
 
-  /**\brief GraphicsItem call this in itemChanged method. It needed for change
-   * item in rtree
+  /**\brief AbstractGraphicsItem call this in itemChanged method. It needed for
+   * change item in rtree
    *
    * \param prevPos have to position which in bounding box of item (prefer
    * centroid of boundingBox)
    *
    * \warning no reason use this manually
    */
-  void itemChanged(const GraphicsItem *item, const PointF &prevPos);
+  void itemChanged(const AbstractGraphicsItem *item, const PointF &prevPos);
 
   /**\breif grabb item, for ungrab set nullptr (or other item) in the method
    */
-  void grabbItem(GraphicsItem *item);
+  void grabbItem(AbstractGraphicsItem *item);
   /**\return currently grabbed item or nullptr
    */
-  GraphicsItem *grabbedItem() const;
+  AbstractGraphicsItem *grabbedItem() const;
 
-  void stackAbove(GraphicsItem *item);
+  void stackAbove(AbstractGraphicsItem *item);
 
 protected:
   /**\brief notify all items at position of event. If some item is grabbed, then
@@ -156,7 +158,7 @@ protected:
 private:
   std::unique_ptr<GraphicsSceneImp> imp_;
 
-  GraphicsItem *grabbed_;
+  AbstractGraphicsItem *grabbed_;
 
   size_t lastIndex_;
 
@@ -170,8 +172,8 @@ public:
     ConstIterator(const ConstIterator &rhs);
     ConstIterator &operator=(const ConstIterator &rhs);
 
-    GraphicsItem *operator*() const;
-    GraphicsItem *operator->() const;
+    AbstractGraphicsItem *operator*() const;
+    AbstractGraphicsItem *operator->() const;
 
     ConstIterator &operator++();
     ConstIterator &operator++(int);
@@ -192,9 +194,9 @@ namespace std {
 template <>
 struct iterator_traits<KaliLaska::GraphicsScene::ConstIterator> {
   using iterator_category = std::forward_iterator_tag;
-  using value_type        = KaliLaska::GraphicsItem *;
-  using pointer           = KaliLaska::GraphicsItem *;
-  using reference         = KaliLaska::GraphicsItem *;
+  using value_type        = KaliLaska::AbstractGraphicsItem *;
+  using pointer           = KaliLaska::AbstractGraphicsItem *;
+  using reference         = KaliLaska::AbstractGraphicsItem *;
   using difference_type   = std::ptrdiff_t;
 };
 } // namespace std

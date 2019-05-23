@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "KaliLaska/GraphicsView.hpp"
+#include "KaliLaska/AbstractGraphicsView.hpp"
 
-class View final : public KaliLaska::GraphicsView {
+class View final : public KaliLaska::AbstractGraphicsView {
 public:
   View(std::string_view        name,
        const KaliLaska::Point &pos,

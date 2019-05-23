@@ -11,20 +11,20 @@ public:
 
   Type type() const override;
 
-  void mousePressEvent(GraphicsView *                   view,
+  void mousePressEvent(AbstractGraphicsView *           view,
                        std::unique_ptr<MousePressEvent> event) const override;
   void
-       mouseReleaseEvent(GraphicsView *                     view,
+       mouseReleaseEvent(AbstractGraphicsView *             view,
                          std::unique_ptr<MouseReleaseEvent> event) const override;
-  void mouseMoveEvent(GraphicsView *                  view,
+  void mouseMoveEvent(AbstractGraphicsView *          view,
                       std::unique_ptr<MouseMoveEvent> event) const override;
 
-  void keyPressEvent(GraphicsView *                 view,
+  void keyPressEvent(AbstractGraphicsView *         view,
                      std::unique_ptr<KeyPressEvent> event) const override;
-  void keyReleaseEvent(GraphicsView *                   view,
+  void keyReleaseEvent(AbstractGraphicsView *           view,
                        std::unique_ptr<KeyReleaseEvent> event) const override;
 
-  void mouseFocusEvent(GraphicsView *                   view,
+  void mouseFocusEvent(AbstractGraphicsView *           view,
                        std::unique_ptr<MouseFocusEvent> event) const override;
 };
 } // namespace KaliLaska

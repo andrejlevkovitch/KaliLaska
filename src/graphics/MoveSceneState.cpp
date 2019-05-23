@@ -1,7 +1,7 @@
 // MoveSceneState.cpp
 
 #include "MoveSceneState.hpp"
-#include "KaliLaska/GraphicsView.hpp"
+#include "KaliLaska/AbstractGraphicsView.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/KeyReleaseEvent.hpp"
 #include "KaliLaska/MouseFocusEvent.hpp"
@@ -31,15 +31,16 @@ ViewState::Type MoveSceneState::type() const {
 }
 
 void MoveSceneState::mousePressEvent(
-    GraphicsView *view, std::unique_ptr<MousePressEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<MousePressEvent> event) const {
   UNUSED(view);
   UNUSED(event);
 }
 
 void MoveSceneState::mouseReleaseEvent(
-    GraphicsView *view, std::unique_ptr<MouseReleaseEvent> event) const {
+    AbstractGraphicsView *             view,
+    std::unique_ptr<MouseReleaseEvent> event) const {
   UNUSED(event);
-  if (view->properties_ & GraphicsView::Property::NotModificable) {
+  if (view->properties_ & AbstractGraphicsView::Property::NotModificable) {
     view->changeState(UnModificableState::instance());
   } else {
     view->changeState(NotifySceneState::instance());
@@ -47,7 +48,7 @@ void MoveSceneState::mouseReleaseEvent(
 }
 
 void MoveSceneState::mouseMoveEvent(
-    GraphicsView *view, std::unique_ptr<MouseMoveEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<MouseMoveEvent> event) const {
   if (view->scene_ && event) {
     bg::strategy::transform::matrix_transformer<float, 2, 2> transform{
         view->matrix_};
@@ -63,23 +64,23 @@ void MoveSceneState::mouseMoveEvent(
   }
 }
 
-void MoveSceneState::keyPressEvent(GraphicsView *                 view,
+void MoveSceneState::keyPressEvent(AbstractGraphicsView *         view,
                                    std::unique_ptr<KeyPressEvent> event) const {
   UNUSED(view);
   UNUSED(event);
 }
 
 void MoveSceneState::keyReleaseEvent(
-    GraphicsView *view, std::unique_ptr<KeyReleaseEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<KeyReleaseEvent> event) const {
   UNUSED(view);
   UNUSED(event);
 }
 
 void MoveSceneState::mouseFocusEvent(
-    GraphicsView *view, std::unique_ptr<MouseFocusEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<MouseFocusEvent> event) const {
   // we can get it only when lost focus, so just change state
   UNUSED(event);
-  if (view->properties_ & GraphicsView::Property::NotModificable) {
+  if (view->properties_ & AbstractGraphicsView::Property::NotModificable) {
     view->changeState(UnModificableState::instance());
   } else {
     view->changeState(NotifySceneState::instance());

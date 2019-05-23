@@ -9,18 +9,25 @@ int main(int argc, char *argv[]) {
   return result;
 }
 
+#include "KaliLaska/AbstractWindow.hpp"
 #include "KaliLaska/Point.hpp"
 #include "KaliLaska/Size.hpp"
-#include "KaliLaska/Window.hpp"
 #include <memory>
 
 #define MY_TITLE "My Title"
 
+class TestWindow final : public KaliLaska::AbstractWindow {
+public:
+  using AbstractWindow::AbstractWindow;
+  void update() override{};
+  void render() const override{};
+};
+
 SCENARIO("test window without parameters", "[Window]") {
   GIVEN("Window without parameters") {
-    std::unique_ptr<KaliLaska::Window> window;
+    std::unique_ptr<KaliLaska::AbstractWindow> window;
     // we have to get window without exception
-    REQUIRE_NOTHROW(window = std::make_unique<KaliLaska::Window>());
+    REQUIRE_NOTHROW(window = std::make_unique<TestWindow>());
 
     WHEN("We get window") {
       REQUIRE(window != nullptr);
@@ -78,10 +85,10 @@ SCENARIO("test window without parameters", "[Window]") {
 
 SCENARIO("Test window with set size", "[Window]") {
   GIVEN("Window with set size") {
-    std::unique_ptr<KaliLaska::Window> window;
-    KaliLaska::Size                    windowSize{200, 200};
-    REQUIRE_NOTHROW(
-        window = std::make_unique<KaliLaska::Window>(MY_TITLE, windowSize));
+    std::unique_ptr<KaliLaska::AbstractWindow> window;
+    KaliLaska::Size                            windowSize{200, 200};
+    REQUIRE_NOTHROW(window =
+                        std::make_unique<TestWindow>(MY_TITLE, windowSize));
 
     WHEN("We get window") {
       REQUIRE(window);
@@ -95,11 +102,11 @@ SCENARIO("Test window with set size", "[Window]") {
 
 SCENARIO("Test window with position and size", "[Window]") {
   GIVEN("Window with set size and pos") {
-    std::unique_ptr<KaliLaska::Window> window;
-    KaliLaska::Size                    windowSize{200, 200};
-    KaliLaska::Point                   windowPos{500, 259};
-    REQUIRE_NOTHROW(window = std::make_unique<KaliLaska::Window>(
-                        MY_TITLE, windowPos, windowSize));
+    std::unique_ptr<KaliLaska::AbstractWindow> window;
+    KaliLaska::Size                            windowSize{200, 200};
+    KaliLaska::Point                           windowPos{500, 259};
+    REQUIRE_NOTHROW(
+        window = std::make_unique<TestWindow>(MY_TITLE, windowPos, windowSize));
 
     WHEN("We get window") {
       REQUIRE(window);

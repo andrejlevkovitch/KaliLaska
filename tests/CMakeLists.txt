@@ -1,7 +1,5 @@
-# cmake for test
-# if leak_check option on - then test always be faild!
-
-cmake_minimum_required(VERSION 3.10)
+# cmake for tests
+# if leak_check option on - then tests always be faild!
 
 project(tests)
 

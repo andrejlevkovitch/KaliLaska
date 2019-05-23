@@ -1,7 +1,7 @@
 // ExampleView.cpp
 
 #include "ExampleView.hpp"
-#include "KaliLaska/GraphicsItem.hpp"
+#include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/Menu.hpp"
@@ -30,7 +30,7 @@ namespace bq = boost::qvm;
 ExampleView::ExampleView(std::string_view        title,
                          const KaliLaska::Point &pos,
                          const KaliLaska::Size & size)
-    : GraphicsView{title, pos, size}
+    : AbstractGraphicsView{title, pos, size}
     , clearColor_{KaliLaska::Color::Colors::Black} {
   auto shaderCodeLoader = [](const std::filesystem::path &fileName) {
     std::string retval;
@@ -69,8 +69,7 @@ ExampleView::~ExampleView() {
 void ExampleView::mousePressEvent(
     std::unique_ptr<KaliLaska::MousePressEvent> event) {
   if ((event->buttons() & KaliLaska::Mouse::Button::Right)) {
-    menu_ = createMenu();
-    menu_->setVisible(true);
+    menu_ = std::make_unique<KaliLaska::Menu>(*this);
     KaliLaska::PointF sceneKoord{0, 0};
     bg::transform(
         event->clickPos(),
@@ -78,11 +77,11 @@ void ExampleView::mousePressEvent(
         bg::strategy::transform::matrix_transformer<float, 2, 2>(matrix()));
     if (scene()) {
       if (auto itemUnderCursor = scene()->itemAt(sceneKoord)) {
-        menu_->setFunction(itemUnderCursor->contextMenu());
+        menu_->setImgui(itemUnderCursor->contextMenu());
         return;
       }
     }
-    menu_->setFunction([this]() {
+    menu_->setImgui([this]() {
       auto       curMatrix = this->matrix();
       auto       tmpColor  = this->clearColor_;
       float      angle     = this->getRotation();
@@ -132,7 +131,7 @@ void ExampleView::mousePressEvent(
     if (menu_) {
       menu_.reset();
     }
-    KaliLaska::GraphicsView::mousePressEvent(std::move(event));
+    KaliLaska::AbstractGraphicsView::mousePressEvent(std::move(event));
   }
 }
 
@@ -175,7 +174,7 @@ void ExampleView::keyPressEvent(
   default:
     break;
   }
-  KaliLaska::GraphicsView::keyPressEvent(std::move(event));
+  KaliLaska::AbstractGraphicsView::keyPressEvent(std::move(event));
 }
 
 void ExampleView::resizeEvent(std::unique_ptr<KaliLaska::ResizeEvent> event) {
@@ -185,13 +184,13 @@ void ExampleView::resizeEvent(std::unique_ptr<KaliLaska::ResizeEvent> event) {
 }
 
 void ExampleView::render() const {
-  Window::makeCurrent();
+  makeCurrent();
 
   renderer()->clear();
   renderer()->setViewMat(bq::inverse(matrix()));
 
-  constexpr auto comparator = [](const KaliLaska::GraphicsItem *lhs,
-                                 const KaliLaska::GraphicsItem *rhs) {
+  constexpr auto comparator = [](const KaliLaska::AbstractGraphicsItem *lhs,
+                                 const KaliLaska::AbstractGraphicsItem *rhs) {
     if (lhs->zvalue() > rhs->zvalue() ||
         (lhs->zvalue() == rhs->zvalue() && !lhs->isAbove(rhs))) {
       return true;
@@ -203,6 +202,8 @@ void ExampleView::render() const {
     i->render(renderer());
   }
 
-  Window::render();
+  if (menu_) {
+    menu_->render();
+  }
   swapWindow();
 }

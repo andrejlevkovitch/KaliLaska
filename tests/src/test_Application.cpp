@@ -9,7 +9,14 @@ int main(int argc, char *argv[]) {
   return result;
 }
 
-#include "KaliLaska/Window.hpp"
+#include "KaliLaska/AbstractWindow.hpp"
+
+class TestWindow final : public KaliLaska::AbstractWindow {
+public:
+  using AbstractWindow::AbstractWindow;
+  void update() override{};
+  void render() const override{};
+};
 
 SCENARIO("Test Application", "[Application]") {
   GIVEN("Application") {
@@ -21,9 +28,9 @@ SCENARIO("Test Application", "[Application]") {
 
     WHEN("We get application") {
       THEN("Check Window creation") {
-        std::unique_ptr<KaliLaska::Window> window;
+        std::unique_ptr<TestWindow> window;
         // we have to get window without exception
-        REQUIRE_NOTHROW(window = std::make_unique<KaliLaska::Window>());
+        REQUIRE_NOTHROW(window = std::make_unique<TestWindow>());
         CHECK(window);
       }
     }

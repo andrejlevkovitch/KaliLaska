@@ -11,7 +11,7 @@
 namespace KaliLaska {
 class GraphicsSceneRTree final : public GraphicsSceneImp {
 public:
-  using ValueType = std::pair<Box, std::shared_ptr<GraphicsItem>>;
+  using ValueType = std::pair<Box, std::shared_ptr<AbstractGraphicsItem>>;
   using Indexable =
       boost::geometry::index::quadratic<MAX_NUMBER_OF_ELEMENTS_IN_NODE>;
   using TreeType = boost::geometry::index::rtree<ValueType, Indexable>;
@@ -23,15 +23,16 @@ public:
   GraphicsSceneRTree(const GraphicsSceneRTree &) = delete;
   GraphicsSceneRTree &operator=(const GraphicsSceneRTree &) = delete;
 
-  GraphicsItem *itemAt(const PointF &pos, Spatials spat) const override;
-  std::list<GraphicsItem *> itemsAt(const PointF &pos,
-                                    Spatials      spat) const override;
-  std::list<GraphicsItem *> itemsAt(const Box &box,
-                                    Spatials   spat) const override;
+  AbstractGraphicsItem *itemAt(const PointF &pos, Spatials spat) const override;
+  std::list<AbstractGraphicsItem *> itemsAt(const PointF &pos,
+                                            Spatials      spat) const override;
+  std::list<AbstractGraphicsItem *> itemsAt(const Box &box,
+                                            Spatials   spat) const override;
 
-  GraphicsItem *addItem(std::shared_ptr<GraphicsItem> item) override;
-  bool          removeItem(GraphicsItem *item) override;
-  bool          removeItem(const SceneIterator &iter) override;
+  AbstractGraphicsItem *
+       addItem(std::shared_ptr<AbstractGraphicsItem> item) override;
+  bool removeItem(AbstractGraphicsItem *item) override;
+  bool removeItem(const SceneIterator &iter) override;
 
   SceneIterator begin() const override;
   SceneIterator end() const override;
@@ -43,7 +44,8 @@ public:
 
   Box bounds() const override;
 
-  void itemChanged(const GraphicsItem *item, const PointF &prevPos) override;
+  void itemChanged(const AbstractGraphicsItem *item,
+                   const PointF &              prevPos) override;
 
 private:
   TreeType tree_;

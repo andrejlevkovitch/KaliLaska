@@ -60,6 +60,7 @@ void RingItem::mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) {
   }
 }
 
-KaliLaska::GraphicsItem::ItemType RingItem::type() const {
-  return static_cast<KaliLaska::GraphicsItem::ItemType>(ExampleScene::RingItem);
+KaliLaska::AbstractGraphicsItem::ItemType RingItem::type() const {
+  return static_cast<KaliLaska::AbstractGraphicsItem::ItemType>(
+      ExampleScene::RingItem);
 }

@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "KaliLaska/GraphicsItem.hpp"
+#include "KaliLaska/AbstractGraphicsItem.hpp"
 
-class BaseItem : public KaliLaska::GraphicsItem {
+class BaseItem : public KaliLaska::AbstractGraphicsItem {
 public:
   BaseItem()
       : anchor_{0, 0} {}
@@ -12,10 +12,12 @@ public:
   void setAnchor(const KaliLaska::PointF &anchor) { anchor_ = anchor; }
   KaliLaska::PointF anchor() const { return anchor_; }
 
-  void rotate(float angle) { KaliLaska::GraphicsItem::rotate(angle, anchor_); }
+  void rotate(float angle) {
+    KaliLaska::AbstractGraphicsItem::rotate(angle, anchor_);
+  }
 
   void scale(std::pair<float, float> factors) {
-    KaliLaska::GraphicsItem::scale(factors, anchor_);
+    KaliLaska::AbstractGraphicsItem::scale(factors, anchor_);
   }
 
   std::function<void(void)> contextMenu() {
@@ -25,9 +27,9 @@ public:
       ImGui::NewFrame();
       ImGui::Begin("ExampleItem");
 
-      auto       curMatrix = this->matrix();
-      float      angle     = this->getRotation();
-      auto       scale     = reinterpret_cast<GraphicsItem *>(this)->getScale();
+      auto  curMatrix = this->matrix();
+      float angle     = this->getRotation();
+      auto  scale = reinterpret_cast<AbstractGraphicsItem *>(this)->getScale();
       const auto prevScale = scale;
       const auto prevAngle = angle;
 

@@ -20,11 +20,11 @@ SceneIterator &SceneIterator::operator=(const SceneIterator &rhs) {
   return *this;
 }
 
-GraphicsItem *SceneIterator::operator*() const {
+AbstractGraphicsItem *SceneIterator::operator*() const {
   return imp_->operator*();
 }
 
-GraphicsItem *SceneIterator::operator->() const {
+AbstractGraphicsItem *SceneIterator::operator->() const {
   return imp_->operator->();
 }
 

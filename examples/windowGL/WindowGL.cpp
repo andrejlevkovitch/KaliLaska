@@ -34,7 +34,7 @@ void main() {
 using KaliLaska::GL::GLFactory;
 
 WindowGL::WindowGL(std::string_view title, const KaliLaska::Size &size)
-    : Window{title, size} {
+    : AbstractWindow{title, size} {
   GL_CHECK();
   renderer()->registerProgram(
       "default", KaliLaska::GL::Program{vertexShader, fragmentShader});
@@ -65,7 +65,7 @@ void WindowGL::update() {
 }
 
 void WindowGL::render() const {
-  Window::makeCurrent();
+  makeCurrent();
 
   std::random_device                    rd{};
   std::default_random_engine            engine{rd()};
@@ -136,6 +136,5 @@ void WindowGL::render() const {
   glDeleteBuffers(1, &ebo);
   glDeleteBuffers(1, &vbo);
 
-  Window::render();
   swapWindow();
 }

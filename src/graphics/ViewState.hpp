@@ -5,7 +5,7 @@
 #include <memory>
 
 namespace KaliLaska {
-class GraphicsView;
+class AbstractGraphicsView;
 
 class MouseMoveEvent;
 class MousePressEvent;
@@ -24,22 +24,22 @@ public:
   virtual Type type() const = 0;
 
   virtual void
-  mousePressEvent(GraphicsView *                   view,
+  mousePressEvent(AbstractGraphicsView *           view,
                   std::unique_ptr<MousePressEvent> event) const = 0;
   virtual void
-               mouseReleaseEvent(GraphicsView *                     view,
+               mouseReleaseEvent(AbstractGraphicsView *             view,
                                  std::unique_ptr<MouseReleaseEvent> event) const = 0;
-  virtual void mouseMoveEvent(GraphicsView *                  view,
+  virtual void mouseMoveEvent(AbstractGraphicsView *          view,
                               std::unique_ptr<MouseMoveEvent> event) const = 0;
 
-  virtual void keyPressEvent(GraphicsView *                 view,
+  virtual void keyPressEvent(AbstractGraphicsView *         view,
                              std::unique_ptr<KeyPressEvent> event) const = 0;
   virtual void
-  keyReleaseEvent(GraphicsView *                   view,
+  keyReleaseEvent(AbstractGraphicsView *           view,
                   std::unique_ptr<KeyReleaseEvent> event) const = 0;
 
   virtual void
-  mouseFocusEvent(GraphicsView *                   view,
+  mouseFocusEvent(AbstractGraphicsView *           view,
                   std::unique_ptr<MouseFocusEvent> event) const = 0;
 };
 } // namespace KaliLaska

@@ -7,7 +7,7 @@
 #include <memory>
 
 namespace KaliLaska {
-class Window;
+class AbstractWindow;
 class Event;
 
 class Object;
@@ -54,7 +54,7 @@ public:
    * \warning custom user event as MoveEvent or ResizeEvent will not change
    * window. This events only notify about changing
    */
-  static void notify(Window *window, std::unique_ptr<Event> event);
+  static void notify(AbstractWindow *window, std::unique_ptr<Event> event);
 
   /**\brief set duration time of every iteration of cickle. By default - 50
    * milliseconds

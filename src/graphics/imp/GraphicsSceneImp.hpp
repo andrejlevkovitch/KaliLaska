@@ -10,7 +10,7 @@
 #include <memory>
 
 namespace KaliLaska {
-class GraphicsItem;
+class AbstractGraphicsItem;
 
 class SceneIteratorImp;
 
@@ -19,13 +19,13 @@ class SceneIteratorImp;
  * method, which copy itself
  */
 class SceneIterator final
-    : public std::iterator<std::forward_iterator_tag, GraphicsItem *> {
+    : public std::iterator<std::forward_iterator_tag, AbstractGraphicsItem *> {
 public:
   explicit SceneIterator(std::unique_ptr<SceneIteratorImp> imp);
   ~SceneIterator();
 
-  GraphicsItem *operator*() const;
-  GraphicsItem *operator->() const;
+  AbstractGraphicsItem *operator*() const;
+  AbstractGraphicsItem *operator->() const;
 
   SceneIterator &operator++();
   SceneIterator &operator++(int);
@@ -52,18 +52,20 @@ public:
 
   /**\warning not consider zvalue
    */
-  virtual GraphicsItem *itemAt(const PointF &pos, Spatials spat) const = 0;
+  virtual AbstractGraphicsItem *itemAt(const PointF &pos,
+                                       Spatials      spat) const = 0;
   /**\warning not consider zvalue
    */
-  virtual std::list<GraphicsItem *> itemsAt(const PointF &pos,
-                                            Spatials      spat) const = 0;
+  virtual std::list<AbstractGraphicsItem *> itemsAt(const PointF &pos,
+                                                    Spatials spat) const = 0;
   /**\warning not consider zvalue
    */
-  virtual std::list<GraphicsItem *> itemsAt(const Box &box,
-                                            Spatials   spat) const = 0;
+  virtual std::list<AbstractGraphicsItem *> itemsAt(const Box &box,
+                                                    Spatials   spat) const = 0;
 
-  virtual GraphicsItem *addItem(std::shared_ptr<GraphicsItem> item) = 0;
-  virtual bool          removeItem(GraphicsItem *item)              = 0;
+  virtual AbstractGraphicsItem *
+               addItem(std::shared_ptr<AbstractGraphicsItem> item) = 0;
+  virtual bool removeItem(AbstractGraphicsItem *item)              = 0;
 
   virtual size_t size() const  = 0;
   virtual bool   empty() const = 0;
@@ -72,7 +74,8 @@ public:
 
   virtual Box bounds() const = 0;
 
-  virtual void itemChanged(const GraphicsItem *item, const PointF &prevPos) = 0;
+  virtual void itemChanged(const AbstractGraphicsItem *item,
+                           const PointF &              prevPos) = 0;
 
 public:
   virtual SceneIterator begin() const                         = 0;
@@ -85,9 +88,9 @@ namespace std {
 template <>
 struct iterator_traits<KaliLaska::SceneIterator> {
   using iterator_category = std::forward_iterator_tag;
-  using value_type        = KaliLaska::GraphicsItem *;
-  using pointer           = KaliLaska::GraphicsItem *;
-  using reference         = KaliLaska::GraphicsItem *;
+  using value_type        = KaliLaska::AbstractGraphicsItem *;
+  using pointer           = KaliLaska::AbstractGraphicsItem *;
+  using reference         = KaliLaska::AbstractGraphicsItem *;
   using difference_type   = std::ptrdiff_t;
 };
 } // namespace std

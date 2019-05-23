@@ -1,7 +1,7 @@
 // GraphicsSceneRTree.hpp
 
 #include "GraphicsSceneRTree.hpp"
-#include "KaliLaska/GraphicsItem.hpp"
+#include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "SceneIteratorRTree.hpp"
 #include "debug.hpp"
 #include <boost/geometry.hpp>
@@ -19,7 +19,8 @@ GraphicsSceneRTree::GraphicsSceneRTree() {
 GraphicsSceneRTree::~GraphicsSceneRTree() {
 }
 
-GraphicsItem *GraphicsSceneRTree::addItem(std::shared_ptr<GraphicsItem> item) {
+AbstractGraphicsItem *
+GraphicsSceneRTree::addItem(std::shared_ptr<AbstractGraphicsItem> item) {
   if (item) {
     if (auto curShape = item->shape(); bg::is_valid(curShape)) {
       bg::strategy::transform::matrix_transformer<float, 2, 2> traslator{
@@ -35,7 +36,7 @@ GraphicsItem *GraphicsSceneRTree::addItem(std::shared_ptr<GraphicsItem> item) {
   return nullptr;
 }
 
-bool GraphicsSceneRTree::removeItem(GraphicsItem *item) {
+bool GraphicsSceneRTree::removeItem(AbstractGraphicsItem *item) {
   if (auto found = std::find(this->begin(), this->end(), item);
       found != this->end()) {
     return removeItem(found);
@@ -59,8 +60,8 @@ bool GraphicsSceneRTree::removeItem(const SceneIterator &iter) {
   return tree_.remove(*rtreeIter);
 }
 
-GraphicsItem *GraphicsSceneRTree::itemAt(const PointF &pos,
-                                         Spatials      spat) const {
+AbstractGraphicsItem *GraphicsSceneRTree::itemAt(const PointF &pos,
+                                                 Spatials      spat) const {
   static auto predicate = [&pos](const auto &val) {
     bg::strategy::transform::matrix_transformer<float, 2, 2> transform{
         bq::inverse(val.second->matrix())};
@@ -96,9 +97,9 @@ GraphicsItem *GraphicsSceneRTree::itemAt(const PointF &pos,
   return nullptr;
 }
 
-std::list<GraphicsItem *> GraphicsSceneRTree::itemsAt(const PointF &pos,
-                                                      Spatials spat) const {
-  std::list<GraphicsItem *> retval;
+std::list<AbstractGraphicsItem *>
+GraphicsSceneRTree::itemsAt(const PointF &pos, Spatials spat) const {
+  std::list<AbstractGraphicsItem *> retval;
   switch (spat) {
   case Spatials::Contains:
     tree_.query(
@@ -134,9 +135,9 @@ std::list<GraphicsItem *> GraphicsSceneRTree::itemsAt(const PointF &pos,
   return retval;
 }
 
-std::list<GraphicsItem *> GraphicsSceneRTree::itemsAt(const Box &box,
-                                                      Spatials   spat) const {
-  std::list<GraphicsItem *> retval;
+std::list<AbstractGraphicsItem *>
+GraphicsSceneRTree::itemsAt(const Box &box, Spatials spat) const {
+  std::list<AbstractGraphicsItem *> retval;
   switch (spat) {
   case Spatials::Contains:
     tree_.query(
@@ -179,10 +180,10 @@ Box GraphicsSceneRTree::bounds() const {
   return tree_.bounds();
 }
 
-void GraphicsSceneRTree::itemChanged(const GraphicsItem *item,
-                                     const PointF &      prevPos) {
+void GraphicsSceneRTree::itemChanged(const AbstractGraphicsItem *item,
+                                     const PointF &              prevPos) {
   if (item) {
-    std::shared_ptr<GraphicsItem> copyItem;
+    std::shared_ptr<AbstractGraphicsItem> copyItem;
 
     // first find item and save it, and remove for current tree
     for (auto i = tree_.qbegin(bg::index::intersects(prevPos));

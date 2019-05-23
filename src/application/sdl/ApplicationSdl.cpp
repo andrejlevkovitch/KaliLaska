@@ -1,7 +1,7 @@
 // ApplicationSdl.cpp
 
 #include "ApplicationSdl.hpp"
-#include "KaliLaska/Window.hpp"
+#include "KaliLaska/AbstractWindow.hpp"
 #include "application/EventNotifyer.hpp"
 #include "debug.hpp"
 #include "events/sdl/EventConverterSdl.hpp"
@@ -112,29 +112,38 @@ int ApplicationSdl::exec() {
     // event notifying have to be in main thread, especally because othrerwise
     // we not get quit event, after closed last window
     if (SDL_WaitEventTimeout(&sdlEvent, waitTime)) {
+      // here we first check imgui for events, and, if imgui not capture the
+      // event this event translate to KaliLaska events and send to window
+      bool captured = false;
       switch (sdlEvent.type) {
       // TODO imgui also can get whele event
       case SDL_TEXTINPUT:
         if (io.WantTextInput) {
           ::ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
-          break;
+          captured = true;
         }
+        break;
       case SDL_MOUSEBUTTONDOWN:
         if (io.WantCaptureMouse) {
           ::ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
-          break;
+          captured = true;
         }
+        break;
       case SDL_KEYDOWN:
       case SDL_KEYUP:
         if (io.WantCaptureKeyboard) {
           ::ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
-          break;
+          captured = true;
         }
+        break;
       default:
+        break;
+      }
+
+      if (!captured) {
         auto [window, event] =
             EventConverterSdl::convert(sdlEvent, *windowImpFactory_);
         EventNotifyer::notify(window, std::move(event));
-        break;
       }
     }
 

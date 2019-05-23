@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include "KaliLaska/GraphicsView.hpp"
+#include "KaliLaska/AbstractGraphicsView.hpp"
+#include "KaliLaska/Menu.hpp"
 
-class ExampleView : public KaliLaska::GraphicsView {
+class ExampleView : public KaliLaska::AbstractGraphicsView {
 public:
   ExampleView(std::string_view        title,
               const KaliLaska::Point &pos,
@@ -27,7 +28,7 @@ protected:
 
 private:
   std::chrono::time_point<std::chrono::system_clock> last_;
-  std::shared_ptr<KaliLaska::Menu>                   menu_;
+  std::unique_ptr<KaliLaska::Menu>                   menu_;
 
   KaliLaska::Color  clearColor_;
   KaliLaska::PointF anchor_;

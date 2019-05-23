@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
   KaliLaska::Application app{argc, argv};
 
   View view{"texture view", {0, 0}, {800, 800}};
-  view.setProperty(KaliLaska::GraphicsView::Property::Movable);
+  view.setProperty(KaliLaska::AbstractGraphicsView::Property::Movable);
 
   Scene scene{};
   view.setScene(&scene);

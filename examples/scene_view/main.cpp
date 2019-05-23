@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   // ExampleView view2{"my mini view", {900, 0}, {300, 300}};
 
   view.setResizable(true);
-  view.setProperty(KaliLaska::GraphicsView::Property::Movable);
+  view.setProperty(KaliLaska::AbstractGraphicsView::Property::Movable);
   // view2.setProperty(KaliLaska::GraphicsView::Property::NotModificable |
   //                  KaliLaska::GraphicsView::Property::Movable);
   // view2.setSceneBox(KaliLaska::Box{{-20, -20}, {800, 800}});

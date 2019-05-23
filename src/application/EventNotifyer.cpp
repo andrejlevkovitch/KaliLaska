@@ -1,6 +1,7 @@
 // EventNotifyer.cpp
 
 #include "EventNotifyer.hpp"
+#include "KaliLaska/AbstractWindow.hpp"
 #include "KaliLaska/CloseEvent.hpp"
 #include "KaliLaska/Event.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
@@ -14,7 +15,6 @@
 #include "KaliLaska/MoveEvent.hpp"
 #include "KaliLaska/ResizeEvent.hpp"
 #include "KaliLaska/ShowEvent.hpp"
-#include "KaliLaska/Window.hpp"
 
 namespace KaliLaska {
 // custom unique cast
@@ -24,7 +24,8 @@ std::unique_ptr<R> uniqueCast(T &t) {
   return std::unique_ptr<R>(reinterpret_cast<R *>(ptr));
 }
 
-void EventNotifyer::notify(Window *window, std::unique_ptr<Event> event) {
+void EventNotifyer::notify(AbstractWindow *       window,
+                           std::unique_ptr<Event> event) {
   if (window && event) {
     switch (event->type()) {
     case Event::Type::CloseEvent:

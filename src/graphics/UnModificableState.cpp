@@ -1,7 +1,7 @@
 // UnModificableState.cpp
 
 #include "UnModificableState.hpp"
-#include "KaliLaska/GraphicsView.hpp"
+#include "KaliLaska/AbstractGraphicsView.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/KeyReleaseEvent.hpp"
 #include "KaliLaska/MouseFocusEvent.hpp"
@@ -26,39 +26,40 @@ ViewState::Type UnModificableState::type() const {
 }
 
 void UnModificableState::mousePressEvent(
-    GraphicsView *view, std::unique_ptr<MousePressEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<MousePressEvent> event) const {
   if (event->buttons() & Mouse::Button::Left &&
-      view->properties_ & GraphicsView::Property::Movable) {
+      view->properties_ & AbstractGraphicsView::Property::Movable) {
     view->changeState(MoveSceneState::instance());
   }
 }
 
 void UnModificableState::mouseReleaseEvent(
-    GraphicsView *view, std::unique_ptr<MouseReleaseEvent> event) const {
+    AbstractGraphicsView *             view,
+    std::unique_ptr<MouseReleaseEvent> event) const {
   UNUSED(view);
   UNUSED(event);
 }
 
 void UnModificableState::mouseMoveEvent(
-    GraphicsView *view, std::unique_ptr<MouseMoveEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<MouseMoveEvent> event) const {
   UNUSED(view);
   UNUSED(event);
 }
 
 void UnModificableState::keyPressEvent(
-    GraphicsView *view, std::unique_ptr<KeyPressEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<KeyPressEvent> event) const {
   UNUSED(view);
   UNUSED(event);
 }
 
 void UnModificableState::keyReleaseEvent(
-    GraphicsView *view, std::unique_ptr<KeyReleaseEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<KeyReleaseEvent> event) const {
   UNUSED(view);
   UNUSED(event);
 }
 
 void UnModificableState::mouseFocusEvent(
-    GraphicsView *view, std::unique_ptr<MouseFocusEvent> event) const {
+    AbstractGraphicsView *view, std::unique_ptr<MouseFocusEvent> event) const {
   UNUSED(view);
   UNUSED(event);
 }

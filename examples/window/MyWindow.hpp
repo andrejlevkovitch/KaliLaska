@@ -2,11 +2,14 @@
 
 #pragma once
 
-#include "KaliLaska/Window.hpp"
+#include "KaliLaska/AbstractWindow.hpp"
 
-class MyWindow : public KaliLaska::Window {
+class MyWindow : public KaliLaska::AbstractWindow {
 public:
-  using Window::Window;
+  using AbstractWindow::AbstractWindow;
+
+  void update() override;
+  void render() const override;
 
 protected:
   void closeEvent(std::unique_ptr<KaliLaska::CloseEvent> event) override;

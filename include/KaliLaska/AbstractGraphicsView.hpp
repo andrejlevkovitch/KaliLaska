@@ -1,10 +1,10 @@
-// GraphicsView.hpp
+// AbstractGraphicsView.hpp
 
 #pragma once
 
+#include "KaliLaska/AbstractWindow.hpp"
 #include "KaliLaska/Box.hpp"
 #include "KaliLaska/TransformMatrix.hpp"
-#include "KaliLaska/Window.hpp"
 
 namespace KaliLaska {
 class GraphicsScene;
@@ -16,7 +16,7 @@ class NotifySceneState;
 
 /**\brief display entity of GraphicsScen. One view can display only one scene
  */
-class GraphicsView : public Window {
+class AbstractGraphicsView : public AbstractWindow {
   friend UnModificableState;
   friend NotifySceneState;
   friend MoveSceneState;
@@ -34,8 +34,10 @@ public:
   };
   using Properties = uint8_t;
 
-  GraphicsView(std::string_view title, const Point &pos, const Size &size);
-  ~GraphicsView() override = default;
+  AbstractGraphicsView(std::string_view title,
+                       const Point &    pos,
+                       const Size &     size);
+  ~AbstractGraphicsView() override = default;
 
   /**\brief by default view have several properties (look in Property enum),
    * which you can set by the method

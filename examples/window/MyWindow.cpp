@@ -16,7 +16,7 @@
 
 void MyWindow::closeEvent(std::unique_ptr<KaliLaska::CloseEvent> event) {
   std::cerr << *event << std::endl;
-  KaliLaska::Window::closeEvent(std::move(event));
+  KaliLaska::AbstractWindow::closeEvent(std::move(event));
 }
 
 void MyWindow::showEvent(std::unique_ptr<KaliLaska::ShowEvent> event) {
@@ -68,4 +68,10 @@ void MyWindow::keyReleaseEvent(
 void MyWindow::userEvent(std::unique_ptr<KaliLaska::Event> event) {
   (void)event;
   std::cerr << "USER EVENT" << std::endl;
+}
+
+void MyWindow::update() {
+}
+
+void MyWindow::render() const {
 }

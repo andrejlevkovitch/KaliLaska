@@ -7,27 +7,25 @@
 #include <string_view>
 
 namespace KaliLaska {
-class Window;
+class AbstractWindow;
 class MenuImp;
 
+/**\brief menu, based on imgui
+ */
 class Menu final {
 public:
   /**\brief window window in which will be displayed the menu
    */
-  Menu(Window &window);
+  Menu(AbstractWindow &window);
   ~Menu();
 
-  /**\return true if visible, otherwise - false. By default - false
+  /**\param imgui lyambda or functor in which describe some functionality by
+   * imgui. Desribe what will be displayed. You need call all functions from
+   * ImGui::NewFrame() to ImGui::EndFrame() inclusive (functions, which depends
+   * from imgui implementations not needed, because it calls in Menu::render
+   * before and after functionality which you set.
    */
-  bool isVisible() const;
-  void setVisible(bool val);
-  /**\return true if menu can be displaed, otherwise - false. By default - false
-   */
-  bool isValid() const;
-
-  /**\brief the method set imgui menu
-   */
-  void setFunction(std::function<void(void)> function);
+  void setImgui(std::function<void(void)> imgui);
 
   void render() const;
 

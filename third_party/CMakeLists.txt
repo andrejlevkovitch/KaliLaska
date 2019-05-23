@@ -33,7 +33,7 @@ set(imgui_SRC
   imgui/imgui_impl_opengl3.cpp
   imgui/imgui_impl_sdl.cpp
   )
-add_library(imgui STATIC ${imgui_SRC})
+add_library(imgui SHARED ${imgui_SRC})
 target_include_directories(imgui INTERFACE "imgui")
 if (WIN32)
   target_link_libraries(imgui

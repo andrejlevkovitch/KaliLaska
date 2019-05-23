@@ -11,8 +11,8 @@ public:
   SceneIteratorRTree(const GraphicsSceneRTree::TreeType::const_iterator &it);
   ~SceneIteratorRTree() override;
 
-  GraphicsItem *operator*() const override;
-  GraphicsItem *operator->() const override;
+  AbstractGraphicsItem *operator*() const override;
+  AbstractGraphicsItem *operator->() const override;
 
   SceneIteratorRTree &operator++() override;
   SceneIteratorRTree &operator++(int) override;

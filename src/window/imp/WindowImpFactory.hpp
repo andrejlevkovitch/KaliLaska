@@ -8,7 +8,7 @@
 
 namespace KaliLaska {
 class WindowImp;
-class Window;
+class AbstractWindow;
 class MenuImp;
 
 class WindowImpFactory {
@@ -21,18 +21,20 @@ public:
    *
    * \throw exceptions from WindowImp at creation time
    */
-  virtual std::unique_ptr<WindowImp> createWindowImp(Window &window) = 0;
-  /**\throw exceptions from WindowImp at creation time
-   */
   virtual std::unique_ptr<WindowImp>
-  createWindowImp(Window &window, std::string_view title, Size size) = 0;
+  createWindowImp(AbstractWindow &window) = 0;
   /**\throw exceptions from WindowImp at creation time
    */
-  virtual std::unique_ptr<WindowImp> createWindowImp(Window &         window,
+  virtual std::unique_ptr<WindowImp> createWindowImp(AbstractWindow & window,
+                                                     std::string_view title,
+                                                     Size             size) = 0;
+  /**\throw exceptions from WindowImp at creation time
+   */
+  virtual std::unique_ptr<WindowImp> createWindowImp(AbstractWindow & window,
                                                      std::string_view title,
                                                      Point            point,
                                                      Size             size) = 0;
 
-  virtual std::unique_ptr<MenuImp> createMenuImp(Window &window) = 0;
+  virtual std::unique_ptr<MenuImp> createMenuImp(AbstractWindow &window) = 0;
 };
 } // namespace KaliLaska

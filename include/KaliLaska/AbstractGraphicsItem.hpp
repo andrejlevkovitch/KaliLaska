@@ -1,4 +1,4 @@
-// GraphicsItem.hpp
+// AbstractGraphicsItem.hpp
 
 #pragma once
 
@@ -25,17 +25,17 @@ class Renderer;
 
 /**\brief represent graphical objects on scene
  */
-class GraphicsItem {
+class AbstractGraphicsItem {
   friend GraphicsScene;
 
 public:
   enum ItemType { None = 0, UserType = 100 };
 
-  GraphicsItem();
-  virtual ~GraphicsItem();
+  AbstractGraphicsItem();
+  virtual ~AbstractGraphicsItem();
 
-  GraphicsItem(GraphicsItem &&) = delete;
-  GraphicsItem &operator=(GraphicsItem &&) = delete;
+  AbstractGraphicsItem(AbstractGraphicsItem &&) = delete;
+  AbstractGraphicsItem &operator=(AbstractGraphicsItem &&) = delete;
 
   /**\return type of item. By default None. If you want to set you own type -
    * use UserType
@@ -71,13 +71,13 @@ public:
    */
   GraphicsScene *scene() const;
 
-  /**\return parent GraphicsItem if it was be set, otherwise nullptr. Parent
-   * item set ownershiep of the item, so it parent item will be changed
+  /**\return parent AbstractGraphicsItem if it was be set, otherwise nullptr.
+   * Parent item set ownershiep of the item, so it parent item will be changed
    * (position for example), or will be deleted - it happens with child item
    */
-  GraphicsItem *parent() const;
+  AbstractGraphicsItem *parent() const;
 
-  void setParent(GraphicsItem *parent);
+  void setParent(AbstractGraphicsItem *parent);
 
   /**\return postion (top-left corner) of item in parent koordinates. If parent
    * is not set - in scene koordinates
@@ -129,7 +129,7 @@ public:
   /**\return list of all children of the item.
    * \warning not sorted
    */
-  std::list<GraphicsItem *> children() const;
+  std::list<AbstractGraphicsItem *> children() const;
 
   /**\return current transformation matrix
    */
@@ -150,7 +150,7 @@ public:
   /**\return  true if current item is above rhs-item. If rhs is nullptr or items
    * not from one scene - return false
    */
-  bool isAbove(const GraphicsItem *rhs) const;
+  bool isAbove(const AbstractGraphicsItem *rhs) const;
 
   // FIXME not preaty
   /**\return implementation for Menu
@@ -190,14 +190,14 @@ protected:
   TransformMatrix &matrixC();
 
 private:
-  void addToChildren(GraphicsItem *item);
-  void removeFromChildren(GraphicsItem *item);
+  void addToChildren(AbstractGraphicsItem *item);
+  void removeFromChildren(AbstractGraphicsItem *item);
 
 private:
   GraphicsScene *scene_;
 
-  GraphicsItem *           parent_;
-  std::set<GraphicsItem *> children_;
+  AbstractGraphicsItem *           parent_;
+  std::set<AbstractGraphicsItem *> children_;
 
   TransformMatrix matrix_;
 

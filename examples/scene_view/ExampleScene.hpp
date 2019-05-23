@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "KaliLaska/GraphicsItem.hpp"
+#include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
 
 class ExampleScene : public KaliLaska::GraphicsScene {
@@ -10,7 +10,7 @@ public:
   enum class Turn { None, Left, Right };
   enum class Scale { None, In, Out };
   enum {
-    ExampleItem = KaliLaska::GraphicsItem::UserType + 1,
+    ExampleItem = KaliLaska::AbstractGraphicsItem::UserType + 1,
     RingItem,
   };
   ExampleScene();

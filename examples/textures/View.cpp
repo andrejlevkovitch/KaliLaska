@@ -1,7 +1,7 @@
 // View.cpp
 
 #include "View.hpp"
-#include "KaliLaska/GraphicsItem.hpp"
+#include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
 #include "KaliLaska/opengl.hpp"
 #include "shaders.hpp"
@@ -14,7 +14,7 @@ namespace bq = boost::qvm;
 View::View(std::string_view        title,
            const KaliLaska::Point &pos,
            const KaliLaska::Size & size)
-    : GraphicsView{title, pos, size}
+    : AbstractGraphicsView{title, pos, size}
     , clearColor_{KaliLaska::Color::Colors::Black} {
   auto shaderCodeLoader = [](const std::filesystem::path &fileName) {
     std::string retval;
@@ -59,13 +59,13 @@ void View::update() {
 }
 
 void View::render() const {
-  Window::makeCurrent();
+  makeCurrent();
 
   renderer()->clear();
   renderer()->setViewMat(bq::inverse(matrix()));
 
-  constexpr auto comparator = [](const KaliLaska::GraphicsItem *lhs,
-                                 const KaliLaska::GraphicsItem *rhs) {
+  constexpr auto comparator = [](const KaliLaska::AbstractGraphicsItem *lhs,
+                                 const KaliLaska::AbstractGraphicsItem *rhs) {
     if (lhs->zvalue() > rhs->zvalue() ||
         (lhs->zvalue() == rhs->zvalue() && !lhs->isAbove(rhs))) {
       return true;
@@ -77,6 +77,5 @@ void View::render() const {
     i->render(renderer());
   }
 
-  Window::render();
   swapWindow();
 }

@@ -6,13 +6,13 @@
 #include <memory>
 
 namespace KaliLaska {
-class Window;
+class AbstractWindow;
 class Event;
 
 /**\brief main function of the class - call protected members of Window
  */
 class EventNotifyer {
 public:
-  static void notify(Window *window, std::unique_ptr<Event> event);
+  static void notify(AbstractWindow *window, std::unique_ptr<Event> event);
 };
 } // namespace KaliLaska

@@ -53,7 +53,7 @@ void ExampleItem::mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) {
   }
 }
 
-KaliLaska::GraphicsItem::ItemType ExampleItem::type() const {
-  return static_cast<KaliLaska::GraphicsItem::ItemType>(
+KaliLaska::AbstractGraphicsItem::ItemType ExampleItem::type() const {
+  return static_cast<KaliLaska::AbstractGraphicsItem::ItemType>(
       ExampleScene::ExampleItem);
 }

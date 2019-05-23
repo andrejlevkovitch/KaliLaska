@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "KaliLaska/Window.hpp"
+#include "KaliLaska/AbstractWindow.hpp"
 
-class WindowGL : public KaliLaska::Window {
+class WindowGL : public KaliLaska::AbstractWindow {
 public:
   WindowGL(std::string_view title, const KaliLaska::Size &size);
 

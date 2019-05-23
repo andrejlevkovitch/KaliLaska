@@ -1,7 +1,6 @@
-// GraphicsView.cpp
+// AbstractGraphicsView.cpp
 
-#include "KaliLaska/GraphicsView.hpp"
-#include "KaliLaska/GraphicsItem.hpp"
+#include "KaliLaska/AbstractGraphicsView.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
 #include "KaliLaska/KeyReleaseEvent.hpp"
@@ -23,19 +22,19 @@ namespace bg = boost::geometry;
 namespace bq = boost::qvm;
 
 namespace KaliLaska {
-GraphicsView::GraphicsView(std::string_view title,
-                           const Point &    pos,
-                           const Size &     size)
-    : Window{title, pos, size}
+AbstractGraphicsView::AbstractGraphicsView(std::string_view title,
+                                           const Point &    pos,
+                                           const Size &     size)
+    : AbstractWindow{title, pos, size}
     , scene_{}
     , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}}
     , state_{NotifySceneState::instance()}
     , properties_{} {
-  LOG_TRACE << "GraphicsView: konstructor";
+  LOG_TRACE << "AbstractGraphicsView: konstructor";
 }
 
-void GraphicsView::setProperty(Properties prop) {
-  LOG_DEBUG << "GraphicsView: set property " << std::to_string(prop);
+void AbstractGraphicsView::setProperty(Properties prop) {
+  LOG_DEBUG << "AbstractGraphicsView: set property " << std::to_string(prop);
   properties_ = prop;
 
   if (properties_ & Property::NotModificable) {
@@ -43,16 +42,16 @@ void GraphicsView::setProperty(Properties prop) {
   }
 }
 
-GraphicsScene *GraphicsView::scene() const {
+GraphicsScene *AbstractGraphicsView::scene() const {
   return scene_;
 }
 
-void GraphicsView::setScene(GraphicsScene *scene) {
-  LOG_DEBUG << "GraphicsView: set scene " << scene;
+void AbstractGraphicsView::setScene(GraphicsScene *scene) {
+  LOG_DEBUG << "AbstractGraphicsView: set scene " << scene;
   scene_ = scene;
 }
 
-void GraphicsView::setSceneBox(const Box &sceneBox) {
+void AbstractGraphicsView::setSceneBox(const Box &sceneBox) {
   bq::mat_traits<TransformMatrix>::write_element<0, 2>(matrix_) =
       bg::get<0>(sceneBox.min_corner());
   bq::mat_traits<TransformMatrix>::write_element<1, 2>(matrix_) =
@@ -71,7 +70,7 @@ void GraphicsView::setSceneBox(const Box &sceneBox) {
       bg::get<1>(sizeSceneBox);
 }
 
-Box GraphicsView::sceneBox() const {
+Box AbstractGraphicsView::sceneBox() const {
   Ring view;
   bg::convert(viewBox(), view);
   Ring                                                     sceneRing;
@@ -80,51 +79,56 @@ Box GraphicsView::sceneBox() const {
   return bg::return_envelope<Box>(sceneRing);
 }
 
-Box GraphicsView::viewBox() const {
+Box AbstractGraphicsView::viewBox() const {
   return {{0, 0},
           {static_cast<float>(drawSize().width()),
            static_cast<float>(drawSize().height())}};
 }
 
-const TransformMatrix &GraphicsView::matrix() const {
+const TransformMatrix &AbstractGraphicsView::matrix() const {
   return matrix_;
 }
 
-TransformMatrix &GraphicsView::matrixC() {
+TransformMatrix &AbstractGraphicsView::matrixC() {
   return matrix_;
 }
 
-void GraphicsView::mousePressEvent(std::unique_ptr<MousePressEvent> event) {
+void AbstractGraphicsView::mousePressEvent(
+    std::unique_ptr<MousePressEvent> event) {
   state_->mousePressEvent(this, std::move(event));
 }
 
-void GraphicsView::mouseReleaseEvent(std::unique_ptr<MouseReleaseEvent> event) {
+void AbstractGraphicsView::mouseReleaseEvent(
+    std::unique_ptr<MouseReleaseEvent> event) {
   state_->mouseReleaseEvent(this, std::move(event));
 }
 
-void GraphicsView::mouseMoveEvent(std::unique_ptr<MouseMoveEvent> event) {
+void AbstractGraphicsView::mouseMoveEvent(
+    std::unique_ptr<MouseMoveEvent> event) {
   state_->mouseMoveEvent(this, std::move(event));
 }
 
-void GraphicsView::keyPressEvent(std::unique_ptr<KeyPressEvent> event) {
+void AbstractGraphicsView::keyPressEvent(std::unique_ptr<KeyPressEvent> event) {
   state_->keyPressEvent(this, std::move(event));
 }
 
-void GraphicsView::keyReleaseEvent(std::unique_ptr<KeyReleaseEvent> event) {
+void AbstractGraphicsView::keyReleaseEvent(
+    std::unique_ptr<KeyReleaseEvent> event) {
   state_->keyReleaseEvent(this, std::move(event));
 }
 
-void GraphicsView::mouseFocusEvent(std::unique_ptr<MouseFocusEvent> event) {
+void AbstractGraphicsView::mouseFocusEvent(
+    std::unique_ptr<MouseFocusEvent> event) {
   state_->mouseFocusEvent(this, std::move(event));
 }
 
-void GraphicsView::changeState(ViewState *state) {
-  LOG_DEBUG << "GraphicsView: state changed to " << state->type();
+void AbstractGraphicsView::changeState(ViewState *state) {
+  LOG_DEBUG << "AbstractGraphicsView: state changed to " << state->type();
   state_ = state;
 }
 
-void GraphicsView::scale(std::pair<float, float> factors,
-                         const PointF &          anchor) {
+void AbstractGraphicsView::scale(std::pair<float, float> factors,
+                                 const PointF &          anchor) {
   // clang-format off
   TransformMatrix scaleMat{{ {factors.first, 0, 0},
                              {0, factors.second, 0},
@@ -140,8 +144,8 @@ void GraphicsView::scale(std::pair<float, float> factors,
   matrix_ *= bq::inverse(anchorMat);
 }
 
-void GraphicsView::setScale(std::pair<float, float> factors,
-                            const PointF &          anchor) {
+void AbstractGraphicsView::setScale(std::pair<float, float> factors,
+                                    const PointF &          anchor) {
   // clang-format off
   TransformMatrix scaleMat{{ {factors.first, 0, 0},
                              {0, factors.second, 0},
@@ -160,11 +164,11 @@ void GraphicsView::setScale(std::pair<float, float> factors,
   matrix_ *= bq::inverse(anchorMat);
 }
 
-std::pair<float, float> GraphicsView::getScale() const {
+std::pair<float, float> AbstractGraphicsView::getScale() const {
   return KaliLaska::getScale(matrix_);
 }
 
-void GraphicsView::rotate(float angle, const PointF &anchor) {
+void AbstractGraphicsView::rotate(float angle, const PointF &anchor) {
   // clang-format off
   TransformMatrix anchorMat{{
       {1, 0, bg::get<0>(anchor)},
@@ -180,7 +184,7 @@ void GraphicsView::rotate(float angle, const PointF &anchor) {
   matrix_ *= bq::inverse(anchorMat);
 }
 
-void GraphicsView::setRotation(float angle, const PointF &anchor) {
+void AbstractGraphicsView::setRotation(float angle, const PointF &anchor) {
   // clang-format off
   TransformMatrix anchorMat{{
         {1, 0, bg::get<0>(anchor)},
@@ -201,7 +205,7 @@ void GraphicsView::setRotation(float angle, const PointF &anchor) {
   matrix_ *= bq::inverse(anchorMat);
 }
 
-float GraphicsView::getRotation() const {
+float AbstractGraphicsView::getRotation() const {
   return KaliLaska::getRotation(matrix_);
 }
 } // namespace KaliLaska

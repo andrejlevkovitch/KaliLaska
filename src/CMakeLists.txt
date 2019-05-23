@@ -64,14 +64,14 @@ set(window_SRC
 
   window/sdl/WindowSdl.cpp
   window/sdl/WindowSdlFactory.cpp
-  window/sdl/MenuImgui.cpp
+  window/sdl/MenuSdl.cpp
   )
 
 set(graphics_SRC
-  graphics/GraphicsItem.cpp
-  graphics/GraphicsScene.cpp
+  graphics/AbstractGraphicsItem.cpp
+  graphics/AbstractGraphicsView.cpp
   graphics/ConstIterator.cpp
-  graphics/GraphicsView.cpp
+  graphics/GraphicsScene.cpp
   graphics/SceneMouseMoveEvent.cpp
   graphics/SceneMousePressEvent.cpp
   graphics/SceneMouseReleaseEvent.cpp
@@ -137,17 +137,17 @@ else()
       Boost::log
       picopng
       -lstdc++fs
-    PUBLIC
-      imgui
     INTERFACE
       SDL2::SDL2
       OpenGL::GL
+      imgui
     )
   target_include_directories(${PROJECT_NAME}
     PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}
       $<TARGET_PROPERTY:SDL2::SDL2,INTERFACE_INCLUDE_DIRECTORIES>
       $<TARGET_PROPERTY:OpenGL::GL,INTERFACE_INCLUDE_DIRECTORIES>
+      $<TARGET_PROPERTY:imgui,INTERFACE_INCLUDE_DIRECTORIES>
       ${Boost_INCLUDE_DIRS}
     PUBLIC
       ${CMAKE_CURRENT_BINARY_DIR}

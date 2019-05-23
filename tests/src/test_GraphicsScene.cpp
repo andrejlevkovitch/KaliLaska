@@ -9,10 +9,10 @@ int main(int argc, char *argv[]) {
   return result;
 }
 
-#include "KaliLaska/GraphicsItem.hpp"
+#include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
 
-class TestItem final : public KaliLaska::GraphicsItem {
+class TestItem final : public KaliLaska::AbstractGraphicsItem {
 public:
   void render(KaliLaska::GL::Renderer *) const override{};
 
