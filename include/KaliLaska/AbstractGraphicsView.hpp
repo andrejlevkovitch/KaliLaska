@@ -34,6 +34,9 @@ public:
   };
   using Properties = uint8_t;
 
+  /**\brief create centered window
+   */
+  AbstractGraphicsView(std::string_view title, const Size &size);
   AbstractGraphicsView(std::string_view title,
                        const Point &    pos,
                        const Size &     size);

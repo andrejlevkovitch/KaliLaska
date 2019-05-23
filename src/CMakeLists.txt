@@ -7,7 +7,6 @@ include(GenerateExportHeader)
 set(geometry_SRC
   geometry/Point.cpp
   geometry/Size.cpp
-  geometry/Color.cpp
   geometry/Box.cpp
   geometry/Ring.cpp
   geometry/TransformMatrix.cpp
@@ -59,7 +58,7 @@ set(events_SRC
   )
 
 set(window_SRC
-  window/Window.cpp
+  window/AbstractWindow.cpp
   window/Menu.cpp
 
   window/sdl/WindowSdl.cpp
@@ -97,6 +96,7 @@ set(KaliLaska_SRC
 
   opengl/Picture.cpp
   opengl/Texture.cpp
+  opengl/Color.cpp
   )
 
 add_library(${PROJECT_NAME}

@@ -23,6 +23,14 @@ namespace bq = boost::qvm;
 
 namespace KaliLaska {
 AbstractGraphicsView::AbstractGraphicsView(std::string_view title,
+                                           const Size &     size)
+    : AbstractWindow{title, size}
+    , scene_{}
+    , matrix_{{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}}
+    , state_{NotifySceneState::instance()}
+    , properties_{} {
+}
+AbstractGraphicsView::AbstractGraphicsView(std::string_view title,
                                            const Point &    pos,
                                            const Size &     size)
     : AbstractWindow{title, pos, size}
