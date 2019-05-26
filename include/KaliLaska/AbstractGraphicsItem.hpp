@@ -157,6 +157,14 @@ public:
    */
   virtual std::function<void(void)> contextMenu();
 
+  /**\brief translate point in item koordinates to scene koordinates
+   */
+  PointF mapToScene(const PointF &point) const;
+
+  /**\brief translate point in scene koordinates to item koordinates
+   */
+  PointF mapFromScene(const PointF &point) const;
+
 protected:
   /**\brief by default does nothing
    */
@@ -199,6 +207,8 @@ private:
   AbstractGraphicsItem *           parent_;
   std::set<AbstractGraphicsItem *> children_;
 
+  /**\brief transform item koordinates to scene koordinates
+   */
   TransformMatrix matrix_;
 
   size_t         index_;

@@ -10,7 +10,6 @@
 #include <iostream>
 
 namespace bg = boost::geometry;
-namespace bq = boost::qvm;
 
 RingItem::RingItem() {
   bg::read_wkt(
@@ -42,11 +41,7 @@ KaliLaska::Ring RingItem::shape() const {
 }
 
 void RingItem::mousePressEvent(KaliLaska::SceneMousePressEvent *event) {
-  KaliLaska::PointF clickPos;
-  auto              inverted = bq::inverse(matrix());
-  bg::strategy::transform::matrix_transformer<float, 2, 2> transformer{
-      inverted};
-  bg::transform(event->clickPos(), clickPos, transformer);
+  KaliLaska::PointF clickPos = mapFromScene(event->clickPos());
   if (bg::intersects(clickPos, shape_)) {
     scene()->grabbItem(this);
     event->accept();

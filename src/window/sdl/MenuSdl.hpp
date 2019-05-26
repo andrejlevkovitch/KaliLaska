@@ -14,6 +14,7 @@ public:
 
   void setImgui(std::function<void(void)> function) override;
   void render() const override;
+  bool isValid() const override;
 
 private:
   SDL_Window *              window_;

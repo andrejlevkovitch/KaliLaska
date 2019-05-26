@@ -29,4 +29,8 @@ void MenuSdl::render() const {
     ::ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   }
 }
+
+bool MenuSdl::isValid() const {
+  return imgui_.operator bool();
+}
 } // namespace KaliLaska

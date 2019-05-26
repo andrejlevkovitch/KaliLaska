@@ -33,6 +33,7 @@ public:
       const auto prevScale = scale;
       const auto prevAngle = angle;
 
+      ImGui::Text("%s", name_.c_str());
       ImGui::InputFloat2("item anchor", reinterpret_cast<float *>(&anchor_));
       ImGui::Separator();
       ImGui::SliderFloat2(
@@ -62,6 +63,9 @@ public:
     };
   }
 
+  void setName(std::string_view name) { name_ = name; }
+
 protected:
   KaliLaska::PointF anchor_;
+  std::string       name_;
 };

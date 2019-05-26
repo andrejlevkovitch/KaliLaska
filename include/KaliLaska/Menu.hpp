@@ -27,7 +27,13 @@ public:
    */
   void setImgui(std::function<void(void)> imgui);
 
+  /**\brief render the imgui. If menu is not valid - does nothing
+   */
   void render() const;
+
+  /**\return true if in menu seted valid imgui, otherwise - false
+   */
+  bool isValid() const;
 
 private:
   std::unique_ptr<MenuImp> imp_;

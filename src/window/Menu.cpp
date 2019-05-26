@@ -22,4 +22,8 @@ void Menu::setImgui(std::function<void(void)> imgui) {
 void Menu::render() const {
   imp_->render();
 }
+
+bool Menu::isValid() const {
+  return imp_->isValid();
+}
 } // namespace KaliLaska

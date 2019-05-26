@@ -96,6 +96,12 @@ public:
    * \warning After creation the texture is not binded!
    */
   explicit Texture(const Picture &fromRGBA32);
+  /**\brief load part of picture to texture
+   * \warning After creation the texture is not binded!
+   * \param box part of picture, which we need load in picture koordinates ({0,
+   * 0} - top-left corner).
+   */
+  Texture(const Picture &fromRGBA32, const Box &box);
   ~Texture();
 
   Texture(Texture &&rhs);

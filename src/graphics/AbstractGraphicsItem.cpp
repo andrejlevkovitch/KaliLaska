@@ -314,4 +314,22 @@ bool AbstractGraphicsItem::isAbove(const AbstractGraphicsItem *rhs) const {
 std::function<void(void)> AbstractGraphicsItem::contextMenu() {
   return {};
 }
+
+PointF AbstractGraphicsItem::mapToScene(const PointF &point) const {
+  PointF retval;
+  bg::transform(
+      point,
+      retval,
+      bg::strategy::transform::matrix_transformer<float, 2, 2>(matrix_));
+  return retval;
+}
+
+PointF AbstractGraphicsItem::mapFromScene(const PointF &point) const {
+  PointF retval;
+  bg::transform(point,
+                retval,
+                bg::strategy::transform::matrix_transformer<float, 2, 2>(
+                    bq::inverse(matrix_)));
+  return retval;
+}
 } // namespace KaliLaska

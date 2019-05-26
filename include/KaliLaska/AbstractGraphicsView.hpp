@@ -94,6 +94,14 @@ public:
    */
   float getRotation() const;
 
+  /**\brief translate view koordinates to scene koordinates
+   */
+  PointF mapToScene(const Point &point) const;
+
+  /**\brief translate scene koordinates to view koordinates.
+   */
+  Point mapFromScene(const PointF &point) const;
+
 protected:
   /**\return not constant matrix of the view
    */

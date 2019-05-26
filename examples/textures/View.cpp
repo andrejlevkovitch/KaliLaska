@@ -3,6 +3,7 @@
 #include "View.hpp"
 #include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
+#include "KaliLaska/MousePressEvent.hpp"
 #include "KaliLaska/opengl.hpp"
 #include "shaders.hpp"
 #include <boost/qvm/mat_operations.hpp>
@@ -15,7 +16,8 @@ View::View(std::string_view        title,
            const KaliLaska::Point &pos,
            const KaliLaska::Size & size)
     : AbstractGraphicsView{title, pos, size}
-    , clearColor_{KaliLaska::Color::Colors::Black} {
+    , clearColor_{KaliLaska::Color::Colors::Black}
+    , menu_{*this} {
   auto shaderCodeLoader = [](const std::filesystem::path &fileName) {
     std::string retval;
     if (!std::filesystem::exists(fileName) &&
@@ -77,5 +79,19 @@ void View::render() const {
     i->render(renderer());
   }
 
+  menu_.render();
   swapWindow();
+}
+
+void View::mousePressEvent(std::unique_ptr<KaliLaska::MousePressEvent> event) {
+  if (scene() && event->button() & KaliLaska::Mouse::Button::Right) {
+    if (auto item = scene()->itemAt(mapToScene(event->clickPos()))) {
+      menu_.setImgui(item->contextMenu());
+    }
+  } else {
+    if (menu_.isValid()) {
+      menu_.setImgui(nullptr);
+    }
+    AbstractGraphicsView::mousePressEvent(std::move(event));
+  }
 }

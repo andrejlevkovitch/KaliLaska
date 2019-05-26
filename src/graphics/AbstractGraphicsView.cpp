@@ -216,4 +216,22 @@ void AbstractGraphicsView::setRotation(float angle, const PointF &anchor) {
 float AbstractGraphicsView::getRotation() const {
   return KaliLaska::getRotation(matrix_);
 }
+
+PointF AbstractGraphicsView::mapToScene(const Point &point) const {
+  PointF retval;
+  bg::transform(
+      point,
+      retval,
+      bg::strategy::transform::matrix_transformer<float, 2, 2>(matrix_));
+  return retval;
+}
+
+Point AbstractGraphicsView::mapFromScene(const PointF &point) const {
+  Point retval;
+  bg::transform(point,
+                retval,
+                bg::strategy::transform::matrix_transformer<float, 2, 2>(
+                    bq::inverse(matrix_)));
+  return retval;
+}
 } // namespace KaliLaska

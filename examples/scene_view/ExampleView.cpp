@@ -14,7 +14,6 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "shaders.hpp"
-#include <boost/geometry.hpp>
 #include <boost/qvm/mat_operations.hpp>
 #include <fstream>
 #include <iostream>
@@ -69,12 +68,8 @@ ExampleView::~ExampleView() {
 void ExampleView::mousePressEvent(
     std::unique_ptr<KaliLaska::MousePressEvent> event) {
   if ((event->buttons() & KaliLaska::Mouse::Button::Right)) {
-    menu_ = std::make_unique<KaliLaska::Menu>(*this);
-    KaliLaska::PointF sceneKoord{0, 0};
-    bg::transform(
-        event->clickPos(),
-        sceneKoord,
-        bg::strategy::transform::matrix_transformer<float, 2, 2>(matrix()));
+    menu_                        = std::make_unique<KaliLaska::Menu>(*this);
+    KaliLaska::PointF sceneKoord = mapToScene(event->clickPos());
     if (scene()) {
       if (auto itemUnderCursor = scene()->itemAt(sceneKoord)) {
         menu_->setImgui(itemUnderCursor->contextMenu());
@@ -187,6 +182,7 @@ void ExampleView::render() const {
   makeCurrent();
 
   renderer()->clear();
+  // the matrix have to transform scene koordinates to view koordinates
   renderer()->setViewMat(bq::inverse(matrix()));
 
   constexpr auto comparator = [](const KaliLaska::AbstractGraphicsItem *lhs,

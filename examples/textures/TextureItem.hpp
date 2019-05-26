@@ -5,10 +5,12 @@
 #include "BaseItem.hpp"
 #include "KaliLaska/opengl.hpp"
 #include <filesystem>
+#include <string>
 
 class TextureItem final : public BaseItem {
 public:
   TextureItem(const std::filesystem::path &file);
+  TextureItem(const std::filesystem::path &file, const KaliLaska::Box &box);
 
   void render(KaliLaska::GL::Renderer *renderer) const override;
 
