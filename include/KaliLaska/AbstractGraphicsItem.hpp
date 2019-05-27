@@ -152,11 +152,6 @@ public:
    */
   bool isAbove(const AbstractGraphicsItem *rhs) const;
 
-  // FIXME not preaty
-  /**\return implementation for Menu
-   */
-  virtual std::function<void(void)> contextMenu();
-
   /**\brief translate point in item koordinates to scene koordinates
    */
   PointF mapToScene(const PointF &point) const;

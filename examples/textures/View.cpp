@@ -1,6 +1,7 @@
 // View.cpp
 
 #include "View.hpp"
+#include "BaseItem.hpp"
 #include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
 #include "KaliLaska/MousePressEvent.hpp"
@@ -85,8 +86,9 @@ void View::render() const {
 
 void View::mousePressEvent(std::unique_ptr<KaliLaska::MousePressEvent> event) {
   if (scene() && event->button() & KaliLaska::Mouse::Button::Right) {
-    if (auto item = scene()->itemAt(mapToScene(event->clickPos()))) {
-      menu_.setImgui(item->contextMenu());
+    if (auto item = reinterpret_cast<BaseItem *>(
+            scene()->itemAt(mapToScene(event->clickPos())))) {
+      menu_.setImgui(item->contextMenu(event->clickPos()));
     }
   } else {
     if (menu_.isValid()) {

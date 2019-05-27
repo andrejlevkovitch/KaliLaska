@@ -20,12 +20,17 @@ public:
     KaliLaska::AbstractGraphicsItem::scale(factors, anchor_);
   }
 
-  std::function<void(void)> contextMenu() {
+  std::function<void(void)> contextMenu(const KaliLaska::Point &pos) {
     namespace bg = boost::geometry;
 
-    return [this]() {
+    return [this, clickPos = pos]() {
       ImGui::NewFrame();
-      ImGui::Begin("ExampleItem");
+      ImGui::Begin("ExampleItem",
+                   nullptr,
+                   ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
+                       ImGuiWindowFlags_AlwaysAutoResize |
+                       ImGuiWindowFlags_NoScrollbar);
+      ImGui::SetWindowPos(::ImVec2(bg::get<0>(clickPos), bg::get<1>(clickPos)));
 
       auto  curMatrix = this->matrix();
       float angle     = this->getRotation();

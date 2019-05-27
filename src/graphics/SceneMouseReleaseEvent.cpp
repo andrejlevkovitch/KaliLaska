@@ -37,6 +37,10 @@ PointF SceneMouseReleaseEvent::clickPos() const {
 Point SceneMouseReleaseEvent::clickViewPos() const {
   return event_->clickPos();
 }
+
+const TransformMatrix &SceneMouseReleaseEvent::matrix() const {
+  return matrix_;
+}
 } // namespace KaliLaska
 
 std::ostream &operator<<(std::ostream &                           stream,

@@ -31,6 +31,10 @@ public:
    */
   Point clickViewPos() const;
 
+  /**\return transformation matrix, which translate view points to scene points
+   */
+  const TransformMatrix &matrix() const;
+
 private:
   std::unique_ptr<MousePressEvent> event_;
   TransformMatrix                  matrix_;

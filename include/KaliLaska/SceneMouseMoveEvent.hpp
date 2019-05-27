@@ -40,6 +40,10 @@ public:
    */
   PointF distance() const;
 
+  /**\return transformation matrix, which translate view points to scene points
+   */
+  const TransformMatrix &matrix() const;
+
 private:
   std::unique_ptr<MouseMoveEvent> event_;
   TransformMatrix                 matrix_;

@@ -58,6 +58,10 @@ PointF SceneMouseMoveEvent::distance() const {
           bq::mat_traits<TransformMatrix>::read_element<1, 1>(matrix_)));
   return retval;
 }
+
+const TransformMatrix &SceneMouseMoveEvent::matrix() const {
+  return matrix_;
+}
 } // namespace KaliLaska
 
 std::ostream &operator<<(std::ostream &                        stream,

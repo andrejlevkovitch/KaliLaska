@@ -311,10 +311,6 @@ bool AbstractGraphicsItem::isAbove(const AbstractGraphicsItem *rhs) const {
   return false;
 }
 
-std::function<void(void)> AbstractGraphicsItem::contextMenu() {
-  return {};
-}
-
 PointF AbstractGraphicsItem::mapToScene(const PointF &point) const {
   PointF retval;
   bg::transform(

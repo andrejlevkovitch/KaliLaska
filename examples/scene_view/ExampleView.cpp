@@ -1,6 +1,7 @@
 // ExampleView.cpp
 
 #include "ExampleView.hpp"
+#include "BaseItem.hpp"
 #include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "KaliLaska/GraphicsScene.hpp"
 #include "KaliLaska/KeyPressEvent.hpp"
@@ -71,7 +72,8 @@ void ExampleView::mousePressEvent(
     menu_                        = std::make_unique<KaliLaska::Menu>(*this);
     KaliLaska::PointF sceneKoord = mapToScene(event->clickPos());
     if (scene()) {
-      if (auto itemUnderCursor = scene()->itemAt(sceneKoord)) {
+      if (auto itemUnderCursor =
+              reinterpret_cast<BaseItem *>(scene()->itemAt(sceneKoord))) {
         menu_->setImgui(itemUnderCursor->contextMenu());
         return;
       }
