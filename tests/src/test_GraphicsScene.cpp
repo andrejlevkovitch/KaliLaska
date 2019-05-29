@@ -18,9 +18,7 @@ public:
 
   /**\brief all items have size{10, 10}
    */
-  KaliLaska::Ring shape() const override {
-    return {{0, 0}, {0, 10}, {10, 10}, {10, 0}, {0, 0}};
-  };
+  KaliLaska::Box boundingBox() const override { return {{0, 0}, {10, 10}}; };
 };
 
 SCENARIO("Test GraphicsScene", "[GraphicsScene]") {

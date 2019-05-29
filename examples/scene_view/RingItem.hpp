@@ -15,7 +15,9 @@ public:
   void update() override;
   void render(KaliLaska::GL::Renderer *renderer) const override;
 
-  KaliLaska::Ring shape() const override;
+  KaliLaska::Ring shape() const;
+
+  KaliLaska::Box boundingBox() const override;
 
   void mousePressEvent(KaliLaska::SceneMousePressEvent *event) override;
   void mouseReleaseEvent(KaliLaska::SceneMouseReleaseEvent *event) override;

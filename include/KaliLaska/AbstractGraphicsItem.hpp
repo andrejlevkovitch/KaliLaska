@@ -42,19 +42,14 @@ public:
    */
   virtual ItemType type() const;
 
-  /**\return box, which contains current item in item koordinates. Building from
-   * shape. Rendering have to be in this box, otherwise it can have unexpected
-   * rezult. Also item get mouse events from the box
-   */
-  Box boundingBox() const;
-
-  /**\return bounding ring of current item in item koordinates. Uses for build
-   * boundingBox. Ring have to be valid, otherwise it can have unexpected rezult
+  /**\return the method have to return box which represents the item. All
+   * rendering operatins have to be in the box. You also get all events by the
+   * box
    *
    * \warning if you change the return value after inserting in scene - do not
    * forget call itemChanged method!
    */
-  virtual Ring shape() const = 0;
+  virtual Box boundingBox() const = 0;
 
   /**\brief have to be used for rendering by GL::Renderer (you also can use
    * opengl directly)

@@ -13,38 +13,17 @@ namespace bg = boost::geometry;
 // FIXME here we have problem, because we can initialize texture only after
 // create opengl program
 Texture::Texture(const Picture &fromRGBA32)
-    : glTexture_{} {
-  ::glActiveTexture(GL_TEXTURE7);
-  ::glGenTextures(1, &glTexture_);
-  ::glBindTexture(GL_TEXTURE_2D, glTexture_);
-
-  int  defaultAlignment{};
-  auto pictureSize = fromRGBA32.size();
-  ::glGetIntegerv(GL_UNPACK_ALIGNMENT, &defaultAlignment);
-  ::glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-  ::glTexImage2D(GL_TEXTURE_2D,
-                 0,
-                 GL_RGBA,
-                 pictureSize.width(),
-                 pictureSize.height(),
-                 0,
-                 GL_RGBA,
-                 GL_UNSIGNED_BYTE,
-                 fromRGBA32.pixels());
-
-  ::glPixelStorei(GL_UNPACK_ALIGNMENT, defaultAlignment);
-
-  ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-  ::glBindTexture(GL_TEXTURE_2D, 0);
+    : Texture{
+          fromRGBA32,
+          Box{PointF{0, 0},
+              PointF(fromRGBA32.size().width(), fromRGBA32.size().height())}} {
 }
 
-Texture::Texture(const Picture &fromRGBA32, const Box &box)
-    : glTexture_{} {
+Texture::Texture(const Picture &fromRGBA32,
+                 const Box &    box,
+                 const Ring &   textureShape)
+    : glTexture_{}
+    , textureShape_{textureShape} {
   glActiveTexture(GL_TEXTURE7);
   glGenTextures(1, &glTexture_);
   glBindTexture(GL_TEXTURE_2D, glTexture_);
@@ -112,5 +91,9 @@ void Texture::bind(bool val) const {
   } else {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
+}
+
+const Ring &Texture::shape() const {
+  return textureShape_;
 }
 } // namespace KaliLaska::GL

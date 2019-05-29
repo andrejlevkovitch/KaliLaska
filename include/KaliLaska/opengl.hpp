@@ -98,10 +98,16 @@ public:
   explicit Texture(const Picture &fromRGBA32);
   /**\brief load part of picture to texture
    * \warning After creation the texture is not binded!
-   * \param box part of picture, which we need load in picture koordinates ({0,
-   * 0} - top-left corner).
+   * \param pictureBox part of picture, which we need load in picture
+   * koordinates ({0, 0} - top-left corner).
+   *
+   * \param textureShape shape which will be rendered. Use this for faster
+   * rendering (not needed parts not will be interpolated)
    */
-  Texture(const Picture &fromRGBA32, const Box &box);
+  Texture(const Picture &fromRGBA32,
+          const Box &    pictureBox,
+          const Ring &   textureShape = {
+              {{0, 0}, {0, 1}, {1, 1}, {1, 0}, {0, 0}}});
   ~Texture();
 
   Texture(Texture &&rhs);
@@ -114,8 +120,13 @@ public:
    */
   void bind(bool val = true) const;
 
+  /**\return textureShape
+   */
+  const Ring &shape() const;
+
 private:
   uint32_t glTexture_;
+  Ring     textureShape_;
 };
 
 // FIXME not working
@@ -166,6 +177,7 @@ public:
   static inline std::string_view viewMatUniform{"view_mat"};
   static inline std::string_view itemMatUniform{"item_mat"};
   static inline std::string_view texture0Uniform{"texture0"};
+  static inline std::string_view textureMatrix{"texture_mat"};
 
   enum class Attributes {
     /**\brief vec2 input vertex for gl_Position
@@ -206,11 +218,9 @@ public:
    * \param textureRing ring of texture (in texture ndc koordinates)
    * \param itemMat transformation matrix (translate, scale, rotation)
    */
-  Cache render(const Ring &           itemRing,
+  Cache render(const Box &            itemBox,
                const TransformMatrix &itemMat,
-               const Texture &        texture,
-               const Ring &           textureRing = {
-                   {0, 0}, {0, 1}, {1, 1}, {1, 0}, {0, 0}});
+               const Texture &        texture);
 
   void render(const Cache &          cache,
               const TransformMatrix &itemMat,

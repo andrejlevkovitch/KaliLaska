@@ -25,7 +25,9 @@ int main(int argc, char **argv) {
   texItem2->setName("first");
 
   auto texItem3 = std::make_unique<TextureItem>(
-      png, KaliLaska::Box{{400, 300}, {800, 600}});
+      png,
+      KaliLaska::Box{{400, 300}, {800, 600}},
+      KaliLaska::Ring{{0, 0}, {0, 1}, {0.5, 1}, {0.5, 0}, {0, 0}});
   texItem3->setScenePos({500, 500}, {0, 0});
   texItem3->setName("second");
 
@@ -34,8 +36,10 @@ int main(int argc, char **argv) {
   texItem4->setScenePos({200, 100}, {0, 0});
   texItem4->setName("third");
 
-  auto texItem5 =
-      std::make_unique<TextureItem>(png, KaliLaska::Box{{0, 300}, {400, 600}});
+  auto texItem5 = std::make_unique<TextureItem>(
+      png,
+      KaliLaska::Box{{0, 300}, {400, 600}},
+      KaliLaska::Ring{{0.5, 0}, {0.5, 1}, {1, 1}, {1, 0}, {0.5, 0}});
   texItem5->setScenePos({200, 500}, {0, 0});
   texItem5->setName("four");
 

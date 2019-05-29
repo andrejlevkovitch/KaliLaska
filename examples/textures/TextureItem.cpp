@@ -8,26 +8,27 @@
 #include <iostream>
 
 TextureItem::TextureItem(const std::filesystem::path &file)
-    : shape_{{0, 0}, {0, 60}, {80, 60}, {80, 0}, {0, 0}}
+    : box_{{0, 0}, {80, 60}}
     , texture_{KaliLaska::Picture{file}} {
 }
 
 TextureItem::TextureItem(const std::filesystem::path &file,
-                         const KaliLaska::Box &       box)
-    : shape_{{0, 0}, {0, 60}, {80, 60}, {80, 0}, {0, 0}}
-    , texture_{KaliLaska::Picture{file}, box} {
+                         const KaliLaska::Box &       box,
+                         const KaliLaska::Ring &      ring)
+    : box_{{-80, -60}, {80, 60}}
+    , texture_{KaliLaska::Picture{file}, box, ring} {
 }
 
-KaliLaska::Ring TextureItem::shape() const {
-  return shape_;
+KaliLaska::Box TextureItem::boundingBox() const {
+  return box_;
 }
 
 void TextureItem::render(KaliLaska::GL::Renderer *renderer) const {
-  if (cache_) {
-    renderer->render(cache_, matrix(), texture_);
-  } else {
-    cache_ = renderer->render(shape_, matrix(), texture_);
-  }
+  // if (cache_) {
+  //  renderer->render(cache_, matrix(), texture_);
+  //} else {
+  cache_ = renderer->render(boundingBox(), matrix(), texture_);
+  //}
 }
 
 void TextureItem::mousePressEvent(KaliLaska::SceneMousePressEvent *event) {

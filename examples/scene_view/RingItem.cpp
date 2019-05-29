@@ -40,6 +40,10 @@ KaliLaska::Ring RingItem::shape() const {
   return shape_;
 }
 
+KaliLaska::Box RingItem::boundingBox() const {
+  return bg::return_envelope<KaliLaska::Box>(shape_);
+}
+
 void RingItem::mousePressEvent(KaliLaska::SceneMousePressEvent *event) {
   KaliLaska::PointF clickPos = mapFromScene(event->clickPos());
   if (bg::intersects(clickPos, shape_)) {

@@ -4,6 +4,7 @@
 #include "KaliLaska/AbstractGraphicsItem.hpp"
 #include "SceneIteratorRTree.hpp"
 #include "debug.hpp"
+#include "logger/logger.hpp"
 #include <boost/geometry.hpp>
 #include <boost/iterator/function_output_iterator.hpp>
 #include <boost/qvm/mat_operations.hpp>
@@ -22,7 +23,11 @@ GraphicsSceneRTree::~GraphicsSceneRTree() {
 AbstractGraphicsItem *
 GraphicsSceneRTree::addItem(std::shared_ptr<AbstractGraphicsItem> item) {
   if (item) {
-    if (auto curShape = item->shape(); bg::is_valid(curShape)) {
+    // we can not just rotade box, so we have to get ring from this and rotade
+    // it. After we get box from rotated ring and insert it in rtree
+    Ring curShape;
+    bg::convert(item->boundingBox(), curShape);
+    if (bg::is_valid(curShape)) {
       bg::strategy::transform::matrix_transformer<float, 2, 2> traslator{
           item->matrix()};
       Ring rezRing;
@@ -198,7 +203,8 @@ void GraphicsSceneRTree::itemChanged(const AbstractGraphicsItem *item,
 
     // if we not find by point we try find by check all items
     if (!copyItem) {
-      GET_POSITION();
+      LOG_WARNING << "we not get item in rtree from previous position, so we "
+                     "search it in all rtree";
       for (const auto &i : tree_) {
         if (i.second.get() == item) {
           copyItem = i.second;

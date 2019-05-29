@@ -18,8 +18,8 @@ ExampleItem::ExampleItem(const KaliLaska::Color &color) {
   setZvalue(1);
 }
 
-KaliLaska::Ring ExampleItem::shape() const {
-  return {{0, 0}, {0, 30}, {30, 30}, {30, 0}, {0, 0}};
+KaliLaska::Box ExampleItem::boundingBox() const {
+  return {{0, 0}, {30, 30}};
 }
 
 void ExampleItem::render(KaliLaska::GL::Renderer *renderer) const {

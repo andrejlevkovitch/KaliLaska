@@ -168,12 +168,30 @@ void Renderer::render(const Cache &          cache,
   }
 }
 
-Cache Renderer::render(const Ring &           itemRing,
+Cache Renderer::render(const Box &            itemBox,
                        const TransformMatrix &itemMat,
-                       const Texture &        texture,
-                       const Ring &           textureRing) {
-  if (auto triangles = triangulation(itemRing); !triangles.empty()) {
+                       const Texture &        texture) {
+  if (auto triangles = triangulation(texture.shape()); !triangles.empty()) {
     Cache retval(GL_TRIANGLES, triangles.size());
+
+    // here we konstruct matrix for transform texture koordinates to item
+    // koordinates
+    PointF boxSize = itemBox.max_corner();
+    bg::subtract_point(boxSize, itemBox.min_corner());
+
+    // clang-format off
+    KaliLaska::TransformMatrix textureMat{
+        {{bg::get<0>(boxSize), 0, bg::get<bg::min_corner, 0>(itemBox)},
+         {0, bg::get<1>(boxSize), bg::get<bg::min_corner, 1>(itemBox)},
+         {0, 0, 1}}};
+    // clang-format on
+    if (auto found = programs_.find(currentProgram_);
+        found != programs_.end()) {
+      ::glUniformMatrix3fv(found->second.getUniformLocation(textureMatrix),
+                           1,
+                           true,
+                           textureMat.a[0]);
+    }
 
     if (auto found = programs_.find(currentProgram_);
         found != programs_.end()) {
@@ -186,18 +204,9 @@ Cache Renderer::render(const Ring &           itemRing,
 
     retval.bind(true);
 
-    Ring verticies;
-    verticies.reserve(itemRing.size() * 2);
-    for (auto i = itemRing.begin(), j = textureRing.begin();
-         i != itemRing.end() && j != textureRing.end();
-         ++i, ++j) {
-      verticies.push_back(*i);
-      verticies.push_back(*j);
-    }
-
     glBufferData(GL_ARRAY_BUFFER,
-                 (verticies.size() - 2) * 2 * sizeof(float),
-                 verticies.data(),
+                 (texture.shape().size() - 1) * 2 * sizeof(float),
+                 texture.shape().data(),
                  GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
                  triangles.size() * sizeof(decltype(triangles)::value_type),
@@ -208,17 +217,9 @@ Cache Renderer::render(const Ring &           itemRing,
                           2,
                           GL_FLOAT,
                           GL_FALSE,
-                          16,
+                          0,
                           nullptr);
     glEnableVertexAttribArray(static_cast<int>(Attributes::Vertex));
-
-    glVertexAttribPointer(static_cast<int>(Attributes::TexVertex),
-                          2,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          16,
-                          reinterpret_cast<void *>(8));
-    glEnableVertexAttribArray(static_cast<int>(Attributes::TexVertex));
 
     ::glActiveTexture(GL_TEXTURE0);
     texture.bind();
@@ -227,7 +228,6 @@ Cache Renderer::render(const Ring &           itemRing,
 
     texture.bind(false);
 
-    glDisableVertexAttribArray(static_cast<int>(Attributes::TexVertex));
     glDisableVertexAttribArray(static_cast<int>(Attributes::Vertex));
     retval.bind(false);
 

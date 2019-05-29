@@ -215,10 +215,6 @@ float AbstractGraphicsItem::getRotation() const {
   return KaliLaska::getRotation(matrix_);
 }
 
-Box AbstractGraphicsItem::boundingBox() const {
-  return bg::return_envelope<Box>(shape());
-}
-
 AbstractGraphicsItem::ItemType AbstractGraphicsItem::type() const {
   return ItemType::None;
 }
